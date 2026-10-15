@@ -85,8 +85,10 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
       DistanceToLine(p, l, d) =>
         self.valid_point(p) && self.valid_line(l) && bounded(d)
       Radius(c, r) => self.valid_circle(c) && bounded(r) && r > 0.0
-      EqualRadius(a, b) | Concentric(a, b) | ExternalTangent(a, b) =>
-        self.valid_circle(a) && self.valid_circle(b)
+      EqualRadius(a, b)
+      | Concentric(a, b)
+      | ExternalTangent(a, b)
+      | InternalTangent(a, b) => self.valid_circle(a) && self.valid_circle(b)
       PointOnCircle(p, c) => self.valid_point(p) && self.valid_circle(c)
       Tangent(l, c) => self.valid_line(l) && self.valid_circle(c)
     }

@@ -103,3 +103,41 @@ test "invalid length ratios are rejected" {
     assert_true(s.solve() is Err(_))
   }
 }
+
+///|
+test "internal tangent circles match analytic center positions" {
+  for side in [-1.0, 1.0] {
+    let s = Sketch::new()
+    let a = s.add_point(0.0, 0.0)
+    let b = s.add_point(3.2, 3.8 * side)
+    let outer = s.add_circle(a, 5.0)
+    let inner = s.add_circle(b, 1.5)
+    s.constrain(Fix(a, 0.0, 0.0)) |> ignore
+    s.constrain(DistanceX(a, b, 3.0)) |> ignore
+    s.constrain(Radius(outer, 7.0)) |> ignore
+    s.constrain(Radius(inner, 2.0)) |> ignore
+    s.constrain(InternalTangent(outer, inner)) |> ignore
+    let r = solved(s)
+    near(sp(r, b).x, 3.0)
+    near(sp(r, b).y, 4.0 * side)
+    near(distance(sp(r, a), sp(r, b)), 5.0)
+    near(
+      distance(sp(r, a), sp(r, b)) + r.radius(inner).unwrap(),
+      r.radius(outer).unwrap(),
+    )
+    assert_eq(r.report.local_dof, 0)
+  }
+}
+
+///|
+test "internal tangency rejects equal circles and reversed nesting" {
+  for radii in [(2.0, 2.0), (1.0, 2.0)] {
+    let s = Sketch::new()
+    let a = s.add_point(0.0, 0.0)
+    let b = s.add_point(1.0, 0.0)
+    let outer = s.add_circle(a, radii.0)
+    let inner = s.add_circle(b, radii.1)
+    s.constrain(InternalTangent(outer, inner)) |> ignore
+    assert_true(solve_error(s).contains("internal tangency needs outer radius"))
+  }
+}

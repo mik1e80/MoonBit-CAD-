@@ -216,6 +216,19 @@ fn Sketch::evaluate(
         let (bx, by, br) = self.circle_jets(b, vars)
         [jet_norm(bx.minus(ax), by.minus(ay)).minus(ar.plus(br))]
       }
+      InternalTangent(outer, inner) => {
+        let (ax, ay, ar) = self.circle_jets(outer, vars)
+        let (bx, by, br) = self.circle_jets(inner, vars)
+        let difference = ar.minus(br)
+        // Equal coincident circles have infinitely many contacts, not an
+        // isolated tangency. Keep the caller's outer/inner branch explicit.
+        if difference.v <= 1.0e-12 {
+          return Err(
+            "Constraint at index \{i}: internal tangency needs outer radius greater than inner radius by more than 1e-12 of sketch scale",
+          )
+        }
+        [jet_norm(bx.minus(ax), by.minus(ay)).minus(difference)]
+      }
     }
     push_rows(out, jets, i, angular)
   }

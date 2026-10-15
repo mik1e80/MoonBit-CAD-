@@ -68,9 +68,11 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | 线关系 | `EqualLength`、`LengthRatio`、`Midpoint`、`PointOnLine` | 等长、`length(a)=ratio*length(b)`、中点、点在无限延伸直线上 |
 | 圆尺寸 | `Radius`、`EqualRadius` | 半径、等半径 |
 | 圆关系 | `Concentric`、`PointOnCircle` | 同心、点在圆周上 |
-| 相切 | `Tangent`、`ExternalTangent` | 无限直线与圆相切、两圆外切 |
+| 相切 | `Tangent`、`ExternalTangent`、`InternalTangent(outer, inner)` | 无限直线与圆相切、两圆外切、指定外圆与内圆的内切 |
 
-共 22 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆内切、圆弧、样条、轴对称和不等式约束暂未实现。
+共 23 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆弧、样条、轴对称和不等式约束暂未实现。
+
+`InternalTangent(outer, inner)` 要求两圆心距离等于 `outer.radius-inner.radius`。外圆半径在初值和迭代中均须大于内圆，差值超过草图尺度的 `1e-12`；等半径圆不作为孤立内切接受。初始圆心重合时可能停滞，宜先设置不同圆心。
 
 ## 求解与诊断
 

@@ -38,6 +38,7 @@ pub(all) enum Constraint {
   PointOnCircle(PointId, CircleId)
   Tangent(LineId, CircleId)
   ExternalTangent(CircleId, CircleId)
+  InternalTangent(CircleId, CircleId)
 } derive(@debug.Debug)
 pub fn Constraint::to_repr(Self) -> @debug.Repr
 

@@ -33,6 +33,7 @@ test "automatic derivatives match independent centered differences for every con
       PointOnCircle(d, ca),
       Tangent(ab, cc),
       ExternalTangent(ca, cc),
+      InternalTangent(ca, cc),
     ] {
     s.constrain(constraint) |> ignore
   }

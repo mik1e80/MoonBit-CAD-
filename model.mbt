@@ -83,6 +83,7 @@ pub(all) enum Constraint {
   PointOnCircle(PointId, CircleId)
   Tangent(LineId, CircleId)
   ExternalTangent(CircleId, CircleId)
+  InternalTangent(CircleId, CircleId)
 } derive(Debug)
 
 ///|
