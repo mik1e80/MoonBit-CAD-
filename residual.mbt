@@ -167,6 +167,11 @@ fn Sketch::evaluate(
         let (bx, by) = self.line_jets(b, vars)
         [jet_norm(ax, ay).minus(jet_norm(bx, by))]
       }
+      LengthRatio(a, b, ratio) => {
+        let (ax, ay) = self.line_jets(a, vars)
+        let (bx, by) = self.line_jets(b, vars)
+        [jet_norm(ax, ay).minus(jet_norm(bx, by).scale(ratio))]
+      }
       Midpoint(p, l) => {
         let (px, py) = point_jets(p, vars)
         let line = self.lines[l.index]

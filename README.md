@@ -65,12 +65,12 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | 轴向 | `Horizontal`、`Vertical` | 线段端点的 y / x 相等 |
 | 尺寸 | `Distance`、`DistanceX`、`DistanceY`、`DistanceToLine` | 两点距离；有符号的 `b.x-a.x`、`b.y-a.y`；点到有向无限直线的垂直距离，左侧为正 |
 | 方向 | `Parallel`、`Perpendicular`、`Angle` | 平行、垂直、从第一条有向线到第二条的逆时针夹角 |
-| 线关系 | `EqualLength`、`Midpoint`、`PointOnLine` | 等长、中点、点在无限延伸直线上 |
+| 线关系 | `EqualLength`、`LengthRatio`、`Midpoint`、`PointOnLine` | 等长、`length(a)=ratio*length(b)`、中点、点在无限延伸直线上 |
 | 圆尺寸 | `Radius`、`EqualRadius` | 半径、等半径 |
 | 圆关系 | `Concentric`、`PointOnCircle` | 同心、点在圆周上 |
 | 相切 | `Tangent`、`ExternalTangent` | 无限直线与圆相切、两圆外切 |
 
-共 21 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆内切、圆弧、样条、轴对称和不等式约束暂未实现。
+共 22 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆内切、圆弧、样条、轴对称和不等式约束暂未实现。
 
 ## 求解与诊断
 
@@ -103,6 +103,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 - 面向小型草图：最多 256 个标量变量、512 条线、512 条约束。点占 2 个变量，圆半径另占 1 个变量；同一中心点可复用。
 - 坐标及长度输入必须有限，绝对值不超过 `1e100`。距离非负、半径严格为正；角度在 `[-2π, 2π]`。
+- `LengthRatio` 的比例必须有限、为正且不超过 `1e12`；残差为 `length(a)-ratio*length(b)`，按长度容差判断。极端比例仍受退化线长和浮点精度限制。
 - 长度容差 / 草图尺度需在 `[1e-14, 1e6]`；角度容差 `[1e-14, 0.1]`，秩阈值 `[1e-14, 0.01]`，迭代预算 `1..1000`。
 - 初始线长不得为零。迭代中线长必须大于草图尺度的 `1e-12`，半径必须大于尺度的 `1e-14`。极端大小混合的模型可能被拒绝。
 - 非线性问题可能多解、翻转或停滞。初始几何应接近所需构型；改尺寸时可分小步求解。两点重合时再要求正距离，是可能停滞的奇异初值，可先分开两点。

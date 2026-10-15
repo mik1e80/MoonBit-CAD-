@@ -28,6 +28,7 @@ pub(all) enum Constraint {
   Perpendicular(LineId, LineId)
   Angle(LineId, LineId, Double)
   EqualLength(LineId, LineId)
+  LengthRatio(LineId, LineId, Double)
   Midpoint(PointId, LineId)
   PointOnLine(PointId, LineId)
   DistanceToLine(PointId, LineId, Double)

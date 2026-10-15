@@ -69,6 +69,12 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
         self.valid_point(a) && self.valid_point(b) && bounded(d)
       Parallel(a, b) | Perpendicular(a, b) | EqualLength(a, b) =>
         self.valid_line(a) && self.valid_line(b)
+      LengthRatio(a, b, ratio) =>
+        self.valid_line(a) &&
+        self.valid_line(b) &&
+        finite(ratio) &&
+        ratio > 0.0 &&
+        ratio <= 1.0e12
       Angle(a, b, t) =>
         self.valid_line(a) &&
         self.valid_line(b) &&

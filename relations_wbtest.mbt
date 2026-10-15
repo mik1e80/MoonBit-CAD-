@@ -68,3 +68,38 @@ test "point symmetry can solve the center and rejects an absent center" {
   s.set_constraint(id, Symmetric(a, b, { index: 99, })) |> ignore
   assert_true(s.solve() is Err(_))
 }
+
+///|
+test "length ratios constrain either longer or shorter geometry" {
+  for ratio in [0.5, 1.0, 2.0] {
+    let s = Sketch::new()
+    let a = s.add_point(0.0, 0.0)
+    let b = s.add_point(3.0, 4.0)
+    let c = s.add_point(10.0, 0.0)
+    let d = s.add_point(10.0 + 4.0 * ratio, 0.1)
+    let ab = s.add_line(a, b)
+    let cd = s.add_line(c, d)
+    s.constrain(Fix(a, 0.0, 0.0)) |> ignore
+    s.constrain(Fix(b, 3.0, 4.0)) |> ignore
+    s.constrain(Fix(c, 10.0, 0.0)) |> ignore
+    s.constrain(Horizontal(cd)) |> ignore
+    s.constrain(LengthRatio(cd, ab, ratio)) |> ignore
+    let r = solved(s)
+    near(sp(r, d).x, 10.0 + 5.0 * ratio)
+    near(sp(r, d).y, 0.0)
+    near(distance(sp(r, c), sp(r, d)), ratio * distance(sp(r, a), sp(r, b)))
+    assert_eq(r.report.local_dof, 0)
+  }
+}
+
+///|
+test "invalid length ratios are rejected" {
+  for ratio in [0.0, -1.0, 1.0e13, 0.0 / 0.0, 1.0 / 0.0] {
+    let s = Sketch::new()
+    let a = s.add_point(0.0, 0.0)
+    let b = s.add_point(1.0, 0.0)
+    let l = s.add_line(a, b)
+    s.constrain(LengthRatio(l, l, ratio)) |> ignore
+    assert_true(s.solve() is Err(_))
+  }
+}

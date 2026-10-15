@@ -23,6 +23,7 @@ test "automatic derivatives match independent centered differences for every con
       Perpendicular(ab, cd),
       Angle(ab, cd, 0.7),
       EqualLength(ab, cd),
+      LengthRatio(ab, cd, 2.5),
       Midpoint(d, ab),
       PointOnLine(c, ab),
       DistanceToLine(c, ab, -1.5),
