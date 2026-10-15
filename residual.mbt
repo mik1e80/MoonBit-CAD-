@@ -57,7 +57,10 @@ fn Sketch::evaluate(
   }
   for i = self.points.length() * 2; i < x.length(); i = i + 1 {
     if x[i] <= 1.0e-14 {
-      return Err("Circle radius approached zero relative to sketch scale")
+      let circle = i - self.points.length() * 2
+      return Err(
+        "Circle at index \{circle}: radius approached zero relative to sketch scale",
+      )
     }
   }
   let vars = Array::makei(x.length(), i => variable(x[i], i, x.length()))
@@ -65,7 +68,7 @@ fn Sketch::evaluate(
     let (dx, dy) = self.line_jets({ index: i, }, vars)
     if @math.hypot(dx.v, dy.v) <= 1.0e-12 {
       return Err(
-        "Line too short relative to sketch scale; use a nondegenerate initial guess",
+        "Line at index \{i}: too short relative to sketch scale; use a nondegenerate initial guess",
       )
     }
   }
@@ -191,9 +194,12 @@ fn Sketch::evaluate(
     }
     push_rows(out, jets, i, angular)
   }
-  if out.any(r => !finite(r.jet.v) || r.jet.d.any(v => !finite(v))) {
-    Err("Nonfinite residual or derivative")
-  } else {
-    Ok(out)
+  for row in out {
+    if !finite(row.jet.v) || row.jet.d.any(v => !finite(v)) {
+      return Err(
+        "Constraint at index \{row.constraint}: nonfinite residual or derivative",
+      )
+    }
   }
+  Ok(out)
 }

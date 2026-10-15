@@ -89,6 +89,15 @@ pub fn SolveReport::unsatisfied(
 }
 
 ///|
+/// Identifiers refer to the sketch at solve time, including satisfied relations.
+pub fn SolveReport::residual(
+  self : SolveReport,
+  id : ConstraintId,
+) -> ConstraintResidual? {
+  self.residuals.get(id.index)
+}
+
+///|
 fn row_tolerance(row : Row, frame : Frame, options : SolveOptions) -> Double {
   if row.angular {
     options.angular_tolerance

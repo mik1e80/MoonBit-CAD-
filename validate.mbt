@@ -27,24 +27,30 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
       "Small-sketch limit: at most 256 variables, 512 lines, and 512 constraints",
     )
   }
-  for p in self.points {
+  for i, p in self.points {
     if !bounded(p.x) || !bounded(p.y) {
-      return Err("Point coordinates must be finite and within +/-1e100")
+      return Err(
+        "Point at index \{i}: coordinates must be finite and within +/-1e100",
+      )
     }
   }
-  for l in self.lines {
+  for i, l in self.lines {
     if !self.valid_point(l.a) || !self.valid_point(l.b) {
-      return Err("Line references a missing point")
+      return Err("Line at index \{i}: references a missing point")
     }
     let a = self.points[l.a.index]
     let b = self.points[l.b.index]
     if a.x == b.x && a.y == b.y {
-      return Err("Zero-length initial line: provide distinct endpoints")
+      return Err(
+        "Line at index \{i}: zero-length initial line; provide distinct endpoints",
+      )
     }
   }
-  for c in self.circles {
+  for i, c in self.circles {
     if !self.valid_point(c.center) || !bounded(c.radius) || c.radius <= 0.0 {
-      return Err("Circle needs an existing center and a finite positive radius")
+      return Err(
+        "Circle at index \{i}: needs an existing center and a finite positive radius",
+      )
     }
   }
   for i, c in self.constraints {

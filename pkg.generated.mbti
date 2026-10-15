@@ -75,6 +75,7 @@ pub fn Sketch::add_circle(Self, PointId, Double) -> CircleId
 pub fn Sketch::add_line(Self, PointId, PointId) -> LineId
 pub fn Sketch::add_point(Self, Double, Double) -> PointId
 pub fn Sketch::constrain(Self, Constraint) -> ConstraintId
+pub fn Sketch::constraint(Self, ConstraintId) -> Constraint?
 pub fn Sketch::new() -> Self
 pub fn Sketch::point(Self, PointId) -> Point?
 pub fn Sketch::radius(Self, CircleId) -> Double?
@@ -110,6 +111,7 @@ pub struct SolveReport {
   residuals : Array[ConstraintResidual]
 } derive(@debug.Debug)
 pub fn SolveReport::is_satisfied(Self) -> Bool
+pub fn SolveReport::residual(Self, ConstraintId) -> ConstraintResidual?
 pub fn SolveReport::to_repr(Self) -> @debug.Repr
 pub fn SolveReport::unsatisfied(Self) -> Array[ConstraintResidual]
 
