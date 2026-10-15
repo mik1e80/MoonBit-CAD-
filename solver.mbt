@@ -13,7 +13,7 @@ pub(all) struct SolveOptions {
   length_tolerance : Double
   angular_tolerance : Double
   rank_tolerance : Double
-  max_iterations : Int
+  max_iterations : Int32
 }
 
 ///|
@@ -43,12 +43,12 @@ pub extend ConstraintResidual with @debug.Debug::{to_repr}
 /// Unsatisfied constraints are symptoms, not a proven minimal conflict set.
 pub struct SolveReport {
   status : SolveStatus
-  iterations : Int
-  variables : Int
-  equations : Int
-  rank : Int
-  local_dof : Int
-  dependent_equations : Int
+  iterations : Int32
+  variables : Int32
+  equations : Int32
+  rank : Int32
+  local_dof : Int32
+  dependent_equations : Int32
   max_tolerance_ratio : Double
   residuals : Array[ConstraintResidual]
 } derive(Debug)
@@ -126,7 +126,7 @@ fn Sketch::solution(
   frame : Frame,
   options : SolveOptions,
   status : SolveStatus,
-  iterations : Int,
+  iterations : Int32,
 ) -> Result[Solution, String] {
   let points : Array[Point] = Array::makei(self.points.length(), i => {
     x: x[i * 2] * frame.scale + frame.x,
@@ -205,7 +205,7 @@ fn Sketch::solution(
 /// A nonconverged Solution still contains the best accepted iterate for inspection.
 pub fn Sketch::solve(
   self : Sketch,
-  options? : SolveOptions = SolveOptions::default(),
+  options~ : SolveOptions = SolveOptions::default(),
 ) -> Result[Solution, String] {
   match self.validate() {
     Err(e) => return Err(e)
@@ -285,7 +285,7 @@ pub fn Sketch::solve(
 /// Commit geometry only if all residuals meet tolerance. Failed solves are atomic.
 pub fn Sketch::solve_and_apply(
   self : Sketch,
-  options? : SolveOptions = SolveOptions::default(),
+  options~ : SolveOptions = SolveOptions::default(),
 ) -> Result[Solution, String] {
   let solution = match self.solve(options~) {
     Ok(s) => s

@@ -6,12 +6,12 @@ priv struct Jet {
 }
 
 ///|
-fn constant(v : Double, n : Int) -> Jet {
+fn constant(v : Double, n : Int32) -> Jet {
   { v, d: Array::make(n, 0.0), }
 }
 
 ///|
-fn variable(v : Double, i : Int, n : Int) -> Jet {
+fn variable(v : Double, i : Int32, n : Int32) -> Jet {
   let d = Array::make(n, 0.0)
   d[i] = 1.0
   { v, d, }

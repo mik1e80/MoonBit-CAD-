@@ -1,7 +1,7 @@
 ///|
 fn solved(
   s : Sketch,
-  options? : SolveOptions = SolveOptions::default(),
+  options~ : SolveOptions = SolveOptions::default(),
 ) -> Solution raise {
   let result = match s.solve(options~) {
     Ok(r) => r
@@ -15,7 +15,7 @@ fn solved(
 }
 
 ///|
-fn near(a : Double, b : Double, tol? : Double = 2.0e-6) -> Unit raise {
+fn near(a : Double, b : Double, tol~ : Double = 2.0e-6) -> Unit raise {
   assert_true((a - b).abs() <= tol, msg="\{a} != \{b}")
 }
 

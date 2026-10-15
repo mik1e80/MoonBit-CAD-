@@ -1,7 +1,7 @@
 ///|
 /// Identifiers are local to the sketch that created them.
 pub struct PointId {
-  index : Int
+  index : Int32
 } derive(Debug)
 
 ///|
@@ -9,7 +9,7 @@ pub extend PointId with @debug.Debug::{to_repr}
 
 ///|
 pub struct LineId {
-  index : Int
+  index : Int32
 } derive(Debug)
 
 ///|
@@ -17,7 +17,7 @@ pub extend LineId with @debug.Debug::{to_repr}
 
 ///|
 pub struct CircleId {
-  index : Int
+  index : Int32
 } derive(Debug)
 
 ///|
@@ -25,14 +25,14 @@ pub extend CircleId with @debug.Debug::{to_repr}
 
 ///|
 pub struct ConstraintId {
-  index : Int
+  index : Int32
 } derive(Debug)
 
 ///|
 pub extend ConstraintId with @debug.Debug::{to_repr}
 
 ///|
-pub fn ConstraintId::index(self : ConstraintId) -> Int {
+pub fn ConstraintId::index(self : ConstraintId) -> Int32 {
   self.index
 }
 

@@ -1,7 +1,7 @@
 ///|
 priv struct Row {
   jet : Jet
-  constraint : Int
+  constraint : Int32
   angular : Bool
 }
 
@@ -36,7 +36,7 @@ fn Sketch::circle_jets(
 fn push_rows(
   out : Array[Row],
   jets : Array[Jet],
-  id : Int,
+  id : Int32,
   angular : Bool,
 ) -> Unit {
   for jet in jets {

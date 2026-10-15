@@ -2,6 +2,8 @@
 
 纯 MoonBit 的二维草图约束求解库。源码版本 `0.1.0` 尚未发布到 Mooncakes；安装、完整约束表、诊断语义和数值边界见 [README.md](README.md)。
 
+需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
+
 下面的公开接口示例随 `moon test` 执行：
 
 ```mbt check

@@ -4,7 +4,7 @@
 fn damped_step(
   jacobian : Array[Array[Double]],
   residual : Array[Double],
-  n : Int,
+  n : Int32,
   lambda : Double,
 ) -> Array[Double]? {
   let m = jacobian.length()
@@ -71,7 +71,11 @@ fn damped_step(
 ///|
 /// Local numerical rank, with row normalization and complete pivoting.
 /// This is a first-order diagnostic, not a global rigidity certificate.
-fn numerical_rank(j : Array[Array[Double]], n : Int, tolerance : Double) -> Int {
+fn numerical_rank(
+  j : Array[Array[Double]],
+  n : Int32,
+  tolerance : Double,
+) -> Int32 {
   let a = j.map(row => {
     let scale = max_abs(row)
     if scale == 0.0 {
