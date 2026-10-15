@@ -161,6 +161,24 @@ pub fn Sketch::set_point(self : Sketch, id : PointId, p : Point) -> Bool {
 }
 
 ///|
+/// Change the initial radius without replacing the circle or its constraints.
+/// This does not fix the radius: use Radius for a driving dimension.
+/// Like set_point(), values are validated at solve time.
+pub fn Sketch::set_radius(
+  self : Sketch,
+  id : CircleId,
+  radius : Double,
+) -> Bool {
+  if !self.valid_circle(id) {
+    false
+  } else {
+    let c = self.circles[id.index]
+    self.circles[id.index] = { center: c.center, radius, }
+    true
+  }
+}
+
+///|
 /// Edit a dimension without rebuilding the sketch.
 pub fn Sketch::set_constraint(
   self : Sketch,

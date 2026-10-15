@@ -81,6 +81,7 @@ pub fn Sketch::point(Self, PointId) -> Point?
 pub fn Sketch::radius(Self, CircleId) -> Double?
 pub fn Sketch::set_constraint(Self, ConstraintId, Constraint) -> Bool
 pub fn Sketch::set_point(Self, PointId, Point) -> Bool
+pub fn Sketch::set_radius(Self, CircleId, Double) -> Bool
 pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, String]
 pub fn Sketch::solve_and_apply(Self, options? : SolveOptions) -> Result[Solution, String]
 
