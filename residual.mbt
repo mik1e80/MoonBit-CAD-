@@ -74,6 +74,9 @@ fn Sketch::evaluate(
   }
   let out = []
   for i, c in self.constraints {
+    if !self.enabled[i] {
+      continue
+    }
     let mut angular = false
     let jets = match c {
       Fix(p, x, y) => {

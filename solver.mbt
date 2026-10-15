@@ -30,6 +30,7 @@ pub fn SolveOptions::default() -> SolveOptions {
 /// Maximum component errors per constraint, before tolerance weighting.
 pub struct ConstraintResidual {
   id : ConstraintId
+  active : Bool
   length_error : Double
   angular_error : Double
   tolerance_ratio : Double
@@ -85,7 +86,7 @@ pub fn SolveReport::is_satisfied(self : SolveReport) -> Bool {
 pub fn SolveReport::unsatisfied(
   self : SolveReport,
 ) -> Array[ConstraintResidual] {
-  self.residuals.filter(r => r.tolerance_ratio > 1.0)
+  self.residuals.filter(r => r.active && r.tolerance_ratio > 1.0)
 }
 
 ///|
@@ -182,6 +183,7 @@ fn Sketch::solution(
   )
   let residuals = Array::makei(self.constraints.length(), i => {
     id: { index: i, },
+    active: self.enabled[i],
     length_error: length_errors[i],
     angular_error: angular_errors[i],
     tolerance_ratio: ratios[i],

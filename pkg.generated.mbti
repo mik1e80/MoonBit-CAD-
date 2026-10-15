@@ -46,6 +46,7 @@ pub fn ConstraintId::to_repr(Self) -> @debug.Repr
 
 pub struct ConstraintResidual {
   id : ConstraintId
+  active : Bool
   length_error : Double
   angular_error : Double
   tolerance_ratio : Double
@@ -76,10 +77,12 @@ pub fn Sketch::add_line(Self, PointId, PointId) -> LineId
 pub fn Sketch::add_point(Self, Double, Double) -> PointId
 pub fn Sketch::constrain(Self, Constraint) -> ConstraintId
 pub fn Sketch::constraint(Self, ConstraintId) -> Constraint?
+pub fn Sketch::constraint_enabled(Self, ConstraintId) -> Bool?
 pub fn Sketch::new() -> Self
 pub fn Sketch::point(Self, PointId) -> Point?
 pub fn Sketch::radius(Self, CircleId) -> Double?
 pub fn Sketch::set_constraint(Self, ConstraintId, Constraint) -> Bool
+pub fn Sketch::set_constraint_enabled(Self, ConstraintId, Bool) -> Bool
 pub fn Sketch::set_point(Self, PointId, Point) -> Bool
 pub fn Sketch::set_radius(Self, CircleId, Double) -> Bool
 pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, String]

@@ -78,6 +78,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 - `Solution::point()` / `radius()` 可读取结果，也可检查未收敛时的最后一个被接受的迭代结果。句柄只属于创建它的草图。
 - `set_point()` 修改下一次求解的初值；`set_constraint()` 修改已有尺寸或关系。它们返回是否找到相应句柄，数值合法性在 `solve()` 时统一验证。
 - `set_radius()` 修改已有圆的初始半径，保留中心与关联约束；它不固定半径，驱动半径尺寸应使用 `Radius`。非法数值同样在求解时诊断。
+- `set_constraint_enabled(id, false)` 暂停某条约束，传 `true` 恢复；编号与关系保留，`set_constraint()` 不改变启停状态。禁用关系不参与校验、尺度计算、方程和自由度计算，仍计入 512 条关系的存储上限；几何本身始终需要合法。
 
 `SolveReport` 包含：
 
@@ -86,7 +87,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | `status` | `Satisfied`：返回几何的每个残差分量均达标；`Stalled`：无法继续降低误差或输出坐标精度不足；`IterationLimit`：达到迭代次数上限 |
 | `local_dof` | 变量数减去当前雅可比矩阵的数值秩 |
 | `dependent_equations` | 方程数减去数值秩，表示当前点的一阶方程依赖 |
-| `residuals` | 每条约束的最大长度误差、角度 / 方向误差、误差与容差之比 |
+| `residuals` | 每条约束的启用状态 `active`、最大长度误差、角度 / 方向误差、误差与容差之比；禁用项误差置零，仅表示未检查 |
 | `unsatisfied()` | 误差与容差之比大于 1 的约束 |
 
 `Err` 表示非法尺寸、失效引用、退化初值、资源上限或数值求值错误。**未收敛不证明无解，未满足约束列表也不是最小冲突集。** 重复约束可以被同时满足。奇异构型的一阶自由度可能高于实际运动自由度，例如完全共线的三角形；不要把它当成全局刚性证明。

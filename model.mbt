@@ -92,11 +92,12 @@ pub struct Sketch {
   priv lines : Array[Line]
   priv circles : Array[Circle]
   priv constraints : Array[Constraint]
+  priv enabled : Array[Bool]
 }
 
 ///|
 pub fn Sketch::new() -> Sketch {
-  { points: [], lines: [], circles: [], constraints: [], }
+  { points: [], lines: [], circles: [], constraints: [], enabled: [], }
 }
 
 ///|
@@ -130,6 +131,7 @@ pub fn Sketch::add_circle(
 pub fn Sketch::constrain(self : Sketch, c : Constraint) -> ConstraintId {
   let id : ConstraintId = { index: self.constraints.length(), }
   self.constraints.push(c)
+  self.enabled.push(true)
   id
 }
 
@@ -147,6 +149,26 @@ pub fn Sketch::radius(self : Sketch, id : CircleId) -> Double? {
 /// Look up the original relation from a diagnostic's constraint identifier.
 pub fn Sketch::constraint(self : Sketch, id : ConstraintId) -> Constraint? {
   self.constraints.get(id.index)
+}
+
+///|
+/// Temporarily suppress a relation without changing any constraint identifiers.
+pub fn Sketch::set_constraint_enabled(
+  self : Sketch,
+  id : ConstraintId,
+  enabled : Bool,
+) -> Bool {
+  if id.index < 0 || id.index >= self.enabled.length() {
+    false
+  } else {
+    self.enabled[id.index] = enabled
+    true
+  }
+}
+
+///|
+pub fn Sketch::constraint_enabled(self : Sketch, id : ConstraintId) -> Bool? {
+  self.enabled.get(id.index)
 }
 
 ///|

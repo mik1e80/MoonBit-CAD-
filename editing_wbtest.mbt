@@ -77,3 +77,45 @@ test "invalid edited radius is diagnosed and can be repaired" {
   assert_true(s.set_radius(c, 4.0))
   assert_true(s.solve_and_apply().unwrap().report.is_satisfied())
 }
+
+///|
+test "suppress and restore conflicts without changing identifiers" {
+  let s = Sketch::new()
+  let p = s.add_point(0.0, 0.0)
+  let a = s.constrain(Fix(p, 0.0, 0.0))
+  let b = s.constrain(Fix(p, 10.0, 0.0))
+  assert_false(s.solve().unwrap().report.is_satisfied())
+  assert_true(s.set_constraint_enabled(b, false))
+  let r = solved(s)
+  assert_eq(r.report.equations, 2)
+  assert_eq(r.report.local_dof, 0)
+  assert_true(r.report.residual(a).unwrap().active)
+  assert_false(r.report.residual(b).unwrap().active)
+  assert_eq(r.report.unsatisfied().length(), 0)
+  assert_true(s.set_constraint(b, Fix(p, 20.0, 0.0)))
+  assert_true(s.constraint_enabled(b) is Some(false))
+  assert_true(s.set_constraint_enabled(b, true))
+  let r = s.solve().unwrap()
+  assert_false(r.report.is_satisfied())
+  assert_eq(r.report.unsatisfied().length(), 2)
+  assert_eq(r.report.residual(b).unwrap().id.index(), b.index())
+  assert_false(s.set_constraint_enabled({ index: 8, }, false))
+  assert_true(s.constraint_enabled({ index: 8, }) is None)
+}
+
+///|
+test "disabled dimensions do not alter normalization or input validation" {
+  let s = Sketch::new()
+  let a = s.add_point(0.0, 0.0)
+  let b = s.add_point(1.0, 0.0)
+  s.add_line(a, b) |> ignore
+  let giant = s.constrain(Fix(a, 1.0e100, 1.0e100))
+  assert_true(s.set_constraint_enabled(giant, false))
+  let r = solved(s)
+  assert_eq(r.report.local_dof, 4)
+  assert_eq(r.report.equations, 0)
+  assert_true(s.set_constraint(giant, Fix(a, 0.0 / 0.0, 0.0)))
+  solved(s) |> ignore
+  assert_true(s.set_constraint_enabled(giant, true))
+  assert_true(s.solve() is Err(_))
+}

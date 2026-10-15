@@ -54,6 +54,9 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
     }
   }
   for i, c in self.constraints {
+    if !self.enabled[i] {
+      continue
+    }
     let ok = match c {
       Fix(p, x, y) => self.valid_point(p) && bounded(x) && bounded(y)
       Coincident(a, b) => self.valid_point(a) && self.valid_point(b)
@@ -102,7 +105,10 @@ fn Sketch::frame(self : Sketch) -> Frame {
   for c in self.circles {
     scale = dmax(scale, c.radius)
   }
-  for c in self.constraints {
+  for i, c in self.constraints {
+    if !self.enabled[i] {
+      continue
+    }
     match c {
       Fix(_, x, y) => {
         scale = dmax(scale, (x - origin.x).abs())
