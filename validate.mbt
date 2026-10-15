@@ -60,6 +60,8 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
     let ok = match c {
       Fix(p, x, y) => self.valid_point(p) && bounded(x) && bounded(y)
       Coincident(a, b) => self.valid_point(a) && self.valid_point(b)
+      Symmetric(a, b, center) =>
+        self.valid_point(a) && self.valid_point(b) && self.valid_point(center)
       Horizontal(l) | Vertical(l) => self.valid_line(l)
       Distance(a, b, d) =>
         self.valid_point(a) && self.valid_point(b) && bounded(d) && d >= 0.0

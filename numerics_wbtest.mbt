@@ -13,6 +13,7 @@ test "automatic derivatives match independent centered differences for every con
     constraint in [
       Fix(a, 0.0, 0.0),
       Coincident(a, c),
+      Symmetric(b, d, a),
       Horizontal(ab),
       Vertical(cd),
       Distance(a, c, 3.0),

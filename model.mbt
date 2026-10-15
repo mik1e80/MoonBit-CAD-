@@ -63,6 +63,7 @@ priv struct Circle {
 pub(all) enum Constraint {
   Fix(PointId, Double, Double)
   Coincident(PointId, PointId)
+  Symmetric(PointId, PointId, PointId)
   Horizontal(LineId)
   Vertical(LineId)
   Distance(PointId, PointId, Double)

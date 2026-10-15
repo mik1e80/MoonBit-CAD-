@@ -105,6 +105,12 @@ fn Sketch::evaluate(
         let (bx, by) = point_jets(b, vars)
         [bx.minus(ax), by.minus(ay)]
       }
+      Symmetric(a, b, center) => {
+        let (ax, ay) = point_jets(a, vars)
+        let (bx, by) = point_jets(b, vars)
+        let (cx, cy) = point_jets(center, vars)
+        [ax.plus(bx).minus(cx.scale(2.0)), ay.plus(by).minus(cy.scale(2.0))]
+      }
       Horizontal(l) => {
         let (_, dy) = self.line_jets(l, vars)
         [dy]

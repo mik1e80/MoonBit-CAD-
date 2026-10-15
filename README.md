@@ -61,6 +61,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | 类别 | 构造器 | 语义 |
 | --- | --- | --- |
 | 位置 | `Fix`、`Coincident` | 固定点坐标、两点重合，各产生两个方程 |
+| 中心对称 | `Symmetric(a, b, center)` | `a+b=2*center`，两点关于第三点中心对称，产生两个方程 |
 | 轴向 | `Horizontal`、`Vertical` | 线段端点的 y / x 相等 |
 | 尺寸 | `Distance`、`DistanceX`、`DistanceY`、`DistanceToLine` | 两点距离；有符号的 `b.x-a.x`、`b.y-a.y`；点到有向无限直线的垂直距离，左侧为正 |
 | 方向 | `Parallel`、`Perpendicular`、`Angle` | 平行、垂直、从第一条有向线到第二条的逆时针夹角 |
@@ -69,7 +70,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | 圆关系 | `Concentric`、`PointOnCircle` | 同心、点在圆周上 |
 | 相切 | `Tangent`、`ExternalTangent` | 无限直线与圆相切、两圆外切 |
 
-共 20 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆内切、圆弧、样条、对称和不等式约束暂未实现。
+共 21 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆内切、圆弧、样条、轴对称和不等式约束暂未实现。
 
 ## 求解与诊断
 
