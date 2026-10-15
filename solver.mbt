@@ -230,7 +230,7 @@ fn Sketch::solution(
 }
 
 ///|
-/// Local damped Gauss-Newton solve, with an exact forward-AD Jacobian.
+/// Local damped Gauss-Newton solve with forward-mode AD in Double arithmetic.
 /// Err means invalid input/evaluation, not a mathematical proof of inconsistency.
 /// A nonconverged Solution still contains the best accepted iterate for inspection.
 pub fn Sketch::solve(

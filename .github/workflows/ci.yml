@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
       - name: Install MoonBit
         run: |
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
@@ -40,3 +43,5 @@ jobs:
         run: |
           moon run cmd/edit_demo
           moon run cmd/edit_demo --target js
+      - name: Verify source archive and downstream consumer
+        run: python scripts/check_package.py

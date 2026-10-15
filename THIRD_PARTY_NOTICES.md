@@ -2,6 +2,18 @@
 
 本仓库的 MoonBit 实现、示例和测试由本项目编写，以 Apache-2.0 许可提供。完整许可文本见 LICENSE。当前未包含第三方 CAD 文件、二进制求解器或移植自第三方库的代码；数值部分仅调用语言自带的 MoonBit core。
 
+## 项目、许可证与使用范围
+
+| 项目 | 许可证与原始条款 | 本仓库使用范围 |
+| --- | --- | --- |
+| [MoonBit core](https://github.com/moonbitlang/core) | Apache-2.0，[LICENSE](https://github.com/moonbitlang/core/blob/main/LICENSE)；个别文件另有保留的第三方声明，以原仓库为准 | 通过工具链导入 math、debug 和基础集合；源码发布包未复制 core 的实现文件 |
+| [SolveSpace](https://github.com/solvespace/solvespace) | GPLv3，[COPYING.txt](https://github.com/solvespace/solvespace/blob/master/COPYING.txt) | 阅读公开约束与技术说明，作为需求、初值和局部自由度语义参照；没有移植或链接其求解器 |
+| [Ceres Solver](https://github.com/ceres-solver/ceres-solver) | BSD-3-Clause，[LICENSE](https://github.com/ceres-solver/ceres-solver/blob/master/LICENSE)；部分文件采用单独许可，以原项目标注为准 | 公开方法文档中的非线性最小二乘和自动微分背景；没有复制 Ceres 源码或测试 |
+| [MoonCassowary](https://github.com/sgy1023-crt/MoonCassowary) | BSD-3-Clause，[LICENSE](https://github.com/sgy1023-crt/MoonCassowary/blob/main/LICENSE) | 仅作 MoonBit 生态范围比较；未使用其 Kiwi 移植实现、测试或生成数据 |
+| [DXFKIT](https://github.com/mik1e80/dxfkit) | Apache-2.0，[LICENSE](https://github.com/mik1e80/dxfkit/blob/main/LICENSE) | 同一作者的独立 DXF 项目，仅作功能范围比较；未将其实现作为本项目求解器代码 |
+
+这些许可证属于各原项目；本仓库的 Apache-2.0 不替换或覆盖它们。上表中的文档参照和比较项目不作为求解器源码的移植来源。
+
 ## 需求与语义参照
 
 - [SolveSpace — Constraints](https://solvespace.com/constraints.pl)：草图约束、初值、多解和自由度的实际使用场景。
@@ -16,3 +28,9 @@
 - [Ceres Solver — Automatic Derivatives](https://ceres-solver.org/automatic_derivatives.html)：前向自动微分与链式法则背景；本仓库使用自行实现的稠密导数数组。
 
 测试的几何期望值来自解析几何：勾股定理、三角函数、直线法向距离和两圆交点公式。自动微分与独立中心差分逐分量比较。没有将其他项目的测试语料重新标为本项目作品。
+
+## 生成文件、示例与开发工具
+
+`pkg.generated.mbti` 由 MoonBit 的 `moon info` 根据本仓库接口生成；示例、解析期望值和测试数据由本项目构造。构建产物、依赖缓存和 Git 内部文件不进入源码发布包，`scripts/check_package.py` 会检查实际压缩包。
+
+GitHub Actions 使用的 `actions/checkout` 和 `actions/setup-python` 为 MIT 许可的 CI 工具，分别见[checkout LICENSE](https://github.com/actions/checkout/blob/main/LICENSE)和[setup-python LICENSE](https://github.com/actions/setup-python/blob/main/LICENSE)；只在工作流中引用，不复制其实现。Python 审查脚本只使用标准库，是开发验证工具，不参与 MoonBit 库的运行时。

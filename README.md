@@ -56,7 +56,7 @@ match s.solve_and_apply() {
 s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 ```
 
-发布前，如需从另一模块调用，可使用 MoonBit 的[本地模块路径依赖](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html)。不要把 `moon add mik1e80/cad_sketch` 当作已经可用的安装命令。
+发布前，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["MoonBit-CAD-", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员，无需注册表中已有包。不要把 `moon add mik1e80/cad_sketch` 当作已经可用的安装命令。
 
 ## 支持的约束
 
@@ -130,6 +130,14 @@ moon run cmd/edit_demo
 ```
 
 测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。全部 23 种约束的自动微分导数另外与中心差分对照；QR 和数值秩也有独立构造案例。测试通过不代表任意非线性草图均会收敛。
+
+`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试。Python 只用于这一开发验证步骤；核心求解与常规 `moon test` 不需要 Python。
+
+本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
+
+## 验收与技术说明
+
+[验收对照记录](docs/ACCEPTANCE.md) 区分仓库证据和未完成事项；[技术路径说明](docs/ARCHITECTURE.md) 解释建模、AD、阻尼 QR、局部秩与 AI 协作。正式章程要求 Mooncakes 发布，当前仅完成源码与打包验证，**尚不能视为全部验收条件已完成**。
 
 ## 与相关项目的区别
 
