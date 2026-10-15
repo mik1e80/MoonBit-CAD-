@@ -36,3 +36,7 @@ jobs:
         run: moon test --target native
       - name: Run public API examples
         run: moon run cmd/demo
+      - name: Verify editing workflow and analytic coordinates
+        run: |
+          moon run cmd/edit_demo
+          moon run cmd/edit_demo --target js
