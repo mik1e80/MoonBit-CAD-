@@ -1,0 +1,125 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mik1e80/cad_sketch"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct CircleId {
+  index : Int
+} derive(@debug.Debug)
+pub fn CircleId::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Constraint {
+  Fix(PointId, Double, Double)
+  Coincident(PointId, PointId)
+  Horizontal(LineId)
+  Vertical(LineId)
+  Distance(PointId, PointId, Double)
+  DistanceX(PointId, PointId, Double)
+  DistanceY(PointId, PointId, Double)
+  Parallel(LineId, LineId)
+  Perpendicular(LineId, LineId)
+  Angle(LineId, LineId, Double)
+  EqualLength(LineId, LineId)
+  Midpoint(PointId, LineId)
+  PointOnLine(PointId, LineId)
+  Radius(CircleId, Double)
+  EqualRadius(CircleId, CircleId)
+  Concentric(CircleId, CircleId)
+  PointOnCircle(PointId, CircleId)
+  Tangent(LineId, CircleId)
+  ExternalTangent(CircleId, CircleId)
+} derive(@debug.Debug)
+pub fn Constraint::to_repr(Self) -> @debug.Repr
+
+pub struct ConstraintId {
+  index : Int
+} derive(@debug.Debug)
+pub fn ConstraintId::index(Self) -> Int
+pub fn ConstraintId::to_repr(Self) -> @debug.Repr
+
+pub struct ConstraintResidual {
+  id : ConstraintId
+  length_error : Double
+  angular_error : Double
+  tolerance_ratio : Double
+} derive(@debug.Debug)
+pub fn ConstraintResidual::to_repr(Self) -> @debug.Repr
+
+pub struct LineId {
+  index : Int
+} derive(@debug.Debug)
+pub fn LineId::to_repr(Self) -> @debug.Repr
+
+pub(all) struct Point {
+  x : Double
+  y : Double
+} derive(@debug.Debug)
+pub fn Point::to_repr(Self) -> @debug.Repr
+
+pub struct PointId {
+  index : Int
+} derive(@debug.Debug)
+pub fn PointId::to_repr(Self) -> @debug.Repr
+
+pub struct Sketch {
+  // private fields
+}
+pub fn Sketch::add_circle(Self, PointId, Double) -> CircleId
+pub fn Sketch::add_line(Self, PointId, PointId) -> LineId
+pub fn Sketch::add_point(Self, Double, Double) -> PointId
+pub fn Sketch::constrain(Self, Constraint) -> ConstraintId
+pub fn Sketch::new() -> Self
+pub fn Sketch::point(Self, PointId) -> Point?
+pub fn Sketch::radius(Self, CircleId) -> Double?
+pub fn Sketch::set_constraint(Self, ConstraintId, Constraint) -> Bool
+pub fn Sketch::set_point(Self, PointId, Point) -> Bool
+pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, String]
+pub fn Sketch::solve_and_apply(Self, options? : SolveOptions) -> Result[Solution, String]
+
+pub struct Solution {
+  report : SolveReport
+  // private fields
+}
+pub fn Solution::point(Self, PointId) -> Point?
+pub fn Solution::radius(Self, CircleId) -> Double?
+
+pub(all) struct SolveOptions {
+  length_tolerance : Double
+  angular_tolerance : Double
+  rank_tolerance : Double
+  max_iterations : Int
+}
+pub fn SolveOptions::default() -> Self
+
+pub struct SolveReport {
+  status : SolveStatus
+  iterations : Int
+  variables : Int
+  equations : Int
+  rank : Int
+  local_dof : Int
+  dependent_equations : Int
+  max_tolerance_ratio : Double
+  residuals : Array[ConstraintResidual]
+} derive(@debug.Debug)
+pub fn SolveReport::is_satisfied(Self) -> Bool
+pub fn SolveReport::to_repr(Self) -> @debug.Repr
+pub fn SolveReport::unsatisfied(Self) -> Array[ConstraintResidual]
+
+pub(all) enum SolveStatus {
+  Satisfied
+  Stalled
+  IterationLimit
+} derive(@debug.Debug)
+pub fn SolveStatus::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

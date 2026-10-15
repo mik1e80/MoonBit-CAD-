@@ -1,0 +1,8 @@
+import {
+  "moonbitlang/core/math",
+  "moonbitlang/core/debug",
+}
+
+import {
+  "mik1e80/cad_sketch" @sketch,
+} for "test"

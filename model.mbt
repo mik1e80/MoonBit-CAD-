@@ -1,0 +1,193 @@
+///|
+/// Identifiers are local to the sketch that created them.
+pub struct PointId {
+  index : Int
+} derive(Debug)
+
+///|
+pub extend PointId with @debug.Debug::{to_repr}
+
+///|
+pub struct LineId {
+  index : Int
+} derive(Debug)
+
+///|
+pub extend LineId with @debug.Debug::{to_repr}
+
+///|
+pub struct CircleId {
+  index : Int
+} derive(Debug)
+
+///|
+pub extend CircleId with @debug.Debug::{to_repr}
+
+///|
+pub struct ConstraintId {
+  index : Int
+} derive(Debug)
+
+///|
+pub extend ConstraintId with @debug.Debug::{to_repr}
+
+///|
+pub fn ConstraintId::index(self : ConstraintId) -> Int {
+  self.index
+}
+
+///|
+pub(all) struct Point {
+  x : Double
+  y : Double
+} derive(Debug)
+
+///|
+pub extend Point with @debug.Debug::{to_repr}
+
+///|
+priv struct Line {
+  a : PointId
+  b : PointId
+}
+
+///|
+priv struct Circle {
+  center : PointId
+  radius : Double
+}
+
+///|
+/// Angles are directed counterclockwise, in radians. Lines extend infinitely
+/// for PointOnLine and Tangent. Distances use the caller's common length unit.
+pub(all) enum Constraint {
+  Fix(PointId, Double, Double)
+  Coincident(PointId, PointId)
+  Horizontal(LineId)
+  Vertical(LineId)
+  Distance(PointId, PointId, Double)
+  DistanceX(PointId, PointId, Double)
+  DistanceY(PointId, PointId, Double)
+  Parallel(LineId, LineId)
+  Perpendicular(LineId, LineId)
+  Angle(LineId, LineId, Double)
+  EqualLength(LineId, LineId)
+  Midpoint(PointId, LineId)
+  PointOnLine(PointId, LineId)
+  Radius(CircleId, Double)
+  EqualRadius(CircleId, CircleId)
+  Concentric(CircleId, CircleId)
+  PointOnCircle(PointId, CircleId)
+  Tangent(LineId, CircleId)
+  ExternalTangent(CircleId, CircleId)
+} derive(Debug)
+
+///|
+pub extend Constraint with @debug.Debug::{to_repr}
+
+///|
+/// Geometry is modified only by explicit setters and apply(), never by solve().
+pub struct Sketch {
+  priv points : Array[Point]
+  priv lines : Array[Line]
+  priv circles : Array[Circle]
+  priv constraints : Array[Constraint]
+}
+
+///|
+pub fn Sketch::new() -> Sketch {
+  { points: [], lines: [], circles: [], constraints: [], }
+}
+
+///|
+/// Nonfinite coordinates are rejected by solve().
+pub fn Sketch::add_point(self : Sketch, x : Double, y : Double) -> PointId {
+  let id : PointId = { index: self.points.length(), }
+  self.points.push({ x, y, })
+  id
+}
+
+///|
+pub fn Sketch::add_line(self : Sketch, a : PointId, b : PointId) -> LineId {
+  let id : LineId = { index: self.lines.length(), }
+  self.lines.push({ a, b, })
+  id
+}
+
+///|
+/// Radius must be finite and strictly positive at solve time.
+pub fn Sketch::add_circle(
+  self : Sketch,
+  center : PointId,
+  radius : Double,
+) -> CircleId {
+  let id : CircleId = { index: self.circles.length(), }
+  self.circles.push({ center, radius, })
+  id
+}
+
+///|
+pub fn Sketch::constrain(self : Sketch, c : Constraint) -> ConstraintId {
+  let id : ConstraintId = { index: self.constraints.length(), }
+  self.constraints.push(c)
+  id
+}
+
+///|
+pub fn Sketch::point(self : Sketch, id : PointId) -> Point? {
+  self.points.get(id.index)
+}
+
+///|
+pub fn Sketch::radius(self : Sketch, id : CircleId) -> Double? {
+  self.circles.get(id.index).map(c => c.radius)
+}
+
+///|
+/// Set a new initial guess, for example before resolving a dragged sketch.
+pub fn Sketch::set_point(self : Sketch, id : PointId, p : Point) -> Bool {
+  if id.index < 0 || id.index >= self.points.length() {
+    false
+  } else {
+    self.points[id.index] = p
+    true
+  }
+}
+
+///|
+/// Edit a dimension without rebuilding the sketch.
+pub fn Sketch::set_constraint(
+  self : Sketch,
+  id : ConstraintId,
+  c : Constraint,
+) -> Bool {
+  if id.index < 0 || id.index >= self.constraints.length() {
+    false
+  } else {
+    self.constraints[id.index] = c
+    true
+  }
+}
+
+///|
+fn finite(x : Double) -> Bool {
+  !x.is_nan() && !x.is_inf()
+}
+
+///|
+fn max_abs(values : Array[Double]) -> Double {
+  let mut result = 0.0
+  for x in values {
+    result = dmax(result, x.abs())
+  }
+  result
+}
+
+///|
+fn dmax(a : Double, b : Double) -> Double {
+  if a > b {
+    a
+  } else {
+    b
+  }
+}
