@@ -55,7 +55,8 @@ fn Sketch::signed_line_distance(
   let (px, py) = point_jets(p, vars)
   let (ax, ay) = point_jets(self.lines[l.index].a, vars)
   let (dx, dy) = self.line_jets(l, vars)
-  jet_cross(dx, dy, px.minus(ax), py.minus(ay)).divide(jet_norm(dx, dy))
+  let length = jet_norm(dx, dy)
+  jet_cross(dx.divide(length), dy.divide(length), px.minus(ax), py.minus(ay))
 }
 
 ///|
@@ -65,12 +66,13 @@ fn Sketch::evaluate(
   self : Sketch,
   x : Array[Double],
   frame : Frame,
+  geometry_scale~ : Double = 1.0,
 ) -> Result[Array[Row], String] {
   if x.any(v => !finite(v)) {
     return Err("Nonfinite parameter during evaluation")
   }
   for i = self.points.length() * 2; i < x.length(); i = i + 1 {
-    if x[i] <= 1.0e-14 {
+    if x[i] <= geometry_scale * 1.0e-14 {
       let circle = i - self.points.length() * 2
       return Err(
         "Circle at index \{circle}: radius approached zero relative to sketch scale",
@@ -80,7 +82,7 @@ fn Sketch::evaluate(
   let vars = Array::makei(x.length(), i => variable(x[i], i, x.length()))
   for i = 0; i < self.lines.length(); i = i + 1 {
     let (dx, dy) = self.line_jets(self.line_id(i), vars)
-    if @math.hypot(dx.v, dy.v) <= 1.0e-12 {
+    if @math.hypot(dx.v, dy.v) <= geometry_scale * 1.0e-12 {
       return Err(
         "Line at index \{i}: too short relative to sketch scale; use a nondegenerate initial guess",
       )
@@ -222,7 +224,7 @@ fn Sketch::evaluate(
         let difference = ar.minus(br)
         // Equal coincident circles have infinitely many contacts, not an
         // isolated tangency. Keep the caller's outer/inner branch explicit.
-        if difference.v <= 1.0e-12 {
+        if difference.v <= geometry_scale * 1.0e-12 {
           return Err(
             "Constraint at index \{i}: internal tangency needs outer radius greater than inner radius by more than 1e-12 of sketch scale",
           )

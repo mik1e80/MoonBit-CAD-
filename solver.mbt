@@ -162,18 +162,19 @@ fn Sketch::solution(
   if points.any(p => !finite(p.x) || !finite(p.y)) || radii.any(r => !finite(r)) {
     return Err("Output geometry overflow")
   }
-  // Re-evaluate the actual returned Double coordinates after denormalization.
-  // A large origin can lose small dimensions; normalized convergence alone
-  // must not result in a false success for the returned geometry.
+  // Measure returned coordinates directly in world units. Re-normalizing the
+  // output can hide a tolerance violation through another cancellation.
   let physical_x = []
   for p in points {
-    physical_x.push((p.x - frame.x) / frame.scale)
-    physical_x.push((p.y - frame.y) / frame.scale)
+    physical_x.push(p.x)
+    physical_x.push(p.y)
   }
   for r in radii {
-    physical_x.push(r / frame.scale)
+    physical_x.push(r)
   }
-  let rows = match self.evaluate(physical_x, frame) {
+  let world_frame : Frame = { x: 0.0, y: 0.0, scale: 1.0, }
+  let rows = match
+    self.evaluate(physical_x, world_frame, geometry_scale=frame.scale) {
     Ok(r) => r
     Err(e) => return Err(e)
   }
@@ -186,9 +187,12 @@ fn Sketch::solution(
     if row.angular {
       angular_errors[i] = dmax(angular_errors[i], error)
     } else {
-      length_errors[i] = dmax(length_errors[i], error * frame.scale)
+      length_errors[i] = dmax(length_errors[i], error)
     }
-    ratios[i] = dmax(ratios[i], error / row_tolerance(row, frame, options))
+    ratios[i] = dmax(
+      ratios[i],
+      error / row_tolerance(row, world_frame, options),
+    )
   }
   let rank = numerical_rank(
     rows.map(r => r.jet.d),
