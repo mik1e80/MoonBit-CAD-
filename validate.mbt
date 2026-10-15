@@ -74,6 +74,8 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
         t.abs() <= 2.0 * @math.PI
       Midpoint(p, l) | PointOnLine(p, l) =>
         self.valid_point(p) && self.valid_line(l)
+      DistanceToLine(p, l, d) =>
+        self.valid_point(p) && self.valid_line(l) && bounded(d)
       Radius(c, r) => self.valid_circle(c) && bounded(r) && r > 0.0
       EqualRadius(a, b) | Concentric(a, b) | ExternalTangent(a, b) =>
         self.valid_circle(a) && self.valid_circle(b)
@@ -117,6 +119,7 @@ fn Sketch::frame(self : Sketch) -> Frame {
       Distance(_, _, d)
       | DistanceX(_, _, d)
       | DistanceY(_, _, d)
+      | DistanceToLine(_, _, d)
       | Radius(_, d) => scale = dmax(scale, d.abs())
       _ => ()
     }

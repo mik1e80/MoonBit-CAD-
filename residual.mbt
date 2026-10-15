@@ -45,6 +45,20 @@ fn push_rows(
 }
 
 ///|
+/// Signed perpendicular distance; positive is to the left of the directed line.
+fn Sketch::signed_line_distance(
+  self : Sketch,
+  p : PointId,
+  l : LineId,
+  vars : Array[Jet],
+) -> Jet {
+  let (px, py) = point_jets(p, vars)
+  let (ax, ay) = point_jets(self.lines[l.index].a, vars)
+  let (dx, dy) = self.line_jets(l, vars)
+  jet_cross(dx, dy, px.minus(ax), py.minus(ay)).divide(jet_norm(dx, dy))
+}
+
+///|
 /// The returned residuals use normalized length units (or radians / unitless
 /// direction error for angular constraints). Tolerance weighting happens later.
 fn Sketch::evaluate(
@@ -154,12 +168,9 @@ fn Sketch::evaluate(
         let (bx, by) = point_jets(line.b, vars)
         [px.minus(ax.plus(bx).scale(0.5)), py.minus(ay.plus(by).scale(0.5))]
       }
-      PointOnLine(p, l) => {
-        let (px, py) = point_jets(p, vars)
-        let (ax, ay) = point_jets(self.lines[l.index].a, vars)
-        let (dx, dy) = self.line_jets(l, vars)
-        [jet_cross(dx, dy, px.minus(ax), py.minus(ay)).divide(jet_norm(dx, dy))]
-      }
+      PointOnLine(p, l) => [self.signed_line_distance(p, l, vars)]
+      DistanceToLine(p, l, d) =>
+        [self.signed_line_distance(p, l, vars).offset(-d / frame.scale)]
       Radius(c, r) => {
         let (_, _, radius) = self.circle_jets(c, vars)
         [radius.offset(-r / frame.scale)]
@@ -180,11 +191,11 @@ fn Sketch::evaluate(
         [jet_norm(px.minus(cx), py.minus(cy)).minus(r)]
       }
       Tangent(l, c) => {
-        let (cx, cy, r) = self.circle_jets(c, vars)
-        let (ax, ay) = point_jets(self.lines[l.index].a, vars)
-        let (dx, dy) = self.line_jets(l, vars)
-        let distance = jet_cross(dx, dy, cx.minus(ax), cy.minus(ay)).divide(
-          jet_norm(dx, dy),
+        let (_, _, r) = self.circle_jets(c, vars)
+        let distance = self.signed_line_distance(
+          self.circles[c.index].center,
+          l,
+          vars,
         )
         let sign = if distance.v < 0.0 { -1.0 } else { 1.0 }
         [distance.scale(sign).minus(r)]

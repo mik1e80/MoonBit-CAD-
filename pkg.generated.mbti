@@ -29,6 +29,7 @@ pub(all) enum Constraint {
   EqualLength(LineId, LineId)
   Midpoint(PointId, LineId)
   PointOnLine(PointId, LineId)
+  DistanceToLine(PointId, LineId, Double)
   Radius(CircleId, Double)
   EqualRadius(CircleId, CircleId)
   Concentric(CircleId, CircleId)

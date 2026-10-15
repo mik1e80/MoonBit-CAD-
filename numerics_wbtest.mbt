@@ -24,6 +24,7 @@ test "automatic derivatives match independent centered differences for every con
       EqualLength(ab, cd),
       Midpoint(d, ab),
       PointOnLine(c, ab),
+      DistanceToLine(c, ab, -1.5),
       Radius(ca, 2.0),
       EqualRadius(ca, cc),
       Concentric(ca, cc),
