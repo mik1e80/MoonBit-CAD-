@@ -1,16 +1,29 @@
 ///|
 fn Sketch::valid_point(self : Sketch, id : PointId) -> Bool {
-  id.index >= 0 && id.index < self.points.length()
+  physical_equal(self.owner, id.owner) &&
+  id.index >= 0 &&
+  id.index < self.points.length()
 }
 
 ///|
 fn Sketch::valid_line(self : Sketch, id : LineId) -> Bool {
-  id.index >= 0 && id.index < self.lines.length()
+  physical_equal(self.owner, id.owner) &&
+  id.index >= 0 &&
+  id.index < self.lines.length()
 }
 
 ///|
 fn Sketch::valid_circle(self : Sketch, id : CircleId) -> Bool {
-  id.index >= 0 && id.index < self.circles.length()
+  physical_equal(self.owner, id.owner) &&
+  id.index >= 0 &&
+  id.index < self.circles.length()
+}
+
+///|
+fn Sketch::valid_constraint(self : Sketch, id : ConstraintId) -> Bool {
+  physical_equal(self.owner, id.owner) &&
+  id.index >= 0 &&
+  id.index < self.constraints.length()
 }
 
 ///|

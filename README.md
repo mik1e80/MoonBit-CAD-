@@ -81,6 +81,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 - `Sketch::solve()` 返回 `Result[Solution, String]`，保留原草图。
 - `Sketch::solve_and_apply()` 只在全部约束达到容差时更新坐标与半径；失败时保留原草图。
 - `Solution::point()` / `radius()` 可读取结果，也可检查未收敛时的最后一个被接受的迭代结果。句柄只属于创建它的草图。
+- 句柄包含运行时归属标识。同号但来自其他草图的句柄不会匹配：查询返回 `None`、编辑返回 `false`，启用的约束或几何引用跨草图对象时求解返回错误；句柄不能作为持久化或跨进程标识。
 - `set_point()` 修改下一次求解的初值；`set_constraint()` 修改已有尺寸或关系。它们返回是否找到相应句柄，数值合法性在 `solve()` 时统一验证。
 - `set_radius()` 修改已有圆的初始半径，保留中心与关联约束；它不固定半径，驱动半径尺寸应使用 `Radius`。非法数值同样在求解时诊断。
 - `set_constraint_enabled(id, false)` 暂停某条约束，传 `true` 恢复；编号与关系保留，`set_constraint()` 不改变启停状态。禁用关系不参与校验、尺度计算、方程和自由度计算，仍计入 512 条关系的存储上限；几何本身始终需要合法。

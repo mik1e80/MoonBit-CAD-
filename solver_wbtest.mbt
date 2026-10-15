@@ -377,7 +377,7 @@ test "bad input and invalid options are errors" {
   s.add_line(a, a) |> ignore
   assert_true(s.solve() is Err(_))
   let s = Sketch::new()
-  s.constrain(Horizontal({ index: 42, })) |> ignore
+  s.constrain(Horizontal(s.line_id(42))) |> ignore
   assert_true(s.solve() is Err(_))
   let s = Sketch::new()
   assert_true(

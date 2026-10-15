@@ -43,6 +43,7 @@ pub extend ConstraintResidual with @debug.Debug::{to_repr}
 /// DOF and equation dependence refer to the local Jacobian at this result.
 /// Unsatisfied constraints are symptoms, not a proven minimal conflict set.
 pub struct SolveReport {
+  priv owner : Array[Unit]
   status : SolveStatus
   iterations : Int32
   variables : Int32
@@ -59,6 +60,7 @@ pub extend SolveReport with @debug.Debug::{to_repr}
 
 ///|
 pub struct Solution {
+  priv owner : Array[Unit]
   report : SolveReport
   priv points : Array[Point]
   priv radii : Array[Double]
@@ -66,12 +68,20 @@ pub struct Solution {
 
 ///|
 pub fn Solution::point(self : Solution, id : PointId) -> Point? {
-  self.points.get(id.index)
+  if physical_equal(self.owner, id.owner) {
+    self.points.get(id.index)
+  } else {
+    None
+  }
 }
 
 ///|
 pub fn Solution::radius(self : Solution, id : CircleId) -> Double? {
-  self.radii.get(id.index)
+  if physical_equal(self.owner, id.owner) {
+    self.radii.get(id.index)
+  } else {
+    None
+  }
 }
 
 ///|
@@ -95,7 +105,11 @@ pub fn SolveReport::residual(
   self : SolveReport,
   id : ConstraintId,
 ) -> ConstraintResidual? {
-  self.residuals.get(id.index)
+  if physical_equal(self.owner, id.owner) {
+    self.residuals.get(id.index)
+  } else {
+    None
+  }
 }
 
 ///|
@@ -182,7 +196,7 @@ fn Sketch::solution(
     options.rank_tolerance,
   )
   let residuals = Array::makei(self.constraints.length(), i => {
-    id: { index: i, },
+    id: self.constraint_id(i),
     active: self.enabled[i],
     length_error: length_errors[i],
     angular_error: angular_errors[i],
@@ -197,6 +211,7 @@ fn Sketch::solution(
     }
   }
   let report : SolveReport = {
+    owner: self.owner,
     status,
     iterations,
     variables: x.length(),
@@ -207,7 +222,7 @@ fn Sketch::solution(
     max_tolerance_ratio: max_abs(ratios),
     residuals,
   }
-  Ok({ report, points, radii, })
+  Ok({ owner: self.owner, report, points, radii, })
 }
 
 ///|

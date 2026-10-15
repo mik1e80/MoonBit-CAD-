@@ -79,7 +79,7 @@ fn Sketch::evaluate(
   }
   let vars = Array::makei(x.length(), i => variable(x[i], i, x.length()))
   for i = 0; i < self.lines.length(); i = i + 1 {
-    let (dx, dy) = self.line_jets({ index: i, }, vars)
+    let (dx, dy) = self.line_jets(self.line_id(i), vars)
     if @math.hypot(dx.v, dy.v) <= 1.0e-12 {
       return Err(
         "Line at index \{i}: too short relative to sketch scale; use a nondegenerate initial guess",

@@ -165,7 +165,7 @@ test "invalid dimensions, references, and numerical limits are rejected" {
     assert_true(s.solve() is Err(_))
   }
   let s = Sketch::new()
-  s.add_circle({ index: 20, }, 1.0) |> ignore
+  s.add_circle(s.point_id(20), 1.0) |> ignore
   assert_true(s.solve() is Err(_))
   let s = Sketch::new()
   let a = s.add_point(0.0, 0.0)

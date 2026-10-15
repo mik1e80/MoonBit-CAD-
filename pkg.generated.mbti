@@ -12,6 +12,7 @@ import {
 // Types and methods
 pub struct CircleId {
   index : Int
+  // private fields
 } derive(@debug.Debug)
 pub fn CircleId::to_repr(Self) -> @debug.Repr
 
@@ -44,6 +45,7 @@ pub fn Constraint::to_repr(Self) -> @debug.Repr
 
 pub struct ConstraintId {
   index : Int
+  // private fields
 } derive(@debug.Debug)
 pub fn ConstraintId::index(Self) -> Int
 pub fn ConstraintId::to_repr(Self) -> @debug.Repr
@@ -59,6 +61,7 @@ pub fn ConstraintResidual::to_repr(Self) -> @debug.Repr
 
 pub struct LineId {
   index : Int
+  // private fields
 } derive(@debug.Debug)
 pub fn LineId::to_repr(Self) -> @debug.Repr
 
@@ -70,6 +73,7 @@ pub fn Point::to_repr(Self) -> @debug.Repr
 
 pub struct PointId {
   index : Int
+  // private fields
 } derive(@debug.Debug)
 pub fn PointId::to_repr(Self) -> @debug.Repr
 
@@ -117,6 +121,7 @@ pub struct SolveReport {
   dependent_equations : Int
   max_tolerance_ratio : Double
   residuals : Array[ConstraintResidual]
+  // private fields
 } derive(@debug.Debug)
 pub fn SolveReport::is_satisfied(Self) -> Bool
 pub fn SolveReport::residual(Self, ConstraintId) -> ConstraintResidual?

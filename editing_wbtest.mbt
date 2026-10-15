@@ -39,8 +39,8 @@ test "residual identifiers locate the original conflicting relations" {
   }
   assert_true(r.report.residual(first).unwrap().length_error > 4.9)
   assert_true(r.report.residual(second).unwrap().length_error > 4.9)
-  assert_true(s.constraint({ index: 5, }) is None)
-  assert_true(r.report.residual({ index: 5, }) is None)
+  assert_true(s.constraint(s.constraint_id(5)) is None)
+  assert_true(r.report.residual(s.constraint_id(5)) is None)
 }
 
 ///|
@@ -62,7 +62,7 @@ test "editing a radius preserves its incident point constraints" {
     near(s.point(p).unwrap().x, 3.0)
     near(s.point(p).unwrap().y, 4.0)
   }
-  assert_false(s.set_radius({ index: 9, }, 1.0))
+  assert_false(s.set_radius(s.circle_id(9), 1.0))
 }
 
 ///|
@@ -99,8 +99,8 @@ test "suppress and restore conflicts without changing identifiers" {
   assert_false(r.report.is_satisfied())
   assert_eq(r.report.unsatisfied().length(), 2)
   assert_eq(r.report.residual(b).unwrap().id.index(), b.index())
-  assert_false(s.set_constraint_enabled({ index: 8, }, false))
-  assert_true(s.constraint_enabled({ index: 8, }) is None)
+  assert_false(s.set_constraint_enabled(s.constraint_id(8), false))
+  assert_true(s.constraint_enabled(s.constraint_id(8)) is None)
 }
 
 ///|

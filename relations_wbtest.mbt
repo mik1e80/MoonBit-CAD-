@@ -29,7 +29,7 @@ test "line offset validates dimensions and references" {
   let l = s.add_line(a, b)
   let c = s.constrain(DistanceToLine(a, l, 1.0 / 0.0))
   assert_true(s.solve() is Err(_))
-  s.set_constraint(c, DistanceToLine({ index: 9, }, l, 1.0)) |> ignore
+  s.set_constraint(c, DistanceToLine(s.point_id(9), l, 1.0)) |> ignore
   assert_true(s.solve() is Err(_))
 }
 
@@ -65,7 +65,7 @@ test "point symmetry can solve the center and rejects an absent center" {
   let r = solved(s)
   near(sp(r, c).x, 3.0)
   near(sp(r, c).y, 5.0)
-  s.set_constraint(id, Symmetric(a, b, { index: 99, })) |> ignore
+  s.set_constraint(id, Symmetric(a, b, s.point_id(99))) |> ignore
   assert_true(s.solve() is Err(_))
 }
 
