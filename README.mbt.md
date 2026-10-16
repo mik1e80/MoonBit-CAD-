@@ -28,7 +28,7 @@ test "dimensioned segment and repeated solve" {
 
 仅 `Satisfied` 表示返回坐标的全部残差分量满足指定容差。`Stalled` / `IterationLimit` 不构成无解证明；残差列表不构成最小冲突集，`local_dof` 是当前构型的一阶数值估计。所有实体句柄局限于创建它们的草图。
 
-已支持 23 种关系，包含中心对称、带符号点线距离、长度比例以及指定内外圆的内切。约束可以临时关闭，编号保持稳定：
+已支持 24 种关系，包含直线轴对称、中心对称、带符号点线距离、长度比例以及指定内外圆的内切。约束可以临时关闭，编号保持稳定：
 
 ```mbt check
 ///|
@@ -47,5 +47,29 @@ test "disable a conflicting edit and inspect its state" {
 ```
 
 完整编辑流程的可执行示例见 `cmd/edit_demo`，会验证修改尺寸、约束启停、失败回退及解析坐标。
+
+直线镜像使用 `Mirror(a, b, axis)`，不是中心对称 `Symmetric(a, b, center)`。下面的轴是无限延伸直线，反向定义端点不改变镜像关系：
+
+```mbt check
+///|
+test "mirror a hole center about a vertical construction line" {
+  let s = @sketch.Sketch::new()
+  let bottom = s.add_point(10.0, 0.0)
+  let top = s.add_point(10.0, 10.0)
+  let left = s.add_point(6.0, 3.0)
+  let right = s.add_point(13.0, 2.5)
+  s.constrain(Fix(bottom, 10.0, 0.0)) |> ignore
+  s.constrain(Fix(top, 10.0, 10.0)) |> ignore
+  s.constrain(Fix(left, 6.0, 3.0)) |> ignore
+  s.constrain(Mirror(left, right, s.add_line(bottom, top))) |> ignore
+  let r = s.solve_and_apply().unwrap()
+  assert_true(r.report.is_satisfied())
+  assert_eq(r.report.local_dof, 0)
+  assert_true((r.point(right).unwrap().x - 14.0).abs() < 1.0e-6)
+  assert_true((r.point(right).unwrap().y - 3.0).abs() < 1.0e-6)
+}
+```
+
+`moon run cmd/mirror_demo` 进一步演示等半径镜像孔位、平移对称轴后的尺寸联动及冲突编辑后的几何保留，并以解析坐标检查结果。
 
 核心库仅依赖 MoonBit core，无 C/C++ 或 JS 求解器依赖。参照 [SolveSpace 的约束建模需求](https://solvespace.com/constraints.pl)，独立实现前向自动微分、阻尼 Gauss–Newton 与增广 Givens QR。完整来源和许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

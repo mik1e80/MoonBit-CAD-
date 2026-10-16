@@ -38,7 +38,7 @@ def main() -> None:
     required = {
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
-        "model.mbt", "solver.mbt", "pkg.generated.mbti",
+        "model.mbt", "solver.mbt", "pkg.generated.mbti", "cmd/mirror_demo/main.mbt",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -83,6 +83,23 @@ test "public API from packaged source" {
   let foreign = other.add_point(0.0, 0.0)
   assert_true(s.point(foreign) is None)
   assert_false(s.set_point(foreign, { x: 9.0, y: 9.0 }))
+}
+
+///|
+test "mirror API from packaged source" {
+  let s = @cad.Sketch::new()
+  let a = s.add_point(10.0, 0.0)
+  let b = s.add_point(10.0, 10.0)
+  let p = s.add_point(6.0, 3.0)
+  let q = s.add_point(13.0, 2.5)
+  s.constrain(Fix(a, 10.0, 0.0)) |> ignore
+  s.constrain(Fix(b, 10.0, 10.0)) |> ignore
+  s.constrain(Fix(p, 6.0, 3.0)) |> ignore
+  s.constrain(Mirror(p, q, s.add_line(a, b))) |> ignore
+  let r = s.solve_and_apply().unwrap()
+  assert_true(r.report.is_satisfied())
+  assert_true((r.point(q).unwrap().x - 14.0).abs() < 1.0e-6)
+  assert_true((r.point(q).unwrap().y - 3.0).abs() < 1.0e-6)
 }
 ''', encoding="utf-8")
     run("check", "--target", "all", "--deny-warn", cwd=consumer)
