@@ -68,6 +68,8 @@ pub(all) enum Constraint {
   Fix(PointId, Double, Double)
   Coincident(PointId, PointId)
   Symmetric(PointId, PointId, PointId)
+  /// The two points are reflections across an infinite line, in either direction.
+  Mirror(PointId, PointId, LineId)
   Horizontal(LineId)
   Vertical(LineId)
   Distance(PointId, PointId, Double)

@@ -63,6 +63,7 @@ test "derivatives stay accurate at several non singular configurations" {
         Parallel(ab, cd),
         Perpendicular(ab, cd),
         DistanceToLine(d, ab, 2.0),
+        Mirror(c, d, ab),
         LengthRatio(ab, cd, 0.7),
         Tangent(ab, inner),
         InternalTangent(outer, inner),

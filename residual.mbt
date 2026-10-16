@@ -113,6 +113,26 @@ fn Sketch::evaluate(
         let (cx, cy) = point_jets(center, vars)
         [ax.plus(bx).minus(cx.scale(2.0)), ay.plus(by).minus(cy.scale(2.0))]
       }
+      Mirror(a, b, axis) => {
+        let (ax, ay) = point_jets(a, vars)
+        let (bx, by) = point_jets(b, vars)
+        let (ox, oy) = point_jets(self.lines[axis.index].a, vars)
+        let (dx, dy) = self.line_jets(axis, vars)
+        let length = jet_norm(dx, dy)
+        let ux = dx.divide(length)
+        let uy = dy.divide(length)
+        // Tangential coordinates agree; signed normal distances sum to zero.
+        // Both rows are lengths, including when the points coincide on the axis.
+        [
+          jet_dot(bx.minus(ax), by.minus(ay), ux, uy),
+          jet_cross(
+            ux,
+            uy,
+            ax.minus(ox).plus(bx.minus(ox)).scale(0.5),
+            ay.minus(oy).plus(by.minus(oy)).scale(0.5),
+          ),
+        ]
+      }
       Horizontal(l) => {
         let (_, dy) = self.line_jets(l, vars)
         [dy]

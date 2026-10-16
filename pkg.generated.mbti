@@ -20,6 +20,7 @@ pub(all) enum Constraint {
   Fix(PointId, Double, Double)
   Coincident(PointId, PointId)
   Symmetric(PointId, PointId, PointId)
+  Mirror(PointId, PointId, LineId)
   Horizontal(LineId)
   Vertical(LineId)
   Distance(PointId, PointId, Double)

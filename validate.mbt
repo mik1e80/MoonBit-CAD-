@@ -75,6 +75,8 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
       Coincident(a, b) => self.valid_point(a) && self.valid_point(b)
       Symmetric(a, b, center) =>
         self.valid_point(a) && self.valid_point(b) && self.valid_point(center)
+      Mirror(a, b, axis) =>
+        self.valid_point(a) && self.valid_point(b) && self.valid_line(axis)
       Horizontal(l) | Vertical(l) => self.valid_line(l)
       Distance(a, b, d) =>
         self.valid_point(a) && self.valid_point(b) && bounded(d) && d >= 0.0
