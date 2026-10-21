@@ -1,8 +1,12 @@
 # MoonBit CAD Sketch
 
-纯 MoonBit 的二维 CAD 草图约束求解库。输入点、线、圆和尺寸关系，求解坐标与半径，并报告约束残差及局部自由度。
+**Pure MoonBit 2D parametric sketch constraint solver.**
 
-适合参数化零件草图、尺寸联动和小型平面连杆机构。核心库仅使用 MoonBit core，不需要 C/C++ 求解器、FFI 或 JavaScript 数学库。支持 wasm、wasm-gc、JS 和 native。
+Define points, lines and circles, add geometric or dimensional constraints, solve the sketch, edit dimensions and solve again.
+
+纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
+
+[使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md)
 
 ## 当前版本
 
