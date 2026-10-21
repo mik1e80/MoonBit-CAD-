@@ -6,7 +6,7 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md)
+[能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
 
 ## 能力图
 
@@ -181,11 +181,19 @@ moon run cmd/mirror_demo
 
 ## 与相关项目的区别
 
-| 项目 | 范围 | 本项目的关系 |
+本项目组合了**几何草图建模、非线性约束求解、参数编辑和诊断**。数值优化、几何算法、线性布局、离散搜索和 CAD 文件处理已有各自适用的库，下面按公开能力说明分工。
+
+| 项目 | 类型与已有能力 | cad_sketch 的区别 |
 | --- | --- | --- |
-| [SolveSpace](https://solvespace.com/tech.pl) | 成熟的参数化 CAD 及几何约束求解器，包含二维、三维和更多实体 | 作为需求与行为参照；本项目是独立实现的小型二维 MoonBit 库，未移植其代码，不宣称功能或稳健性等价 |
-| [sgy1023-crt/cassowary](https://mooncakes.io/docs/sgy1023-crt/cassowary) | MoonBit 增量线性约束库，包含优先级与编辑变量 | 本项目处理距离、夹角、相切等非线性几何等式；暂不支持 Cassowary 的增量编辑与软约束优先级 |
-| [mik1e80/dxfkit](https://github.com/mik1e80/dxfkit) | DXF 读取、几何离散、辅助检查和 SVG 预览 | 本项目修改参数化草图几何，不负责读取或检查 DXF；当前没有自动互转接口 |
+| [MoonCurveFit](https://github.com/yyyt0807/moonbit-curvefit/blob/43d980b5429d9e5780adf7007fe7c278736104db/README.md) | 通用小型稠密非线性最小二乘；自定义残差、参数边界、稳健损失与诊断 | 提供点、线、圆和 24 种几何关系，自动构造方程，管理约束编辑与几何更新；当前未提供参数边界或稳健损失 |
+| [Moon Geometry](https://github.com/walkzzz/moon-geometry/blob/375f5f87fa73b308a75969cf320c46e3de386321/README.md) | 计算几何基础类型、相交、拟合等算法，以及 [LM 优化接口](https://github.com/walkzzz/moon-geometry/blob/375f5f87fa73b308a75969cf320c46e3de386321/src/optim/levenberg_marquardt/pkg.generated.mbti) | 在几何计算与优化之外，封装草图对象、设计关系、联合求解、尺寸编辑和逐约束诊断 |
+| [MoonCassowary](https://github.com/sgy1023-crt/MoonCassowary/blob/19f431f82d698173cada459ab7f35ce7dcc38ce3/README.md) | 增量线性等式 / 不等式、软约束权重与编辑变量，适用于交互布局 | 求解距离、角度、相切等非线性几何等式；每次重新线性化，当前没有增量 tableau、软约束权重或不等式 |
+| [moonbit-constraint](https://github.com/mjfmjf879/moonbit-constraint/blob/932d867d9116ab6746d9f4d93df654855a6dc9cf/README.md) | 整数有限域、约束传播与搜索，包含排班和组合配置模型 | 变量为连续坐标与半径，通过局部数值迭代求解；当前没有整数有限域搜索或冲突核心证明 |
+| [moonbit-step](https://github.com/gmlewis/moonbit-step/blob/3d77e2bed4bef957f7019af754bf8d2a5e772cea/README.md) | 三维建模 DSL 与 STEP 解析 / 序列化 | 聚焦二维草图关系与尺寸重求；当前没有三维实体、STEP I/O 或自动互转接口 |
+| [SolveSpace](https://github.com/solvespace/solvespace/blob/30e1c3ac0beb77fe3e098315b1bb662840ddc99a/README.md) | 二维 / 三维参数化 CAD，提供几何约束求解及[独立求解库](https://solvespace.com/tech.pl) | 独立实现的小型纯 MoonBit 求解组件；未移植或链接 SolveSpace，不宣称功能或稳健性等价 |
+| [dxfkit](https://github.com/mik1e80/dxfkit/blob/6d75d895c2a706c013290936f7880c1c05e88516/README.md) | ASCII DXF 读取、轮廓辅助检查与 SVG 预览 | 按设计约束修改参数化几何；当前没有 DXF 读取、轮廓检查或与 dxfkit 的自动互转接口 |
+
+核对日期：2026-10-22。表中链接固定到核对时的源码版本；详细证据、接口差异、选型依据与集成边界见 [生态对比](docs/ECOSYSTEM.md)。本次为文档与接口核对，未进行跨库性能或收敛率测试。
 
 ## 许可与来源
 
