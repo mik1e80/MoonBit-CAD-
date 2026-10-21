@@ -45,5 +45,9 @@ jobs:
           moon run cmd/edit_demo --target js
           moon run cmd/mirror_demo
           moon run cmd/mirror_demo --target js
+      - name: Verify parametric bracket and committed SVG
+        run: |
+          node scripts/bracket_showcase.cjs --check --target wasm
+          node scripts/bracket_showcase.cjs --check --target js
       - name: Verify source archive and downstream consumer
         run: python scripts/check_package.py

@@ -1,6 +1,6 @@
 """Verify the actual source archive and consume it without registry publication.
 
-Requires Python 3.10+ and MoonBit on PATH. No third-party Python packages.
+Requires Python 3.10+, Node.js 18+ and MoonBit on PATH. No third-party packages.
 """
 
 from pathlib import Path, PurePosixPath
@@ -39,6 +39,10 @@ def main() -> None:
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
         "model.mbt", "solver.mbt", "pkg.generated.mbti", "cmd/mirror_demo/main.mbt",
+        "cmd/bracket_demo/main.mbt", "cmd/bracket_demo/moon.pkg",
+        "cmd/bracket_demo/bracket_wbtest.mbt", "cmd/bracket_demo/pkg.generated.mbti",
+        "docs/SHOWCASE.md", "docs/images/bracket-before-after.svg",
+        "scripts/bracket_showcase.cjs", "docs/POSITIONING.md", "docs/ECOSYSTEM.md",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -105,7 +109,18 @@ test "mirror API from packaged source" {
     run("check", "--target", "all", "--deny-warn", cwd=consumer)
     for target in ("wasm", "wasm-gc", "js", "native"):
         run("test", "--target", target, cwd=consumer)
-    print(f"Package and downstream consumer verified; workspace retained at {work}")
+    subprocess.run(
+        [MOON, "run", "cmd/bracket_demo"], cwd=package,
+        stdout=subprocess.DEVNULL, check=True, timeout=180,
+    )
+    node = shutil.which("node")
+    if node is None:
+        raise RuntimeError("Node.js 18+ is required to verify the packaged showcase")
+    subprocess.run(
+        [node, "scripts/bracket_showcase.cjs", "--check"],
+        cwd=package, check=True, timeout=180,
+    )
+    print(f"Package, bracket showcase and downstream consumer verified; workspace retained at {work}")
 
 
 if __name__ == "__main__":

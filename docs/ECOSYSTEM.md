@@ -58,7 +58,7 @@
 | --- | --- |
 | 草图对象与关系 | [model.mbt](../model.mbt)：点、线、圆与 24 种关系；句柄包含草图归属 |
 | 关系自动转方程 | [residual.mbt](../residual.mbt)、[autodiff.mbt](../autodiff.mbt)：关系残差与前向自动微分 |
-| 参数编辑与重复求解 | [公开接口示例](../README.mbt.md)、[镜像孔位示例](../cmd/mirror_demo/main.mbt)：尺寸修改、关系启停、失败时保留几何 |
+| 参数编辑与重复求解 | [公开接口示例](../README.mbt.md)、[四孔安装板](SHOWCASE.md)：尺寸修改、关系启停、前后图形、独立坐标核对及失败时保留几何 |
 | 结果诊断与应用 | [solver.mbt](../solver.mbt)：逐约束残差、局部自由度、状态；仅全部达标时应用结果 |
 | 数值方法与范围 | [linalg.mbt](../linalg.mbt)、[技术说明](ARCHITECTURE.md)：阻尼 QR 和局部秩；采用稠密矩阵，无全局收敛保证 |
 

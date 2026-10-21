@@ -1,0 +1,5 @@
+import {
+  "mik1e80/cad_sketch" @sketch,
+}
+
+pkgtype(kind: "executable")

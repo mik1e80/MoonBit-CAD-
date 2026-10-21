@@ -6,7 +6,20 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+[安装板案例](#parametric-bracket-demo) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+
+## Parametric Bracket Demo
+
+用同一个草图建立 120×80 的四孔安装板，再将板宽 120→160、孔半径 5→8、水平孔心边距 20→30。四孔位置由镜像、等半径和孔心到板边的距离关系共同确定；每次编辑只修改尺寸约束。
+
+![参数化安装板修改前后的实际求解结果](docs/images/bracket-before-after.svg)
+
+```sh
+moon run cmd/bracket_demo
+node scripts/bracket_showcase.cjs --check
+```
+
+首条命令验证六个阶段并输出 JSON Lines；第二条需要 Node.js 18+，独立核对实际坐标并检查 SVG。案例还启用互相矛盾的宽度 160 与 170，验证失败时几何不变，关闭冲突后恢复。参数、建模关系、孔位结果及复现步骤见 [安装板案例说明](docs/SHOWCASE.md)。
 
 ## 能力图
 
@@ -167,11 +180,13 @@ moon test --target native
 moon run cmd/demo
 moon run cmd/edit_demo
 moon run cmd/mirror_demo
+moon run cmd/bracket_demo
+node scripts/bracket_showcase.cjs --check
 ```
 
 测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。全部 24 种约束的自动微分导数另外与中心差分对照；QR 和数值秩也有独立构造案例。测试通过不代表任意非线性草图均会收敛。
 
-`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试。Python 只用于这一开发验证步骤；核心求解与常规 `moon test` 不需要 Python。
+`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板案例与 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
 
 本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
 

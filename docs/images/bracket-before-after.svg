@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+<title id="title">Parametric bracket: initial and edited solver results</title>
+<desc id="desc">A 120 by 80 plate with four radius 5 holes and 20 by 15 center margins changes to a 160 by 80 plate with radius 8 holes and 30 by 15 center margins. Both geometries come from the same MoonBit sketch. A conflicting width is rejected and disabling it restores a satisfied result.</desc>
+<defs><marker id="arrow" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 8 0 L 0 4 L 8 8" fill="none" stroke="#77859b" stroke-width="1.2"/></marker></defs>
+<style>
+text{font-family:Segoe UI,Arial,sans-serif;fill:#1c2b42}
+.eyebrow{font-size:12px;letter-spacing:2px;font-weight:700;fill:#235fc1}
+.title{font-size:34px;font-weight:700;letter-spacing:-.7px}
+.muted{font-size:16px;fill:#5c6d84}
+.panel-title{font-size:21px;font-weight:700}
+.success{font-size:12px;font-weight:600;fill:#23724b}
+.axis{stroke:#98b0cf;stroke-width:1;stroke-dasharray:7 5}
+.center{stroke:#7b8ca5;stroke-width:1}
+.hole-label{font-size:12px;font-weight:600;fill:#526780}
+.extension{stroke:#b2bdcc;stroke-width:1}
+.dimension{stroke:#77859b;stroke-width:1}
+.dimension-label{font-size:14px;fill:#526780}
+.panel-note{font-size:13px;fill:#5c6d84}
+.change{font-size:17px;font-weight:600}
+.recovery{font-size:14px;fill:#526780}
+</style>
+<rect width="1280" height="820" fill="#f5f7fb"/>
+<text x="40" y="44" class="eyebrow" >MOONBIT CAD SKETCH / SHOWCASE 01</text>
+<text x="40" y="97" class="title" >Parametric mounting plate</text>
+<text x="40" y="133" class="muted" >Actual solved geometry · same sketch and constraint handles · identical drawing scale</text>
+<g>
+<rect x="40" y="174" width="584" height="454" rx="18" fill="#ffffff" stroke="#dce3ed"/>
+<text x="68" y="213" class="panel-title" >01 / Initial sketch</text>
+<rect x="470" y="190" width="126" height="31" rx="15" fill="#e7f6ee"/>
+<text x="533" y="211" class="success" text-anchor="middle">Satisfied / DOF 0</text>
+<text x="68" y="242" class="muted" >120 × 80 mm · 4 × R5</text>
+<path d="M 170 508 L 494 508 L 494 292 L 170 292 Z" fill="#f0f3f7" stroke="#50627a" stroke-width="2.5"/>
+<line x1="332" y1="520" x2="332" y2="280" class="axis" />
+<line x1="158" y1="400" x2="506" y2="400" class="axis" /><circle cx="224" cy="467.5" r="13.5" fill="#ffffff" stroke="#50627a" stroke-width="2.3"/><line x1="219" y1="467.5" x2="229" y2="467.5" class="center" /><line x1="224" y1="462.5" x2="224" y2="472.5" class="center" /><text x="224" y="446" class="hole-label" text-anchor="middle">A</text><circle cx="440" cy="467.5" r="13.5" fill="#ffffff" stroke="#50627a" stroke-width="2.3"/><line x1="435" y1="467.5" x2="445" y2="467.5" class="center" /><line x1="440" y1="462.5" x2="440" y2="472.5" class="center" /><text x="440" y="446" class="hole-label" text-anchor="middle">B</text><circle cx="224" cy="332.5" r="13.5" fill="#ffffff" stroke="#50627a" stroke-width="2.3"/><line x1="219" y1="332.5" x2="229" y2="332.5" class="center" /><line x1="224" y1="327.5" x2="224" y2="337.5" class="center" /><text x="224" y="311" class="hole-label" text-anchor="middle">C</text><circle cx="440" cy="332.5" r="13.5" fill="#ffffff" stroke="#50627a" stroke-width="2.3"/><line x1="435" y1="332.5" x2="445" y2="332.5" class="center" /><line x1="440" y1="327.5" x2="440" y2="337.5" class="center" /><text x="440" y="311" class="hole-label" text-anchor="middle">D</text><line x1="170" y1="286" x2="170" y2="262" class="extension" /><line x1="494" y1="286" x2="494" y2="262" class="extension" /><line x1="172" y1="267" x2="492" y2="267" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="332" y="259" class="dimension-label" text-anchor="middle">120 mm</text><line x1="146" y1="294" x2="146" y2="506" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="137" y="400" class="dimension-label" text-anchor="middle" transform="rotate(-90 137 400)">80</text><line x1="170" y1="514" x2="170" y2="541" class="extension" /><line x1="224" y1="485" x2="224" y2="541" class="extension" /><line x1="172" y1="537" x2="222" y2="537" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="197" y="557" class="dimension-label" text-anchor="middle">20</text><line x1="256.5" y1="469.5" x2="256.5" y2="506" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="265.5" y="492.75" class="dimension-label" >15</text><text x="68" y="604" class="panel-note" >Center-to-edge margins: 20 mm horizontal / 15 mm vertical</text></g>
+<g>
+<rect x="656" y="174" width="584" height="454" rx="18" fill="#ffffff" stroke="#dce3ed"/>
+<text x="684" y="213" class="panel-title" >02 / After parameter edits</text>
+<rect x="1086" y="190" width="126" height="31" rx="15" fill="#e7f6ee"/>
+<text x="1149" y="211" class="success" text-anchor="middle">Satisfied / DOF 0</text>
+<text x="684" y="242" class="muted" >160 × 80 mm · 4 × R8</text>
+<path d="M 732 508 L 1164 508 L 1164 292 L 732 292 Z" fill="#e9f1ff" stroke="#235fc1" stroke-width="2.5"/>
+<line x1="948" y1="520" x2="948" y2="280" class="axis" />
+<line x1="720" y1="400" x2="1176" y2="400" class="axis" /><circle cx="813" cy="467.5" r="21.6" fill="#ffffff" stroke="#235fc1" stroke-width="2.3"/><line x1="808" y1="467.5" x2="818" y2="467.5" class="center" /><line x1="813" y1="462.5" x2="813" y2="472.5" class="center" /><text x="813" y="437.9" class="hole-label" text-anchor="middle">A</text><circle cx="1083" cy="467.5" r="21.6" fill="#ffffff" stroke="#235fc1" stroke-width="2.3"/><line x1="1078" y1="467.5" x2="1088" y2="467.5" class="center" /><line x1="1083" y1="462.5" x2="1083" y2="472.5" class="center" /><text x="1083" y="437.9" class="hole-label" text-anchor="middle">B</text><circle cx="813" cy="332.5" r="21.6" fill="#ffffff" stroke="#235fc1" stroke-width="2.3"/><line x1="808" y1="332.5" x2="818" y2="332.5" class="center" /><line x1="813" y1="327.5" x2="813" y2="337.5" class="center" /><text x="813" y="302.9" class="hole-label" text-anchor="middle">C</text><circle cx="1083" cy="332.5" r="21.6" fill="#ffffff" stroke="#235fc1" stroke-width="2.3"/><line x1="1078" y1="332.5" x2="1088" y2="332.5" class="center" /><line x1="1083" y1="327.5" x2="1083" y2="337.5" class="center" /><text x="1083" y="302.9" class="hole-label" text-anchor="middle">D</text><line x1="732" y1="286" x2="732" y2="262" class="extension" /><line x1="1164" y1="286" x2="1164" y2="262" class="extension" /><line x1="734" y1="267" x2="1162" y2="267" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="948" y="259" class="dimension-label" text-anchor="middle">160 mm</text><line x1="708" y1="294" x2="708" y2="506" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="699" y="400" class="dimension-label" text-anchor="middle" transform="rotate(-90 699 400)">80</text><line x1="732" y1="514" x2="732" y2="541" class="extension" /><line x1="813" y1="493.1" x2="813" y2="541" class="extension" /><line x1="734" y1="537" x2="811" y2="537" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="772.5" y="557" class="dimension-label" text-anchor="middle">30</text><line x1="853.6" y1="469.5" x2="853.6" y2="506" class="dimension" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="862.6" y="492.75" class="dimension-label" >15</text><text x="684" y="604" class="panel-note" >Center-to-edge margins: 30 mm horizontal / 15 mm vertical</text></g>
+<rect x="40" y="652" width="1200" height="130" rx="18" fill="#e9eff9" stroke="#d4dfef"/>
+<text x="66" y="689" class="change" >Width 120 → 160</text>
+<text x="380" y="689" class="change" >Hole radius 5 → 8</text>
+<text x="752" y="689" class="change" >Horizontal margin 20 → 30</text>
+<text x="66" y="724" class="recovery" >20 active relations / 28 equations / 28 variables · all four hole positions follow the design relations</text>
+<text x="66" y="752" class="recovery" >Conflicting widths 160 and 170: not applied; all 28 geometry values retained. Disable conflict: Satisfied.</text>
+</svg>

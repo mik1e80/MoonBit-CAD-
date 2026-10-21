@@ -37,4 +37,6 @@
 
 `pkg.generated.mbti` 由 MoonBit 的 `moon info` 根据本仓库接口生成；示例、解析期望值和测试数据由本项目构造。构建产物、依赖缓存和 Git 内部文件不进入源码发布包，`scripts/check_package.py` 会检查实际压缩包。
 
+四孔安装板图 `docs/images/bracket-before-after.svg` 由本仓库的 `scripts/bracket_showcase.cjs` 根据实际 MoonBit 求解坐标生成，没有引入第三方 CAD 图纸。该脚本只使用 Node.js 标准库做开发验证与 SVG 绘制，不参与核心求解运行时。
+
 GitHub Actions 使用的 `actions/checkout` 和 `actions/setup-python` 为 MIT 许可的 CI 工具，分别见[checkout LICENSE](https://github.com/actions/checkout/blob/main/LICENSE)和[setup-python LICENSE](https://github.com/actions/setup-python/blob/main/LICENSE)；只在工作流中引用，不复制其实现。Python 审查脚本只使用标准库，是开发验证工具，不参与 MoonBit 库的运行时。
