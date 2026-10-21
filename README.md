@@ -6,7 +6,36 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md)
+[能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md)
+
+## 能力图
+
+从几何草图建模、约束定义，到尺寸编辑后的重新求解：
+
+```mermaid
+flowchart TD
+    G["草图建模 Sketch<br/>Point · Line · Circle"]
+    C["几何与尺寸约束<br/>Distance · Angle · Parallel · Tangent · Mirror …"]
+    S["非线性约束求解<br/>solve_and_apply()"]
+    R["结果与诊断<br/>状态 · 逐约束残差 · 局部自由度"]
+    U["更新草图<br/>坐标与半径"]
+    K["保留原几何<br/>查看诊断并调整"]
+    E["参数编辑<br/>修改尺寸 · 启用 / 禁用约束"]
+
+    G --> C --> S
+    S -->|"Ok(Solution)"| R
+    S -->|"Err：输入或求值错误"| K
+    R -->|"Satisfied：全部残差达标"| U
+    R -->|"Stalled / IterationLimit"| K
+    U --> E
+    K --> E
+    E --> C
+```
+
+建模层管理点、线、圆和约束；求解层返回候选几何与诊断。`solve()` 仅返回结果，图中的 `solve_and_apply()` 在全部残差达标时更新草图。
+
+`Satisfied` 表示残差达标，仍可能存在局部自由度。`local_dof` 是当前构型的一阶数值估计；`Stalled` / `IterationLimit` 不证明无解，未满足约束列表也不是最小冲突集。
+
 
 ## 当前版本
 
