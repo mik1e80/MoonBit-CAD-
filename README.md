@@ -63,7 +63,7 @@ match sketch.solve_and_apply() {
 moon run examples/parametric_bracket --target js
 ```
 
-[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。以上三份 SVG 由核心库的 `sketch.to_svg()` 直接返回，同一视野、同一比例。[SVG 导出说明](docs/SVG_EXPORT.md)包含接口与生成命令；此接口从 Mooncakes 0.2.1 起提供。
+[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。以上三份 SVG 由核心库的 `sketch.to_svg()` 直接返回，同一视野、同一比例。[SVG 导出说明](docs/SVG_EXPORT.md)包含接口与生成命令；此接口已包含在 Mooncakes 0.2.1 正式版本中。
 
 ## Features
 
@@ -72,7 +72,7 @@ moon run examples/parametric_bracket --target js
 - **参数编辑**：修改尺寸、启停或永久删除约束，再次求解。
 - **结果应用**：只有全部启用关系达标时，`solve_and_apply()` 才写回几何。
 - **诊断**：类型化错误、状态、逐约束残差和局部自由度。
-- **SVG 输出（源码开发版）**：`to_svg()` 导出保存几何，支持自动适配和共享视野。
+- **SVG 输出**：`Sketch::to_svg()` 导出当前草图，支持自动适配或使用共享视野。
 - **运行时**：纯 MoonBit，仅依赖 MoonBit core；支持 wasm、wasm-gc、JS 和 native。
 
 <details>

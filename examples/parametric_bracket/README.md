@@ -9,4 +9,4 @@
 如需独立检查 SVG，运行 `node scripts/bracket_showcase.cjs --check --target js`；该命令需要 Node.js。它只验证这个案例，不运行全量套件。
 
 
-开发版的 JSON 事件另含核心 `to_svg()` 返回的 `svg` 字符串。运行 `python scripts/export_svg.py --write` 写出独立的修改前、修改后及冲突 SVG；`--check` 只核对文件。接口和共享比例见 [SVG 导出](../../docs/SVG_EXPORT.md)。这是源码开发版新增功能，未重新发布 0.1.0。
+案例的 JSON 事件包含核心 `Sketch::to_svg()` 返回的 `svg` 字符串。运行 `python scripts/export_svg.py --write` 写出独立的修改前、修改后及冲突 SVG；`--check` 只核对文件。接口和共享比例见 [SVG 导出](../../docs/SVG_EXPORT.md)。此功能已包含在 Mooncakes 0.2.1 正式版本中。
