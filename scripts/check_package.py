@@ -47,6 +47,7 @@ def main() -> None:
         "examples/four_bar/four_bar_wbtest.mbt", "examples/four_bar/pkg.generated.mbti",
         "examples/four_bar/README.md", "docs/images/four-bar-motion.svg",
         "scripts/four_bar_showcase.cjs",
+        "removal_wbtest.mbt", "docs/CONSTRAINT_LIFECYCLE.md",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -108,6 +109,29 @@ test "mirror API from packaged source" {
   assert_true(r.report.is_satisfied())
   assert_true((r.point(q).unwrap().x - 14.0).abs() < 1.0e-6)
   assert_true((r.point(q).unwrap().y - 3.0).abs() < 1.0e-6)
+}
+
+///|
+test "permanent removal through the packaged public API" {
+  let s = @cad.Sketch::new()
+  let p = s.add_point(0.0, 0.0)
+  s.constrain(Fix(p, 0.0, 0.0)) |> ignore
+  let removed = s.constrain(Fix(p, 10.0, 0.0))
+  let old = s.solve().unwrap().report
+  assert_false(old.is_satisfied())
+  assert_true(s.remove_constraint(removed))
+  assert_false(s.remove_constraint(removed))
+  assert_false(s.set_constraint_enabled(removed, true))
+  assert_true(s.constraint(removed) is None)
+  let fresh = s.constrain(Fix(p, 0.0, 0.0))
+  assert_true(fresh.index() > removed.index())
+  let report = s.solve_and_apply().unwrap().report
+  assert_true(report.is_satisfied())
+  assert_eq(report.residuals.length(), 2)
+  assert_true(report.residual(removed) is None)
+  assert_true(report.residual(fresh).unwrap().active)
+  assert_true(old.residual(removed).unwrap().active)
+  assert_true(old.residual(fresh) is None)
 }
 ''', encoding="utf-8")
     run("check", "--target", "all", "--deny-warn", cwd=consumer)

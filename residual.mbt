@@ -1,7 +1,7 @@
 ///|
 priv struct Row {
   jet : Jet
-  constraint : Int32
+  slot : Int32
   angular : Bool
 }
 
@@ -36,11 +36,11 @@ fn Sketch::circle_jets(
 fn push_rows(
   out : Array[Row],
   jets : Array[Jet],
-  id : Int32,
+  slot : Int32,
   angular : Bool,
 ) -> Unit {
   for jet in jets {
-    out.push({ jet, constraint: id, angular, })
+    out.push({ jet, slot, angular, })
   }
 }
 
@@ -245,8 +245,9 @@ fn Sketch::evaluate(
         // Equal coincident circles have infinitely many contacts, not an
         // isolated tangency. Keep the caller's outer/inner branch explicit.
         if difference.v <= geometry_scale * 1.0e-12 {
+          let id = self.constraint_ids[i].index
           return Err(
-            "Constraint at index \{i}: internal tangency needs outer radius greater than inner radius by more than 1e-12 of sketch scale",
+            "Constraint at index \{id}: internal tangency needs outer radius greater than inner radius by more than 1e-12 of sketch scale",
           )
         }
         [jet_norm(bx.minus(ax), by.minus(ay)).minus(difference)]
@@ -256,9 +257,8 @@ fn Sketch::evaluate(
   }
   for row in out {
     if !finite(row.jet.v) || row.jet.d.any(v => !finite(v)) {
-      return Err(
-        "Constraint at index \{row.constraint}: nonfinite residual or derivative",
-      )
+      let id = self.constraint_ids[row.slot].index
+      return Err("Constraint at index \{id}: nonfinite residual or derivative")
     }
   }
   Ok(out)

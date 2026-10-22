@@ -20,10 +20,16 @@ fn Sketch::valid_circle(self : Sketch, id : CircleId) -> Bool {
 }
 
 ///|
-fn Sketch::valid_constraint(self : Sketch, id : ConstraintId) -> Bool {
-  physical_equal(self.owner, id.owner) &&
-  id.index >= 0 &&
-  id.index < self.constraints.length()
+fn Sketch::constraint_slot(self : Sketch, id : ConstraintId) -> Int32? {
+  if !physical_equal(self.owner, id.owner) || id.index < 0 {
+    return None
+  }
+  for slot, stored in self.constraint_ids {
+    if stored.index == id.index {
+      return Some(slot)
+    }
+  }
+  None
 }
 
 ///|
@@ -108,7 +114,10 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
       Tangent(l, c) => self.valid_line(l) && self.valid_circle(c)
     }
     if !ok {
-      return Err("Invalid constraint at index \{i}: bad reference or dimension")
+      let id = self.constraint_ids[i].index
+      return Err(
+        "Invalid constraint at index \{id}: bad reference or dimension",
+      )
     }
   }
   Ok(())

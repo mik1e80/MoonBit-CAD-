@@ -100,16 +100,21 @@ pub fn SolveReport::unsatisfied(
 }
 
 ///|
-/// Identifiers refer to the sketch at solve time, including satisfied relations.
+/// Look up a stable ID in this report's solve-time snapshot. Deleted relations
+/// remain readable in older reports and are absent from subsequent reports.
 pub fn SolveReport::residual(
   self : SolveReport,
   id : ConstraintId,
 ) -> ConstraintResidual? {
-  if physical_equal(self.owner, id.owner) {
-    self.residuals.get(id.index)
-  } else {
-    None
+  if !physical_equal(self.owner, id.owner) {
+    return None
   }
+  for residual in self.residuals {
+    if residual.id.index == id.index {
+      return Some(residual)
+    }
+  }
+  None
 }
 
 ///|
@@ -182,7 +187,7 @@ fn Sketch::solution(
   let angular_errors = Array::make(self.constraints.length(), 0.0)
   let ratios = Array::make(self.constraints.length(), 0.0)
   for row in rows {
-    let i = row.constraint
+    let i = row.slot
     let error = row.jet.v.abs()
     if row.angular {
       angular_errors[i] = dmax(angular_errors[i], error)
@@ -200,7 +205,7 @@ fn Sketch::solution(
     options.rank_tolerance,
   )
   let residuals = Array::makei(self.constraints.length(), i => {
-    id: self.constraint_id(i),
+    id: self.constraint_ids[i],
     active: self.enabled[i],
     length_error: length_errors[i],
     angular_error: angular_errors[i],

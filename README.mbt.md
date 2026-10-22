@@ -54,6 +54,32 @@ test "disable a conflicting edit and inspect its state" {
 }
 ```
 
+约束管理还支持永久删除。禁用保留关系和编号，删除则让旧句柄失效；新关系不会复用已删除的编号。完整语义见 [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md)。
+
+```mbt check
+///|
+test "edit disable remove and readd without reviving the old handle" {
+  let s = @sketch.Sketch::new()
+  let p = s.add_point(0.0, 0.0)
+  s.constrain(Fix(p, 0.0, 0.0)) |> ignore
+  let temporary = s.constrain(Fix(p, 10.0, 0.0))
+  assert_true(s.set_constraint(temporary, Fix(p, 20.0, 0.0)))
+  assert_true(s.set_constraint_enabled(temporary, false))
+  let before = s.solve().unwrap().report
+  assert_true(before.is_satisfied())
+  assert_true(s.remove_constraint(temporary))
+  assert_true(s.constraint(temporary) is None)
+  assert_false(s.set_constraint_enabled(temporary, true))
+  let replacement = s.constrain(Fix(p, 0.0, 0.0))
+  assert_true(replacement.index() > temporary.index())
+  let after = s.solve_and_apply().unwrap().report
+  assert_true(after.is_satisfied())
+  assert_true(after.residual(temporary) is None)
+  assert_false(before.residual(temporary).unwrap().active)
+  assert_true(before.residual(replacement) is None)
+}
+```
+
 完整编辑流程的可执行示例见 `cmd/edit_demo`，会验证修改尺寸、约束启停、失败回退及解析坐标。
 
 直线镜像使用 `Mirror(a, b, axis)`，不是中心对称 `Symmetric(a, b, center)`。下面的轴是无限延伸直线，反向定义端点不改变镜像关系：

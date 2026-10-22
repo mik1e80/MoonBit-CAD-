@@ -36,6 +36,7 @@ pub struct ConstraintId {
 pub extend ConstraintId with @debug.Debug::{to_repr}
 
 ///|
+/// Stable creation index, not a live-array offset after constraint removals.
 pub fn ConstraintId::index(self : ConstraintId) -> Int32 {
   self.index
 }
@@ -104,6 +105,8 @@ pub struct Sketch {
   priv circles : Array[Circle]
   priv constraints : Array[Constraint]
   priv enabled : Array[Bool]
+  priv constraint_ids : Array[ConstraintId]
+  priv next_constraint : Array[Int32]
 }
 
 ///|
@@ -115,6 +118,8 @@ pub fn Sketch::new() -> Sketch {
     circles: [],
     constraints: [],
     enabled: [],
+    constraint_ids: [],
+    next_constraint: [0],
   }
 }
 
@@ -168,9 +173,16 @@ pub fn Sketch::add_circle(
 
 ///|
 pub fn Sketch::constrain(self : Sketch, c : Constraint) -> ConstraintId {
-  let id = self.constraint_id(self.constraints.length())
+  // IDs never alias a removed relation, even after compacting the live arrays.
+  let index = self.next_constraint[0]
+  if index == 2147483647 {
+    abort("Constraint identifier space exhausted")
+  }
+  let id = self.constraint_id(index)
+  self.next_constraint[0] = index + 1
   self.constraints.push(c)
   self.enabled.push(true)
+  self.constraint_ids.push(id)
   id
 }
 
@@ -193,12 +205,11 @@ pub fn Sketch::radius(self : Sketch, id : CircleId) -> Double? {
 }
 
 ///|
-/// Look up the original relation from a diagnostic's constraint identifier.
+/// Look up a live relation. Removed IDs return None, including old diagnostics.
 pub fn Sketch::constraint(self : Sketch, id : ConstraintId) -> Constraint? {
-  if self.valid_constraint(id) {
-    self.constraints.get(id.index)
-  } else {
-    None
+  match self.constraint_slot(id) {
+    Some(slot) => self.constraints.get(slot)
+    None => None
   }
 }
 
@@ -209,20 +220,36 @@ pub fn Sketch::set_constraint_enabled(
   id : ConstraintId,
   enabled : Bool,
 ) -> Bool {
-  if !self.valid_constraint(id) {
-    false
-  } else {
-    self.enabled[id.index] = enabled
-    true
+  match self.constraint_slot(id) {
+    None => false
+    Some(slot) => {
+      self.enabled[slot] = enabled
+      true
+    }
   }
 }
 
 ///|
 pub fn Sketch::constraint_enabled(self : Sketch, id : ConstraintId) -> Bool? {
-  if self.valid_constraint(id) {
-    self.enabled.get(id.index)
-  } else {
-    None
+  match self.constraint_slot(id) {
+    Some(slot) => self.enabled.get(slot)
+    None => None
+  }
+}
+
+///|
+/// Permanently remove a relation without changing geometry or other handles.
+/// Removed/unknown/foreign IDs return false and can never be re-enabled.
+/// Old solve reports remain snapshots; new reports omit this relation.
+pub fn Sketch::remove_constraint(self : Sketch, id : ConstraintId) -> Bool {
+  match self.constraint_slot(id) {
+    None => false
+    Some(slot) => {
+      self.constraints.remove(slot) |> ignore
+      self.enabled.remove(slot) |> ignore
+      self.constraint_ids.remove(slot) |> ignore
+      true
+    }
   }
 }
 
@@ -262,11 +289,12 @@ pub fn Sketch::set_constraint(
   id : ConstraintId,
   c : Constraint,
 ) -> Bool {
-  if !self.valid_constraint(id) {
-    false
-  } else {
-    self.constraints[id.index] = c
-    true
+  match self.constraint_slot(id) {
+    None => false
+    Some(slot) => {
+      self.constraints[slot] = c
+      true
+    }
   }
 }
 

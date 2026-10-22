@@ -90,6 +90,7 @@ pub fn Sketch::constraint_enabled(Self, ConstraintId) -> Bool?
 pub fn Sketch::new() -> Self
 pub fn Sketch::point(Self, PointId) -> Point?
 pub fn Sketch::radius(Self, CircleId) -> Double?
+pub fn Sketch::remove_constraint(Self, ConstraintId) -> Bool
 pub fn Sketch::set_constraint(Self, ConstraintId, Constraint) -> Bool
 pub fn Sketch::set_constraint_enabled(Self, ConstraintId, Bool) -> Bool
 pub fn Sketch::set_point(Self, PointId, Point) -> Bool
