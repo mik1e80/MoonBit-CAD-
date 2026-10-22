@@ -48,7 +48,7 @@ sketch.set_constraint(length, Distance(a, b, 7.0)) |> ignore
 | [VALIDATION](docs/VALIDATION.md) | 语料、独立判定、真实历史数据与复现 |
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | 内部建模、数值实现与验证方法 |
 
-[API 总览](docs/API_GUIDE.md) · [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md) · [项目定位](docs/POSITIONING.md) · [验收记录](docs/ACCEPTANCE.md) · [发布与安装验证](docs/PUBLISHING.md)
+[API 总览](docs/API_GUIDE.md) · [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md) · [项目定位](docs/POSITIONING.md) · [验收记录](docs/ACCEPTANCE.md) · [发布与安装验证](docs/PUBLISHING.md) · [Consumer Test](docs/CONSUMER_TEST.md)
 
 ## 示例目录
 

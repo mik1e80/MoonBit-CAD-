@@ -47,3 +47,8 @@ moon publish
 2026-10-22，正式上传返回 `200 OK`。随后在不属于本地 workspace 的独立项目执行 `moon add mik1e80/cad_sketch`，解析并下载 `0.1.0`；JS 下两项冒烟检查均通过：尺寸 5→7 的求解与编辑、公开 `SketchError::InvalidRadius` 模式匹配。已下载的 99 个归档文件逐字节与上传包一致。
 
 [发布回执](releases/0.1.0.json)记录归档 SHA-256、工具链和验证范围。回执在发布后生成，不属于不可变的 0.1.0 归档。此次未创建 GitHub Release；源码和安装文档通过 Git 提交同步。
+
+
+## 完整 Consumer Test
+
+发布后的独立安装检查进一步补齐 `moon new → moon add → 最小示例 → moon test → moon run` 全流程；仓库外新项目的两个测试及可执行程序均通过。运行 `python scripts/check_consumer.py` 可复现，完整手工步骤、代码、缓存说明与真实结果见 [Consumer Test](CONSUMER_TEST.md)。该检查只使用公开发布的 0.1.0，未再次发布版本，也不执行库的全量回归。

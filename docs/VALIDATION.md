@@ -108,3 +108,8 @@ node scripts/four_bar_showcase.cjs --check
 本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
 
 [验收对照](ACCEPTANCE.md)区分源码证据与未完成发布事项。日常只运行本次改动相关的轻量检查；完整矩阵由维护者显式决定是否运行。
+
+
+## 注册表 Consumer Test
+
+`python scripts/check_consumer.py` 在仓库外执行 `moon new`、`moon add mik1e80/cad_sketch`，编写小型消费程序并运行两个 JS 测试和一次可执行示例。它针对已发布的包，不使用本地 workspace；标准注册表缓存允许使用并记录。独立项目代码、真实输出及完整复现见 [CONSUMER_TEST](CONSUMER_TEST.md)。这项轻量检查不调用上面的源码包全矩阵检查或 400 / 1000 模型实验。

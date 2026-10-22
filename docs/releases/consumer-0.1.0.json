@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "module": "mik1e80/cad_sketch",
+  "version": "0.1.0",
+  "target": "js",
+  "consumer_created_by_moon_new": true,
+  "consumer_outside_repository": true,
+  "workspace_or_path_override": false,
+  "fresh_project_dependency_directory": true,
+  "dependency_source": "Mooncakes registry",
+  "registry_index_refresh_failed": false,
+  "registry_cache_used": true,
+  "commands": [
+    {
+      "command": [
+        "moon",
+        "version",
+        "--all"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "new",
+        "consumer",
+        "--user",
+        "consumer_test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "add",
+        "mik1e80/cad_sketch"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "info"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "fmt"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "run",
+        "cmd/main",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0
+  },
+  "run": {
+    "exit_code": 0,
+    "edited_length": 6.9999999993777795,
+    "expected_length": 7.0,
+    "tolerance": 1e-06
+  },
+  "consumer_source_sha256": {
+    "moon.pkg": "54efb698cac15320265b8873a62c32ace27f0a41e6d4d408eb051bbb3ecdfcad",
+    "consumer.mbt": "4b733b11803937514625623e2c7fe7a9820a144d67889b7f794cce2a24d81983",
+    "consumer_test.mbt": "6174ec2ff5fdbf948fee048fde13f5d4d73ceeaeed41d248bf6d0fb3302fbbd8",
+    "cmd/main/moon.pkg": "238ed5eefa155865af3b898f44263652f42f4926893d35229861ad07608bed36",
+    "cmd/main/main.mbt": "3f772b1aade6da46aa310e361fb4e51561a36736acc5e51db3aa6e4c876a6896"
+  },
+  "toolchain": {
+    "moon": "0.1.20261012",
+    "moonc": "v0.10.15+943464bfa",
+    "moonrun": "0.1.20261012"
+  },
+  "repository_regression_suite_executed": false,
+  "date": "2026-10-22",
+  "note": "Post-publication consumer verification; no republishing or modification of the immutable 0.1.0 package."
+}
