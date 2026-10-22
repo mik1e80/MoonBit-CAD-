@@ -4,16 +4,19 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const { checkSnapshotSource } = require('./snapshot_provenance.cjs');
 const root = path.resolve(__dirname, '..');
-let target = 'js', write = false;
+let target = 'js', write = false, strictSnapshot = false;
 const args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--write') write = true;
+  else if (args[i] === '--require-current-snapshot') strictSnapshot = true;
   else if (args[i] === '--check') assert.ok(!args.includes('--write'), 'Choose --write or --check');
   else if (args[i] === '--target') target = args[++i];
-  else throw new Error('Usage: node scripts/random_triangle.cjs [--check | --write] [--target js|wasm|wasm-gc|native]');
+  else throw new Error('Usage: node scripts/random_triangle.cjs [--check | --write] [--require-current-snapshot] [--target js|wasm|wasm-gc|native]');
 }
 assert.ok(['js', 'wasm', 'wasm-gc', 'native'].includes(target));
+assert.ok(!strictSnapshot || !write, '--require-current-snapshot cannot be combined with --write');
 const moon = process.env.MOON_HOME
   ? path.join(process.env.MOON_HOME, 'bin', process.platform === 'win32' ? 'moon.exe' : 'moon')
   : (process.platform === 'win32' ? 'moon.exe' : 'moon');
@@ -106,7 +109,7 @@ const mutationResults = mutations.map(([category, mutate]) => {
   return { category, passed: inspect(copy).failures.includes(category) };
 });
 const sourceFiles = ['cmd/random_triangle/main.mbt', 'cmd/random_triangle/moon.pkg', 'scripts/random_triangle.cjs',
-  'model.mbt', 'solver.mbt', 'validate.mbt', 'residual.mbt', 'autodiff.mbt', 'linalg.mbt'];
+  'scripts/snapshot_provenance.cjs', 'errors.mbt', 'model.mbt', 'solver.mbt', 'validate.mbt', 'residual.mbt', 'autodiff.mbt', 'linalg.mbt'];
 const digest = crypto.createHash('sha256');
 for (const file of sourceFiles) digest.update(file + '\n' +
   fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n'));
@@ -149,7 +152,7 @@ if (write && healthy) {
   fs.writeFileSync(csvPath, csv);
 } else if (!write && healthy) {
   const snapshot = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
-  assert.equal(snapshot.source_sha256, summary.source_sha256, 'Stale experiment snapshot; review and regenerate --write');
+  checkSnapshotSource(snapshot.source_sha256, summary.source_sha256, strictSnapshot);
   assert.equal(snapshot.cases, 1000);
   assert.deepEqual(snapshot.sides, [3, 4, 5]);
   assert.equal(sha(fs.readFileSync(csvPath, 'utf8').replace(/\r\n/g, '\n')), snapshot.cases_csv_sha256,

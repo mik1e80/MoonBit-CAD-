@@ -139,7 +139,7 @@ fn FourBar::advance(self : FourBar, degrees : Int32) -> @sketch.Solution {
   )
   let solution = match self.sketch.solve_and_apply() {
     Ok(solution) => solution
-    Err(message) => abort(message)
+    Err(error) => abort(error.message())
   }
   demand(
     solution.report.is_satisfied() &&
@@ -162,7 +162,7 @@ fn FourBar::free_dof(self : FourBar) -> Int32 {
   )
   let solution = match self.sketch.solve() {
     Ok(solution) => solution
-    Err(message) => abort(message)
+    Err(error) => abort(error.message())
   }
   demand(
     solution.report.is_satisfied() &&

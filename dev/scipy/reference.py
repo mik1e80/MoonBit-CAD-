@@ -208,7 +208,7 @@ def main():
     models, moon_version = inputs("js", output)
     results = [compare(row) for row in models[:args.count]]
     source_files = ["dev/scipy/reference.py", "dev/scipy/requirements.txt", "cmd/validation/main.mbt",
-                    "cmd/random_triangle/main.mbt", "model.mbt", "solver.mbt", "validate.mbt",
+                    "cmd/random_triangle/main.mbt", "errors.mbt", "model.mbt", "solver.mbt", "validate.mbt",
                     "residual.mbt", "autodiff.mbt", "linalg.mbt"]
     digest = hashlib.sha256()
     for name in source_files:

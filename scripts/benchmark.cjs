@@ -5,18 +5,21 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const { checkSnapshotSource } = require('./snapshot_provenance.cjs');
 const root = path.resolve(__dirname, '..');
-let target = 'js', write = false, smoke = false;
+let target = 'js', write = false, strictSnapshot = false, smoke = false;
 const args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--write') write = true;
+  else if (args[i] === '--require-current-snapshot') strictSnapshot = true;
   else if (args[i] === '--check') assert.ok(!args.includes('--write'), 'Choose --write or --check');
   else if (args[i] === '--smoke') smoke = true;
   else if (args[i] === '--target') target = args[++i];
-  else throw new Error('Usage: node scripts/benchmark.cjs [--check | --write] [--smoke] [--target js|wasm|wasm-gc|native]');
+  else throw new Error('Usage: node scripts/benchmark.cjs [--check | --write] [--require-current-snapshot] [--smoke] [--target js|wasm|wasm-gc|native]');
 }
 assert.ok(['js', 'wasm', 'wasm-gc', 'native'].includes(target));
 assert.ok(!smoke || !write, 'Smoke data cannot replace a full benchmark snapshot');
+assert.ok(!strictSnapshot || (!smoke && !write), '--require-current-snapshot requires a full --check');
 const moon = process.env.MOON_HOME
   ? path.join(process.env.MOON_HOME, 'bin', process.platform === 'win32' ? 'moon.exe' : 'moon')
   : (process.platform === 'win32' ? 'moon.exe' : 'moon');
@@ -111,7 +114,7 @@ if (fixture) for (const mutate of mutations) {
   mutationPassed++;
 }
 const sourceFiles = ['bench/main.mbt', 'bench/moon.pkg', 'scripts/benchmark.cjs',
-  'model.mbt', 'solver.mbt', 'validate.mbt', 'residual.mbt', 'autodiff.mbt', 'linalg.mbt'];
+  'scripts/snapshot_provenance.cjs', 'errors.mbt', 'model.mbt', 'solver.mbt', 'validate.mbt', 'residual.mbt', 'autodiff.mbt', 'linalg.mbt'];
 const digest = crypto.createHash('sha256');
 for (const name of sourceFiles) digest.update(name + '\n' + fs.readFileSync(path.join(root, name), 'utf8').replace(/\r\n/g, '\n'));
 const range = values => {
@@ -156,7 +159,7 @@ if (write && healthy) {
   fs.writeFileSync(path.join(folder, target + '.csv'), csv);
 } else if (!write && !smoke && healthy) {
   const snapshot = JSON.parse(fs.readFileSync(path.join(folder, target + '.json'), 'utf8'));
-  assert.equal(snapshot.source_sha256, summary.source_sha256, 'Stale benchmark snapshot: review results and --write');
+  checkSnapshotSource(snapshot.source_sha256, summary.source_sha256, strictSnapshot);
   assert.equal(snapshot.cases_csv_sha256, hash(fs.readFileSync(path.join(folder, target + '.csv'), 'utf8').replace(/\r\n/g, '\n')));
   // No timing threshold and no cross-machine equality assertions.
 }

@@ -137,7 +137,9 @@ test "internal tangency rejects equal circles and reversed nesting" {
     let b = s.add_point(1.0, 0.0)
     let outer = s.add_circle(a, radii.0)
     let inner = s.add_circle(b, radii.1)
-    s.constrain(InternalTangent(outer, inner)) |> ignore
-    assert_true(solve_error(s).contains("internal tangency needs outer radius"))
+    let bad = s.constrain(InternalTangent(outer, inner))
+    assert_true(
+      solve_error(s) is InvalidConstraint(id) && id.index == bad.index,
+    )
   }
 }

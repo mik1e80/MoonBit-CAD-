@@ -133,7 +133,7 @@ fn run_case(
       retained_points: stored(s, ids),
     }
     let row = match result {
-      Err(error) => { ..row, error, }
+      Err(error) => { ..row, error: error.message(), }
       Ok(solution) => {
         let report = solution.report
         let mut max_length_error = 0.0

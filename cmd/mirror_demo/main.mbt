@@ -7,7 +7,7 @@ fn require_solved(s : @sketch.Sketch) -> @sketch.Solution {
       }
       r
     }
-    Err(e) => abort(e)
+    Err(e) => abort(e.message())
   }
 }
 
@@ -54,7 +54,7 @@ fn main {
       if r.report.is_satisfied() {
         abort("Expected conflicting edit to fail")
       }
-    Err(e) => abort(e)
+    Err(e) => abort(e.message())
   }
   let retained = s.point(right).unwrap()
   if retained.x != previous.x || retained.y != previous.y {

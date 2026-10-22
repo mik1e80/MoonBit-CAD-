@@ -42,14 +42,14 @@ match s.solve_and_apply() {
       }
     }
   }
-  Err(message) => println(message)
+  Err(error) => println(error.message())
 }
 
 // 修改尺寸后，以已有坐标为初值继续求解。
 if s.set_constraint(dimension, Distance(a, b, 7.0)) {
   match s.solve_and_apply() {
     Ok(updated) => println("修改尺寸后达标：\{updated.report.is_satisfied()}")
-    Err(message) => println(message)
+    Err(error) => println(error.message())
   }
 }
 ```
@@ -58,13 +58,15 @@ if s.set_constraint(dimension, Distance(a, b, 7.0)) {
 
 ## Validation Suite
 
+下列批量验证、随机实验、SciPy 和 Benchmark 数据是各自源码指纹对应的历史测量。类型化错误升级仅运行定向轻量检查，未重测这些数据，不能视为当前提交的全量验证结果。
+
 **400 个可复现模型配置，四后端独立检查。** 基础解析、平移、旋转、缩放、极端尺寸各 60 个，固定种子初始扰动 100 个；包含三角形、矩形、镜像孔位和线圆相切模型。除求解状态外，Node 检查器独立重算残差，并核对解析位置、构型分支和保存的几何。
 
 ```sh
 node scripts/validation_suite.cjs --check --target js
 ```
 
-当前 wasm、wasm-gc、JS、native 各 400/400 通过；CI 重跑全部四个后端，保存逐案例 JSON / CSV。测试范围为接近目标构型的小型模型，极端尺寸组同步缩放长度容差；数据与方法见 [Validation Suite](docs/VALIDATION.md)，其中说明种子、判定阈值、失败分类及四后端结果快照。
+记录快照时 wasm、wasm-gc、JS、native 各 400/400 通过；CI 重跑全部四个后端，保存逐案例 JSON / CSV。测试范围为接近目标构型的小型模型，极端尺寸组同步缩放长度容差；数据与方法见 [Validation Suite](docs/VALIDATION.md)，其中说明种子、判定阈值、失败分类及四后端结果快照。
 
 ### 3-4-5 triangle randomized initialization
 
@@ -201,7 +203,7 @@ moon run cmd/demo
 
 ## 求解与诊断
 
-- `Sketch::solve()` 返回 `Result[Solution, String]`，保留原草图。
+- `Sketch::solve()` 返回 `Result[Solution, SketchError]`，保留原草图。
 - `Sketch::solve_and_apply()` 只在全部约束达到容差时更新坐标与半径；失败时保留原草图。
 - `Solution::point()` / `radius()` 可读取结果，也可检查未收敛时的最后一个被接受的迭代结果。句柄只属于创建它的草图。
 - 句柄包含运行时归属标识。同号但来自其他草图的句柄不会匹配：查询返回 `None`、编辑返回 `false`，启用的约束或几何引用跨草图对象时求解返回错误；句柄不能作为持久化或跨进程标识。
@@ -224,7 +226,7 @@ moon run cmd/demo
 
 失败排查可用 `report.likely_conflicts()`：返回与 `unsatisfied()` 相同的启用超标项，按 `tolerance_ratio` 降序排列，同误差比按稳定约束编号升序排列。它不改变报告、几何或求解权重，仅提供优先检查顺序；停滞、初值或迭代预算也可能产生这些症状，不是无解证明或最小冲突集。示例与边界见[失败诊断](docs/DIAGNOSTICS.md)及[可执行示例](README.mbt.md)。
 
-输入与求值错误会注明点、线、圆或约束的索引。可用 `Sketch::constraint(finding.id)` 从残差找回原始关系，用 `SolveReport::residual(id)` 查询指定约束的结果，便于在编辑器中定位。
+错误通过 `SketchError` 的变体匹配：`ForeignHandle`、`ResourceLimit`、`InvalidConstraint(id)`、`DegenerateLine(id)`、`InvalidRadius(id)` 等；`error.message()` 提供日志文本。[错误分类与 String API 迁移](docs/API_GUIDE.md#类型化错误与迁移)说明完整语义。可用 `Sketch::constraint(finding.id)` 从残差找回原始关系，用 `SolveReport::residual(id)` 查询指定约束的结果，便于在编辑器中定位。
 
 约束索引是同一草图内稳定、不复用的创建编号。删除后编号可能不连续，`report.residuals[id.index()]` 不再表示指定约束，请使用 `report.residual(id)`。旧报告属于求解当时的快照；若关系后来已删除，当前草图的 `constraint(id)` 返回 `None`。
 

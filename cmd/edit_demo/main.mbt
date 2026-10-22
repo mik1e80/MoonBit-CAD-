@@ -1,11 +1,11 @@
 ///|
 fn require(
-  result : Result[@sketch.Solution, String],
+  result : Result[@sketch.Solution, @sketch.SketchError],
   satisfied : Bool,
 ) -> @sketch.Solution {
   let r = match result {
     Ok(r) => r
-    Err(e) => abort(e)
+    Err(e) => abort(e.message())
   }
   if r.report.is_satisfied() != satisfied {
     abort("Unexpected convergence state in editing example")

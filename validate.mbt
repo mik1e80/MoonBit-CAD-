@@ -38,43 +38,88 @@ fn bounded(x : Double) -> Bool {
 }
 
 ///|
-fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
+fn Sketch::constraint_has_foreign_handle(self : Sketch, c : Constraint) -> Bool {
+  let point = (p : PointId) => physical_equal(self.owner, p.owner)
+  let line = (l : LineId) => physical_equal(self.owner, l.owner)
+  let circle = (c : CircleId) => physical_equal(self.owner, c.owner)
+  let owned = match c {
+    Fix(p, _, _) => point(p)
+    Coincident(a, b)
+    | Distance(a, b, _)
+    | DistanceX(a, b, _)
+    | DistanceY(a, b, _) => point(a) && point(b)
+    Symmetric(a, b, center) => point(a) && point(b) && point(center)
+    Mirror(a, b, axis) => point(a) && point(b) && line(axis)
+    Horizontal(l) | Vertical(l) => line(l)
+    Parallel(a, b)
+    | Perpendicular(a, b)
+    | EqualLength(a, b)
+    | LengthRatio(a, b, _)
+    | Angle(a, b, _) => line(a) && line(b)
+    Midpoint(p, l) | PointOnLine(p, l) | DistanceToLine(p, l, _) =>
+      point(p) && line(l)
+    Radius(c, _) => circle(c)
+    EqualRadius(a, b)
+    | Concentric(a, b)
+    | ExternalTangent(a, b)
+    | InternalTangent(a, b) => circle(a) && circle(b)
+    PointOnCircle(p, c) => point(p) && circle(c)
+    Tangent(l, c) => line(l) && circle(c)
+  }
+  !owned
+}
+
+///|
+fn Sketch::validate(self : Sketch) -> Result[Unit, SketchError] {
   if self.points.length() * 2 + self.circles.length() > 256 ||
     self.constraints.length() > 512 ||
     self.lines.length() > 512 {
-    return Err(
-      "Small-sketch limit: at most 256 variables, 512 lines, and 512 constraints",
-    )
+    return Err(ResourceLimit)
   }
   for i, p in self.points {
     if !bounded(p.x) || !bounded(p.y) {
       return Err(
-        "Point at index \{i}: coordinates must be finite and within +/-1e100",
+        InvalidGeometry(
+          "Point at index \{i}: coordinates must be finite and within +/-1e100",
+        ),
       )
     }
   }
   for i, l in self.lines {
+    if !physical_equal(self.owner, l.a.owner) ||
+      !physical_equal(self.owner, l.b.owner) {
+      return Err(ForeignHandle)
+    }
     if !self.valid_point(l.a) || !self.valid_point(l.b) {
-      return Err("Line at index \{i}: references a missing point")
+      return Err(
+        InvalidGeometry("Line at index \{i}: references a missing point"),
+      )
     }
     let a = self.points[l.a.index]
     let b = self.points[l.b.index]
     if a.x == b.x && a.y == b.y {
-      return Err(
-        "Line at index \{i}: zero-length initial line; provide distinct endpoints",
-      )
+      return Err(DegenerateLine(self.line_id(i)))
     }
   }
   for i, c in self.circles {
-    if !self.valid_point(c.center) || !bounded(c.radius) || c.radius <= 0.0 {
+    if !physical_equal(self.owner, c.center.owner) {
+      return Err(ForeignHandle)
+    }
+    if !self.valid_point(c.center) {
       return Err(
-        "Circle at index \{i}: needs an existing center and a finite positive radius",
+        InvalidGeometry("Circle at index \{i}: references a missing center"),
       )
+    }
+    if !bounded(c.radius) || c.radius <= 0.0 {
+      return Err(InvalidRadius(self.circle_id(i)))
     }
   }
   for i, c in self.constraints {
     if !self.enabled[i] {
       continue
+    }
+    if self.constraint_has_foreign_handle(c) {
+      return Err(ForeignHandle)
     }
     let ok = match c {
       Fix(p, x, y) => self.valid_point(p) && bounded(x) && bounded(y)
@@ -114,10 +159,7 @@ fn Sketch::validate(self : Sketch) -> Result[Unit, String] {
       Tangent(l, c) => self.valid_line(l) && self.valid_circle(c)
     }
     if !ok {
-      let id = self.constraint_ids[i].index
-      return Err(
-        "Invalid constraint at index \{id}: bad reference or dimension",
-      )
+      return Err(InvalidConstraint(self.constraint_ids[i]))
     }
   }
   Ok(())

@@ -32,6 +32,22 @@ test "dimensioned segment and repeated solve" {
 
 仅 `Satisfied` 表示返回坐标的全部残差分量满足指定容差。`Stalled` / `IterationLimit` 不构成无解证明；残差列表不构成最小冲突集，`local_dof` 是当前构型的一阶数值估计。所有实体句柄局限于创建它们的草图。
 
+求解的 `Err` 可直接匹配 `SketchError`；日志使用 `error.message()`。完整分类与迁移见 [API 指南](docs/API_GUIDE.md#类型化错误与迁移)。
+
+```mbt check
+///|
+test "handle typed sketch errors through the public API" {
+  let s = @sketch.Sketch::new()
+  let a = s.add_point(0.0, 0.0)
+  let line = s.add_line(a, a)
+  match s.solve_and_apply() {
+    Err(DegenerateLine(id)) => assert_eq(id.index, line.index)
+    Err(error) => fail(error.message())
+    Ok(_) => fail("Expected a degenerate line error")
+  }
+}
+```
+
 已支持 24 种关系，包含直线轴对称、中心对称、带符号点线距离、长度比例以及指定内外圆的内切。约束可以临时关闭，编号保持稳定：
 
 ```mbt check
@@ -138,6 +154,8 @@ test "mirror a hole center about a vertical construction line" {
 完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run cmd/bracket_demo`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
 
 机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
+
+以下批量测量保留原源码指纹；类型化错误升级仅做定向检查，未重跑这些实验。
 
 [Validation Suite](docs/VALIDATION.md) 自动生成 400 个模型配置，分为基础解析、平移、旋转、缩放、固定种子初始扰动和极端尺寸六组；在四后端独立核对残差与解析坐标，并记录逐案例结果。运行 `node scripts/validation_suite.cjs --check --target js` 复现。结果仅代表文档中定义的小型模型和初值范围。
 

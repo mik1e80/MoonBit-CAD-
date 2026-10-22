@@ -1,11 +1,11 @@
 ///|
 fn report(
   name : String,
-  result : Result[@sketch.Solution, String],
+  result : Result[@sketch.Solution, @sketch.SketchError],
 ) -> @sketch.Solution? {
   match result {
     Err(e) => {
-      println("\{name}: input error: \{e}")
+      println("\{name}: input error: \{e.message()}")
       None
     }
     Ok(s) => {

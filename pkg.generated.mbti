@@ -95,8 +95,21 @@ pub fn Sketch::set_constraint(Self, ConstraintId, Constraint) -> Bool
 pub fn Sketch::set_constraint_enabled(Self, ConstraintId, Bool) -> Bool
 pub fn Sketch::set_point(Self, PointId, Point) -> Bool
 pub fn Sketch::set_radius(Self, CircleId, Double) -> Bool
-pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, String]
-pub fn Sketch::solve_and_apply(Self, options? : SolveOptions) -> Result[Solution, String]
+pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, SketchError]
+pub fn Sketch::solve_and_apply(Self, options? : SolveOptions) -> Result[Solution, SketchError]
+
+pub(all) enum SketchError {
+  InvalidGeometry(String)
+  InvalidConstraint(ConstraintId)
+  ForeignHandle
+  DegenerateLine(LineId)
+  InvalidRadius(CircleId)
+  ResourceLimit
+  InvalidOptions(String)
+  NumericalFailure(String)
+} derive(@debug.Debug)
+pub fn SketchError::message(Self) -> String
+pub fn SketchError::to_repr(Self) -> @debug.Repr
 
 pub struct Solution {
   report : SolveReport

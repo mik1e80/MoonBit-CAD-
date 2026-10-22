@@ -216,11 +216,11 @@ test "validation and evaluation errors keep stable IDs after compaction" {
   let removed = s.constrain(Fix(p, 0.0, 0.0))
   let bad = s.constrain(Fix(p, 0.0 / 0.0, 0.0))
   assert_true(s.remove_constraint(removed))
-  assert_true(solve_error(s).contains("constraint at index 1"))
+  assert_true(solve_error(s) is InvalidConstraint(id) && id.index == bad.index)
   let inner = s.add_circle(p, 1.0)
   let outer = s.add_circle(p, 2.0)
   assert_true(s.set_constraint(bad, InternalTangent(inner, outer)))
-  assert_true(solve_error(s).contains("Constraint at index 1"))
+  assert_true(solve_error(s) is InvalidConstraint(id) && id.index == bad.index)
   assert_true(s.remove_constraint(bad))
   assert_eq(solved(s).report.residuals.length(), 0)
 }

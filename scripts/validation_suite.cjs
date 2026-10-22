@@ -5,23 +5,26 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const { checkSnapshotSource } = require('./snapshot_provenance.cjs');
 const root = path.resolve(__dirname, '..');
 const groups = { analytic: 60, translation: 60, rotation: 60, scaling: 60, perturbation: 100, extreme: 60 };
 const families = ['triangle', 'rectangle', 'mirror_circles', 'line_circle_tangent'];
 const shape = { triangle: [3, 0, 6, 6, 4], rectangle: [4, 0, 8, 9, 7],
   mirror_circles: [4, 2, 10, 10, 6], line_circle_tangent: [3, 1, 7, 7, 5] };
-let target = 'js', write = false, selection;
+let target = 'js', write = false, strictSnapshot = false, selection;
 const args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
   if (args[i] === '--write') write = true;
+  else if (args[i] === '--require-current-snapshot') strictSnapshot = true;
   else if (args[i] === '--check') {
     assert.ok(!args.includes('--write'), 'Choose --check or --write');
   } else if (args[i] === '--target') target = args[++i];
   else if (args[i] === '--case') selection = args[++i];
-  else throw new Error('Usage: node scripts/validation_suite.cjs [--check | --write] [--target js|wasm|wasm-gc|native] [--case group:index]');
+  else throw new Error('Usage: node scripts/validation_suite.cjs [--check | --write] [--require-current-snapshot] [--target js|wasm|wasm-gc|native] [--case group:index]');
 }
 assert.ok(['js', 'wasm', 'wasm-gc', 'native'].includes(target), 'Unknown target');
 assert.ok(!selection || !write, '--case cannot write a complete-suite snapshot');
+assert.ok(!strictSnapshot || (!selection && !write), '--require-current-snapshot requires a full --check');
 const executable = process.platform === 'win32' ? 'moon.exe' : 'moon';
 const moon = process.env.MOON_HOME ? path.join(process.env.MOON_HOME, 'bin', executable) : executable;
 const version = spawnSync(moon, ['version', '--all'], { cwd: root, encoding: 'utf8', timeout: 30_000 });
@@ -230,7 +233,7 @@ const selfCheckResults = selfChecks.map(([family, mutate, category]) => {
 });
 const mutationPassed = selfCheckResults.filter(x => x.passed).length;
 const sourceFiles = ['cmd/validation/main.mbt', 'cmd/validation/moon.pkg', 'scripts/validation_suite.cjs',
-  'model.mbt', 'validate.mbt', 'residual.mbt', 'solver.mbt', 'autodiff.mbt', 'linalg.mbt'];
+  'scripts/snapshot_provenance.cjs', 'errors.mbt', 'model.mbt', 'validate.mbt', 'residual.mbt', 'solver.mbt', 'autodiff.mbt', 'linalg.mbt'];
 const hash = crypto.createHash('sha256');
 for (const file of sourceFiles) hash.update(file + '\n' + fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n'));
 const sourceHash = hash.digest('hex');
@@ -272,7 +275,7 @@ if (selection) {
     fs.writeFileSync(destination, JSON.stringify(summary, null, 2) + '\n');
   } else if (!write && summary.failed === 0) {
     const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'validation-results', `${target}.json`), 'utf8'));
-    assert.equal(snapshot.source_sha256, sourceHash, 'Committed snapshot is stale; rerun --write for all four targets');
+    checkSnapshotSource(snapshot.source_sha256, sourceHash, strictSnapshot);
     assert.equal(snapshot.corpus, summary.corpus);
     assert.equal(snapshot.total, 400);
     assert.equal(snapshot.failed, 0);

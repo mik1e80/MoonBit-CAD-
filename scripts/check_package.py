@@ -38,7 +38,7 @@ def main() -> None:
     required = {
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
-        "model.mbt", "solver.mbt", "pkg.generated.mbti", "cmd/mirror_demo/main.mbt",
+        "errors.mbt", "model.mbt", "solver.mbt", "pkg.generated.mbti", "cmd/mirror_demo/main.mbt",
         "cmd/bracket_demo/main.mbt", "cmd/bracket_demo/moon.pkg",
         "cmd/bracket_demo/bracket_wbtest.mbt", "cmd/bracket_demo/pkg.generated.mbti",
         "docs/SHOWCASE.md", "docs/images/bracket-before-after.svg",
@@ -51,7 +51,7 @@ def main() -> None:
         "diagnostics_wbtest.mbt", "docs/DIAGNOSTICS.md",
         "cmd/validation/main.mbt", "cmd/validation/moon.pkg",
         "cmd/validation/pkg.generated.mbti", "scripts/validation_suite.cjs",
-        "docs/VALIDATION.md",
+        "docs/VALIDATION.md", "scripts/snapshot_provenance.cjs",
         "docs/validation-results/js.json", "docs/validation-results/wasm.json",
         "docs/validation-results/wasm-gc.json", "docs/validation-results/native.json",
         "cmd/random_triangle/main.mbt", "cmd/random_triangle/moon.pkg",

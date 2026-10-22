@@ -66,3 +66,5 @@ python dev/scipy/reference.py --write
 工具只使用 `MOON_HOME` 或 PATH 中的 MoonBit。完整 JSON、逐项 CSV 和 MoonBit 原始输入输出保存在 `_build/scipy-reference/`。默认 500 项；`--count 8` 只运行前八项 SciPy 对照，但 MoonBit 生成器仍输出固定的 400 项，脚本没有执行原有完整验证框架或后端矩阵。
 
 本次只做 8 项冒烟、必要的 500 项对照实验、4 项定向检查及发布包排除检查，未运行全量回归、四后端验证或源码包消费测试。提交跳过自动全量 CI。上述结果是限定语料上的开发证据，不是新运行时依赖或通用收敛率承诺。
+
+类型化错误升级未重跑上述对照数据。此可选工具继续严格要求随机实验快照与当前源码一致；若提示 `Recorded random corpus is stale`，须先审查并刷新随机实验快照，再进行新的 SciPy 对照。历史结果不会被自动标为新源码实测。

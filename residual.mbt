@@ -67,25 +67,21 @@ fn Sketch::evaluate(
   x : Array[Double],
   frame : Frame,
   geometry_scale~ : Double = 1.0,
-) -> Result[Array[Row], String] {
+) -> Result[Array[Row], SketchError] {
   if x.any(v => !finite(v)) {
-    return Err("Nonfinite parameter during evaluation")
+    return Err(NumericalFailure("Nonfinite parameter during evaluation"))
   }
   for i = self.points.length() * 2; i < x.length(); i = i + 1 {
     if x[i] <= geometry_scale * 1.0e-14 {
       let circle = i - self.points.length() * 2
-      return Err(
-        "Circle at index \{circle}: radius approached zero relative to sketch scale",
-      )
+      return Err(InvalidRadius(self.circle_id(circle)))
     }
   }
   let vars = Array::makei(x.length(), i => variable(x[i], i, x.length()))
   for i = 0; i < self.lines.length(); i = i + 1 {
     let (dx, dy) = self.line_jets(self.line_id(i), vars)
     if @math.hypot(dx.v, dy.v) <= geometry_scale * 1.0e-12 {
-      return Err(
-        "Line at index \{i}: too short relative to sketch scale; use a nondegenerate initial guess",
-      )
+      return Err(DegenerateLine(self.line_id(i)))
     }
   }
   let out = []
@@ -245,10 +241,7 @@ fn Sketch::evaluate(
         // Equal coincident circles have infinitely many contacts, not an
         // isolated tangency. Keep the caller's outer/inner branch explicit.
         if difference.v <= geometry_scale * 1.0e-12 {
-          let id = self.constraint_ids[i].index
-          return Err(
-            "Constraint at index \{id}: internal tangency needs outer radius greater than inner radius by more than 1e-12 of sketch scale",
-          )
+          return Err(InvalidConstraint(self.constraint_ids[i]))
         }
         [jet_norm(bx.minus(ax), by.minus(ay)).minus(difference)]
       }
@@ -258,7 +251,11 @@ fn Sketch::evaluate(
   for row in out {
     if !finite(row.jet.v) || row.jet.d.any(v => !finite(v)) {
       let id = self.constraint_ids[row.slot].index
-      return Err("Constraint at index \{id}: nonfinite residual or derivative")
+      return Err(
+        NumericalFailure(
+          "Constraint at index \{id}: nonfinite residual or derivative",
+        ),
+      )
     }
   }
   Ok(out)

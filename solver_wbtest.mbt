@@ -5,7 +5,7 @@ fn solved(
 ) -> Solution raise {
   let result = match s.solve(options~) {
     Ok(r) => r
-    Err(e) => fail(e)
+    Err(e) => fail(e.message())
   }
   if !result.report.is_satisfied() {
     fail("Did not solve: \{result.report.to_repr()}")

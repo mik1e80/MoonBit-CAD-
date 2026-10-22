@@ -68,7 +68,8 @@ fn sample(index : Int32) -> Sample {
     residual_ratios: [],
   }
   match s.solve_and_apply() {
-    Err(error) => { ..row, error, stored_points: stored(s, ids), }
+    Err(error) =>
+      { ..row, error: error.message(), stored_points: stored(s, ids), }
     Ok(solution) => {
       let report = solution.report
       {

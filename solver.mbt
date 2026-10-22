@@ -176,7 +176,7 @@ fn Sketch::solution(
   options : SolveOptions,
   status : SolveStatus,
   iterations : Int32,
-) -> Result[Solution, String] {
+) -> Result[Solution, SketchError] {
   let points : Array[Point] = Array::makei(self.points.length(), i => {
     x: x[i * 2] * frame.scale + frame.x,
     y: x[i * 2 + 1] * frame.scale + frame.y,
@@ -185,7 +185,7 @@ fn Sketch::solution(
     x[self.points.length() * 2 + i] * frame.scale
   })
   if points.any(p => !finite(p.x) || !finite(p.y)) || radii.any(r => !finite(r)) {
-    return Err("Output geometry overflow")
+    return Err(NumericalFailure("Output geometry overflow"))
   }
   // Measure returned coordinates directly in world units. Re-normalizing the
   // output can hide a tolerance violation through another cancellation.
@@ -261,7 +261,7 @@ fn Sketch::solution(
 pub fn Sketch::solve(
   self : Sketch,
   options~ : SolveOptions = SolveOptions::default(),
-) -> Result[Solution, String] {
+) -> Result[Solution, SketchError] {
   match self.validate() {
     Err(e) => return Err(e)
     Ok(_) => ()
@@ -276,14 +276,20 @@ pub fn Sketch::solve(
     options.rank_tolerance > 0.01 ||
     options.max_iterations < 1 ||
     options.max_iterations > 1000 {
-    return Err("Invalid tolerances or iteration budget (1..1000)")
+    return Err(
+      InvalidOptions("Invalid tolerances or iteration budget (1..1000)"),
+    )
   }
   let frame = self.frame()
   let relative_tolerance = options.length_tolerance / frame.scale
   if !finite(relative_tolerance) ||
     relative_tolerance < 1.0e-14 ||
     relative_tolerance > 1.0e6 {
-    return Err("Length tolerance / sketch scale must be between 1e-14 and 1e6")
+    return Err(
+      InvalidOptions(
+        "Length tolerance / sketch scale must be between 1e-14 and 1e6",
+      ),
+    )
   }
   let mut x = self.parameters(frame)
   let mut rows = match self.evaluate(x, frame) {
@@ -341,7 +347,7 @@ pub fn Sketch::solve(
 pub fn Sketch::solve_and_apply(
   self : Sketch,
   options~ : SolveOptions = SolveOptions::default(),
-) -> Result[Solution, String] {
+) -> Result[Solution, SketchError] {
   let solution = match self.solve(options~) {
     Ok(s) => s
     Err(e) => return Err(e)

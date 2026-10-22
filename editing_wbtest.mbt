@@ -1,5 +1,5 @@
 ///|
-fn solve_error(s : Sketch) -> String raise {
+fn solve_error(s : Sketch) -> SketchError raise {
   match s.solve() {
     Err(e) => e
     Ok(_) => fail("Expected invalid geometry to return an error")
@@ -11,18 +11,21 @@ test "diagnostics identify the offending geometry index" {
   let s = Sketch::new()
   s.add_point(0.0, 0.0) |> ignore
   s.add_point(1.0 / 0.0, 0.0) |> ignore
-  assert_true(solve_error(s).contains("Point at index 1"))
+  assert_true(
+    solve_error(s) is InvalidGeometry(message) &&
+    message.contains("Point at index 1"),
+  )
   let s = Sketch::new()
   let a = s.add_point(0.0, 0.0)
   let b = s.add_point(1.0, 0.0)
   s.add_line(a, b) |> ignore
   s.add_line(a, a) |> ignore
-  assert_true(solve_error(s).contains("Line at index 1"))
+  assert_true(solve_error(s) is DegenerateLine(id) && id.index == 1)
   let s = Sketch::new()
   let a = s.add_point(0.0, 0.0)
   s.add_circle(a, 1.0) |> ignore
   s.add_circle(a, -1.0) |> ignore
-  assert_true(solve_error(s).contains("Circle at index 1"))
+  assert_true(solve_error(s) is InvalidRadius(id) && id.index == 1)
 }
 
 ///|

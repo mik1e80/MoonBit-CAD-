@@ -219,7 +219,7 @@ fn Bracket::verify(self : Bracket, p : Parameters) -> Unit {
 fn Bracket::solve_checked(self : Bracket, p : Parameters) -> @sketch.Solution {
   let solution = match self.sketch.solve_and_apply() {
     Ok(solution) => solution
-    Err(message) => abort(message)
+    Err(error) => abort(error.message())
   }
   require_true(
     solution.report.is_satisfied() &&
@@ -262,7 +262,7 @@ fn Bracket::reject_conflict(self : Bracket, p : Parameters) -> @sketch.Solution 
   )
   let failed = match self.sketch.solve_and_apply() {
     Ok(solution) => solution
-    Err(message) => abort(message)
+    Err(error) => abort(error.message())
   }
   require_true(
     !failed.report.is_satisfied() && failed.report.unsatisfied().length() > 0,

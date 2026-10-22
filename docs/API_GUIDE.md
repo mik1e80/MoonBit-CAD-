@@ -22,13 +22,40 @@
 
 ## 求解和读取结果
 
-两个求解方法都返回 `Result[Solution,String]`。先处理 `Err(message)`，再在 `Ok(solution)` 中检查 `solution.report.is_satisfied()`：
+两个求解方法都返回 `Result[Solution,SketchError]`。先按错误变体处理 `Err(error)`，日志使用 `error.message()`，再在 `Ok(solution)` 中检查 `solution.report.is_satisfied()`：
 
 - `Err`：输入或求值出错，读取错误信息修正输入。
 - `Ok` 且达标：用 `sketch.point(id)`、`sketch.radius(id)` 读取更新后的草图；也可用 `solution.point(id)`、`solution.radius(id)` 读取返回结果。
 - `Ok` 但未达标：查看报告并调整初值、尺寸或约束。`Stalled` / `IterationLimit` 不证明无解。
 
 `solve_and_apply()` 只在全部启用关系达到容差时更新几何。`solve()` 始终保留当前草图，只返回候选结果；未达标的候选几何可以检查，但不能当成已经保存的草图。基本调用不需要传 `options`。
+
+## 类型化错误与迁移
+
+`solve()` 与 `solve_and_apply()` 返回 `Result[Solution,SketchError]`。这是源码 API 变更：显式声明的 `Result[Solution,String]` 需要替换错误类型；原先打印或 `abort(message)` 的调用改用 `error.message()`。不应解析消息文本判断错误类别。
+
+| 变体 | 含义 |
+| --- | --- |
+| `InvalidGeometry(String)` | 点坐标非法，或本草图几何引用缺失 |
+| `InvalidConstraint(ConstraintId)` | 启用关系的引用、尺寸或几何定义域非法；含删除后仍稳定的创建句柄 |
+| `ForeignHandle` | 几何或启用关系使用其他草图的句柄 |
+| `DegenerateLine(LineId)` | 初始或求值时线长退化 |
+| `InvalidRadius(CircleId)` | 圆的初始或求值半径非法、相对尺度过小 |
+| `ResourceLimit` | 超过变量、线或现存约束上限 |
+| `InvalidOptions(String)` | 容差、相对尺度或迭代预算非法 |
+| `NumericalFailure(String)` | 非有限求值或输出溢出 |
+
+```moonbit
+match sketch.solve_and_apply() {
+  Err(ForeignHandle) => println("请使用同一草图的句柄")
+  Err(ResourceLimit) => println("请拆分草图")
+  Err(InvalidConstraint(id)) => println("检查约束编号 \{id.index()}")
+  Err(error) => println(error.message())
+  Ok(solution) => println(solution.report.is_satisfied())
+}
+```
+
+禁用关系仍跳过关系校验，几何对象始终校验。多个问题同时存在时返回按校验顺序遇到的第一个错误，并不汇总所有错误。迭代搜索中的非法候选会被拒绝；最终未收敛使用 `Ok` 内的 `Stalled` / `IterationLimit`。`Err` 和未达标结果均不会由 `solve_and_apply()` 写回几何。JSON 示例工具仍将 `message()` 序列化为字符串，因此其数据格式保持一致。
 
 ## 编辑后重新求解
 

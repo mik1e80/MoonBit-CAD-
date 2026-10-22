@@ -213,7 +213,7 @@ fn run_case(group : Int32, index : Int32) -> Record {
     Err(error) =>
       {
         ..record,
-        error,
+        error: error.message(),
         stored_points: stored_points(s, ids),
         stored_radii: circles.map(id => s.radius(id).unwrap()),
       }
