@@ -2,3 +2,5 @@
 /target/
 /.mooncakes/
 /.moon-lock
+/.venv-scipy/
+/dev/scipy/__pycache__/

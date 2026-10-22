@@ -58,6 +58,8 @@ def main() -> None:
         "cmd/random_triangle/pkg.generated.mbti", "scripts/random_triangle.cjs",
         "docs/RANDOM_TRIANGLE.md", "docs/validation-results/random-triangle-js.json",
         "docs/validation-results/random-triangle-js.csv",
+        "docs/SCIPY_REFERENCE.md", "docs/validation-results/scipy-reference-js.json",
+        "docs/validation-results/scipy-reference-js.csv",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -67,6 +69,8 @@ def main() -> None:
                 raise RuntimeError("Unsafe package path")
             if any(p in {".git", ".mooncakes", "_build", "target"} for p in relative.parts):
                 raise RuntimeError(f"Development artifacts in package: {relative}")
+            if relative.parts[:2] == ("dev", "scipy"):
+                raise RuntimeError(f"Optional SciPy tools must stay out of the library archive: {relative}")
             names.add(relative.as_posix())
             destination = package.joinpath(*relative.parts)
             destination.resolve().relative_to(package.resolve())

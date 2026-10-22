@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "experiment": "moonbit-vs-scipy-500-v1",
+  "cases": 500,
+  "categories": {
+    "agree": 500
+  },
+  "settings": {
+    "method": "trf",
+    "jac": "3-point",
+    "ftol": 1e-12,
+    "xtol": 1e-12,
+    "gtol": 1e-12,
+    "max_nfev": 200,
+    "x_scale": 1.0,
+    "loss": "linear"
+  },
+  "source_sha256": "774e85791c618002fd6cb7eee3678f348183c046abc551fa45ac9580da414738",
+  "source_files": [
+    "dev/scipy/reference.py",
+    "dev/scipy/requirements.txt",
+    "cmd/validation/main.mbt",
+    "cmd/random_triangle/main.mbt",
+    "model.mbt",
+    "solver.mbt",
+    "validate.mbt",
+    "residual.mbt",
+    "autodiff.mbt",
+    "linalg.mbt"
+  ],
+  "families": {
+    "free_triangle": 100,
+    "line_circle_tangent": 100,
+    "mirror_circles": 100,
+    "rectangle": 100,
+    "triangle": 100
+  },
+  "radius_cases": 200,
+  "scipy_success_flag_count": 500,
+  "maxima": {
+    "moonbit_independent_ratio": 0.9635689091069821,
+    "scipy_independent_ratio": 5.1167958758924215e-05,
+    "coordinate_gap_divided_by_scale": 2.7152559667342757e-07,
+    "coordinate_gap_in_length_tolerances": 2.7152559667342757,
+    "radius_gap_divided_by_scale": 1.14058146705176e-07,
+    "radius_gap_in_length_tolerances": 1.14058146705176
+  },
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "scipy": "1.18.0",
+    "numpy": "2.3.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "moon": "moon 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moon.exe\nmoonc v0.10.15+943464bfa (2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonc.exe\nmoonrun 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+  },
+  "unresolved": [],
+  "cases_csv_sha256": "2372094c52cf53f9d62abe392567531336c56f2927a83fc5335d5a459a55c6dc"
+}

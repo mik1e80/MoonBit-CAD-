@@ -35,6 +35,10 @@ node scripts/validation_suite.cjs --check --target js
 node scripts/random_triangle.cjs --check --target js
 ```
 
+### SciPy 开发参考对照
+
+另以相同输入对比 MoonBit JS 与 SciPy `least_squares`：500 个配置均达到预设的残差与几何比较标准，其中 200 个含圆。最大坐标差 / scale 为 2.72e-7，最大半径差 / scale 为 1.14e-7；自由三角形先做刚体对齐。[对照方法、阈值和真实逐项数据](docs/SCIPY_REFERENCE.md)说明了适用范围。Python 仅为可选开发工具，排除在发布库之外；正式运行时仍为纯 MoonBit。
+
 ## Parametric Bracket Demo
 
 用同一个草图建立 120×80 的四孔安装板，再将板宽 120→160、孔半径 5→8、水平孔心边距 20→30。四孔位置由镜像、等半径和孔心到板边的距离关系共同确定；每次编辑只修改尺寸约束。
