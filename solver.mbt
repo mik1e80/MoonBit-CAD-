@@ -100,6 +100,26 @@ pub fn SolveReport::unsatisfied(
 }
 
 ///|
+/// Heuristic inspection order, not proof of inconsistency or a minimal conflict
+/// set. Sort active violations by descending tolerance_ratio, then stable ID.
+/// Returns a fresh array without changing this report or the sketch.
+pub fn SolveReport::likely_conflicts(
+  self : SolveReport,
+) -> Array[ConstraintResidual] {
+  let findings = self.unsatisfied()
+  findings.sort_by((a, b) => {
+    if a.tolerance_ratio > b.tolerance_ratio {
+      -1
+    } else if a.tolerance_ratio < b.tolerance_ratio {
+      1
+    } else {
+      a.id.index.compare(b.id.index)
+    }
+  })
+  findings
+}
+
+///|
 /// Look up a stable ID in this report's solve-time snapshot. Deleted relations
 /// remain readable in older reports and are absent from subsequent reports.
 pub fn SolveReport::residual(

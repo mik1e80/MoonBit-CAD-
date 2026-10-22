@@ -165,6 +165,8 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 `Err` 表示非法尺寸、失效引用、退化初值、资源上限或数值求值错误。**未收敛不证明无解，未满足约束列表也不是最小冲突集。** 重复约束可以被同时满足。奇异构型的一阶自由度可能高于实际运动自由度，例如完全共线的三角形；不要把它当成全局刚性证明。
 
+失败排查可用 `report.likely_conflicts()`：返回与 `unsatisfied()` 相同的启用超标项，按 `tolerance_ratio` 降序排列，同误差比按稳定约束编号升序排列。它不改变报告、几何或求解权重，仅提供优先检查顺序；停滞、初值或迭代预算也可能产生这些症状，不是无解证明或最小冲突集。示例与边界见[失败诊断](docs/DIAGNOSTICS.md)及[可执行示例](README.mbt.md)。
+
 输入与求值错误会注明点、线、圆或约束的索引。可用 `Sketch::constraint(finding.id)` 从残差找回原始关系，用 `SolveReport::residual(id)` 查询指定约束的结果，便于在编辑器中定位。
 
 约束索引是同一草图内稳定、不复用的创建编号。删除后编号可能不连续，`report.residuals[id.index()]` 不再表示指定约束，请使用 `report.residual(id)`。旧报告属于求解当时的快照；若关系后来已删除，当前草图的 `constraint(id)` 返回 `None`。

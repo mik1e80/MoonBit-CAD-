@@ -54,6 +54,37 @@ test "disable a conflicting edit and inspect its state" {
 }
 ```
 
+失败时可用 `likely_conflicts()` 按误差比降序排查启用且超标的约束，误差比相同时按约束编号升序排列。它是排序提示，不是无解证明或最小冲突集；完整语义见[失败诊断](docs/DIAGNOSTICS.md)。
+
+```mbt check
+///|
+test "inspect likely conflicts by descending tolerance ratio" {
+  let s = @sketch.Sketch::new()
+  let p = s.add_point(0.0, 0.0)
+  s.constrain(Fix(p, 0.0, 0.0)) |> ignore
+  s.constrain(Fix(p, 6.0, 0.0)) |> ignore
+  s.constrain(Fix(p, 30.0, 0.0)) |> ignore
+  let report = s.solve_and_apply().unwrap().report
+  assert_false(report.is_satisfied())
+  let findings = report.likely_conflicts()
+  assert_eq(findings.length(), 3)
+  assert_true(findings[0].tolerance_ratio >= findings[1].tolerance_ratio)
+  assert_true(findings[1].tolerance_ratio >= findings[2].tolerance_ratio)
+  println("Likely conflicts (heuristic inspection order):")
+  for finding in findings {
+    let kind = match s.constraint(finding.id) {
+      Some(Fix(_, _, _)) => "Fix"
+      _ => "Other"
+    }
+    println(
+      "#\{finding.id.index()} \{kind}; error ratio: \{finding.tolerance_ratio}",
+    )
+  }
+  assert_eq(s.point(p).unwrap().x, 0.0)
+  assert_eq(report.residuals[0].id.index(), 0)
+}
+```
+
 约束管理还支持永久删除。禁用保留关系和编号，删除则让旧句柄失效；新关系不会复用已删除的编号。完整语义见 [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md)。
 
 ```mbt check

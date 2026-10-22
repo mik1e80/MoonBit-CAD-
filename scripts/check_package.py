@@ -48,6 +48,7 @@ def main() -> None:
         "examples/four_bar/README.md", "docs/images/four-bar-motion.svg",
         "scripts/four_bar_showcase.cjs",
         "removal_wbtest.mbt", "docs/CONSTRAINT_LIFECYCLE.md",
+        "diagnostics_wbtest.mbt", "docs/DIAGNOSTICS.md",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -132,6 +133,30 @@ test "permanent removal through the packaged public API" {
   assert_true(report.residual(fresh).unwrap().active)
   assert_true(old.residual(removed).unwrap().active)
   assert_true(old.residual(fresh) is None)
+}
+///|
+test "rank likely conflicts through the packaged public API" {
+  let s = @cad.Sketch::new()
+  let p = s.add_point(0.0, 0.0)
+  let retired = s.constrain(Fix(p, 0.0, 0.0))
+  assert_true(s.remove_constraint(retired))
+  let first = s.constrain(Fix(p, 0.0, 0.0))
+  let middle = s.constrain(Fix(p, 6.0, 0.0))
+  let last = s.constrain(Fix(p, 30.0, 0.0))
+  let report = s.solve_and_apply().unwrap().report
+  assert_false(report.is_satisfied())
+  let findings = report.likely_conflicts()
+  assert_eq(findings.map(r => r.id.index()), [
+    last.index(), first.index(), middle.index(),
+  ])
+  assert_eq(report.residuals[0].id.index(), first.index())
+  assert_true(report.residual(retired) is None)
+  assert_eq(s.point(p).unwrap().x, 0.0)
+  for finding in findings {
+    assert_true(s.constraint(finding.id) is Some(Fix(_, _, _)))
+    assert_true(finding.active)
+    assert_true(finding.tolerance_ratio > 1.0)
+  }
 }
 ''', encoding="utf-8")
     run("check", "--target", "all", "--deny-warn", cwd=consumer)

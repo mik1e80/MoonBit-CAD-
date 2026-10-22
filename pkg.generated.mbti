@@ -126,6 +126,7 @@ pub struct SolveReport {
   // private fields
 } derive(@debug.Debug)
 pub fn SolveReport::is_satisfied(Self) -> Bool
+pub fn SolveReport::likely_conflicts(Self) -> Array[ConstraintResidual]
 pub fn SolveReport::residual(Self, ConstraintId) -> ConstraintResidual?
 pub fn SolveReport::to_repr(Self) -> @debug.Repr
 pub fn SolveReport::unsatisfied(Self) -> Array[ConstraintResidual]
