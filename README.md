@@ -152,9 +152,11 @@ if sketch.set_constraint(length, Distance(a, b, 7.0)) {
 | [Validation Suite](docs/VALIDATION.md) | 六组 400 个生成配置，四后端分别独立检查 |
 | [随机初值实验](docs/RANDOM_TRIANGLE.md) | JS 的 1000 个三角形初值，记录全部状态与独立边长检查 |
 | [SciPy 开发对照](docs/SCIPY_REFERENCE.md) | 500 个同输入配置，对比坐标、半径和残差 |
-| [Consumer Test](docs/CONSUMER_TEST.md) | 仓库外 `moon new → moon add → moon test → moon run`，两个消费测试及程序运行通过 |
+| [Consumer Test](docs/CONSUMER_TEST.md) | 仓库外 `moon new → moon add → moon test → moon run`，三个消费测试、SVG XML 校验及程序运行通过 |
 
-批量实验数据对应各自保存的源码指纹，属于历史测量；本次 README 改版未重跑这些实验。日常可以只运行六项公开接口示例：
+**当前 Release `v0.2.1` 完整回归已通过**：[实际 Actions](https://github.com/mik1e80/moonbit-cad-sketch/actions/runs/39787171206)固定到提交 `458d5f3`。四后端各 107 项测试、各 400 个生成配置，以及 JS 的 1000 个随机初值全部通过；解包后的完整检查四后端各 112 项通过。[版本验证摘要](docs/releases/0.2.1-full-regression.json)保留范围、源码指纹及原始产物地址。
+
+历史快照保留原始测量；本次完整结果单独保存，未重测 SciPy 对照或四档计时。日常仍只需运行七项公开接口示例：
 
 ```sh
 moon test README.mbt.md --target js

@@ -143,6 +143,24 @@ Python / SciPy 位于可选开发目录，使用独立依赖文件，通过 `.mo
 
 - Mooncakes 0.2.1 正式发布，包含 SVG 导出及当前仓库元数据；独立注册表消费检查的 3 项测试、实际程序输出、SVG XML 与归档一致性均通过。见[发布回执](releases/0.2.1.json)及[消费记录](releases/consumer-0.2.1.json)。
 - GitHub 对应版本为 [v0.2.1](https://github.com/mik1e80/moonbit-cad-sketch/releases/tag/v0.2.1)，Release 验证附件记录确切提交、正式 tag 与实际 Actions 结果。
-- 默认 CI 在四后端分别执行 7 项公开接口与 9 项 SVG 测试，JS 另执行 5 项源码归档消费测试；这属于定向冒烟，不能称为最新版全量回归通过。完整验证仍需维护者手动勾选。
+- 默认 CI 在四后端分别执行 7 项公开接口与 9 项 SVG 测试，JS 另执行 5 项源码归档消费测试；这些默认检查不等同于全量回归；本次例外授权后的完整结果见下节。完整验证仍需维护者手动勾选。
 - 修复包消费检查在 workspace 中意外扩大测试范围的问题，并修复多行 SVG 的 XML 提取。首次旧路径意外执行了 112 项 JS 测试，均通过；修复后默认只运行 5 项消费测试。
-- 400 配置、1000 随机初值、SciPy 参考与四档 Benchmark 的历史数据继续保留其原始指纹；本版未重测，不作为本版全量验证声明。诊断排序继续明确为启发式，不承诺最小冲突集。
+- 400 配置、1000 随机初值、SciPy 参考与四档 Benchmark 的历史数据继续保留其原始指纹；初次交付时未重测；后续完整回归结果见下节。诊断排序继续明确为启发式，不承诺最小冲突集。
+
+
+## 2026-10-22 当前 Release 完整回归
+
+2026-10-22，按用户本次例外授权，对 **`v0.2.1` / `458d5f397b2112e392b859c5a3054fafa1eb9185`** 执行完整回归，[实际工作流](https://github.com/mik1e80/moonbit-cad-sketch/actions/runs/39787171206)结果为 **success**。
+
+| 检查 | 实际结果 |
+| --- | --- |
+| wasm / wasm-gc / JS / native 全量测试 | 各 107/107 通过 |
+| 六组自动模型配置 | 四后端各 400/400，通过每后端 6 项检查器故障注入 |
+| JS 随机三角形初值 | 1000/1000 Satisfied；Stalled / IterationLimit / Invalid 均为 0 |
+| 解包后的完整测试与消费检查 | 四后端各 112/112（107 项库测试 + 5 项消费测试） |
+| 安装板、四杆机构、编辑与冲突示例 | 通过 |
+| Benchmark | Small 冒烟通过；四档性能计时未重测 |
+
+完整摘要：[full-regression.json](releases/0.2.1-full-regression.json)；[逐模型原始数据 ZIP](https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression-results.zip)；[完整任务日志](https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression.log)。ZIP 的 SHA-256 为 `239725cd4cb3d3a92f4aa57bcad1cd06618a2ff9a16cffbcb6d197ab3be759c3`，已与 GitHub artifact 摘要核对一致。
+
+原 `verification.json` 保留首次发布时的轻量验证记录，本节是随后补充的全量结果。旧批量快照保持原始指纹，新运行证据单独保存；SciPy 开发对照及四档 Benchmark 未重测。日常 CI 仍默认轻量，未修改 tag、运行时代码或已发布的 Mooncakes 包。

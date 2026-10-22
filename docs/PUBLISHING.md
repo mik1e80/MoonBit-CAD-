@@ -84,4 +84,22 @@ GitHub 对应交付名称为 `v0.2.1`。发布记录分别保存 Mooncakes 的�
 
 [发布回执](releases/0.2.1.json)和[消费记录](releases/consumer-0.2.1.json)保留真实版本、归档指纹与验证范围。GitHub 正式版本入口为 [v0.2.1](https://github.com/mik1e80/moonbit-cad-sketch/releases/tag/v0.2.1)，发布验证附件记录对应提交和四后端冒烟工作流结果。
 
-旧包检查脚本首次执行曾意外连带运行 112 项 JS 测试，全部通过；已修复默认执行范围为消费模块的 5 项测试。之后不再执行库全量回归，400 / 1000 模型、SciPy 对照与四档 Benchmark 均未重新测量。
+旧包检查脚本首次执行曾意外连带运行 112 项 JS 测试，全部通过；已修复默认执行范围为消费模块的 5 项测试。首次交付至本次例外授权前未再执行库全量回归；随后对当前 Release 的完整回归结果见下节，SciPy 对照与四档 Benchmark 计时仍未重测。
+
+
+## 2026-10-22 当前 Release 完整回归
+
+2026-10-22，按用户本次例外授权，对 **`v0.2.1` / `458d5f397b2112e392b859c5a3054fafa1eb9185`** 执行完整回归，[实际工作流](https://github.com/mik1e80/moonbit-cad-sketch/actions/runs/39787171206)结果为 **success**。
+
+| 检查 | 实际结果 |
+| --- | --- |
+| wasm / wasm-gc / JS / native 全量测试 | 各 107/107 通过 |
+| 六组自动模型配置 | 四后端各 400/400，通过每后端 6 项检查器故障注入 |
+| JS 随机三角形初值 | 1000/1000 Satisfied；Stalled / IterationLimit / Invalid 均为 0 |
+| 解包后的完整测试与消费检查 | 四后端各 112/112（107 项库测试 + 5 项消费测试） |
+| 安装板、四杆机构、编辑与冲突示例 | 通过 |
+| Benchmark | Small 冒烟通过；四档性能计时未重测 |
+
+完整摘要：[full-regression.json](releases/0.2.1-full-regression.json)；[逐模型原始数据 ZIP](https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression-results.zip)；[完整任务日志](https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression.log)。ZIP 的 SHA-256 为 `239725cd4cb3d3a92f4aa57bcad1cd06618a2ff9a16cffbcb6d197ab3be759c3`，已与 GitHub artifact 摘要核对一致。
+
+原 `verification.json` 保留首次发布时的轻量验证记录，本节是随后补充的全量结果。旧批量快照保持原始指纹，新运行证据单独保存；SciPy 开发对照及四档 Benchmark 未重测。日常 CI 仍默认轻量，未修改 tag、运行时代码或已发布的 Mooncakes 包。

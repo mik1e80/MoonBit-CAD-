@@ -1,0 +1,1072 @@
+{
+  "schema": 1,
+  "version": "0.2.1",
+  "tag": "v0.2.1",
+  "commit": "458d5f397b2112e392b859c5a3054fafa1eb9185",
+  "conclusion": "success",
+  "workflow_run_id": 39787171206,
+  "workflow_run_url": "https://github.com/mik1e80/moonbit-cad-sketch/actions/runs/39787171206",
+  "event": "workflow_dispatch",
+  "started_at": "2026-10-22T13:28:40Z",
+  "completed_at": "2026-10-22T13:29:34Z",
+  "authorization": "One-time full release regression expressly requested by the user; default CI remains lightweight.",
+  "toolchain": {
+    "moon": "0.1.20261021",
+    "moonc": "v0.10.17+093cb8f9c",
+    "moonrun": "0.1.20261021"
+  },
+  "backend_tests": {
+    "wasm": {
+      "total": 107,
+      "passed": 107,
+      "failed": 0
+    },
+    "wasm-gc": {
+      "total": 107,
+      "passed": 107,
+      "failed": 0
+    },
+    "js": {
+      "total": 107,
+      "passed": 107,
+      "failed": 0
+    },
+    "native": {
+      "total": 107,
+      "passed": 107,
+      "failed": 0
+    }
+  },
+  "source_archive_backend_tests": {
+    "wasm": {
+      "total": 112,
+      "passed": 112,
+      "failed": 0,
+      "library_tests": 107,
+      "consumer_tests": 5
+    },
+    "wasm-gc": {
+      "total": 112,
+      "passed": 112,
+      "failed": 0,
+      "library_tests": 107,
+      "consumer_tests": 5
+    },
+    "js": {
+      "total": 112,
+      "passed": 112,
+      "failed": 0,
+      "library_tests": 107,
+      "consumer_tests": 5
+    },
+    "native": {
+      "total": 112,
+      "passed": 112,
+      "failed": 0,
+      "library_tests": 107,
+      "consumer_tests": 5
+    }
+  },
+  "generated_models": {
+    "wasm": {
+      "schema": 1,
+      "corpus": "cad-validation-400-v1",
+      "seed": 20261022,
+      "target": "wasm",
+      "source_sha256": "dc754e57f8ddcfb468b3fd4e35e87fa1c002ac9a90660993b306798cf3a5af39",
+      "source_files": [
+        "cmd/validation/main.mbt",
+        "cmd/validation/moon.pkg",
+        "scripts/validation_suite.cjs",
+        "scripts/snapshot_provenance.cjs",
+        "errors.mbt",
+        "model.mbt",
+        "validate.mbt",
+        "residual.mbt",
+        "solver.mbt",
+        "autodiff.mbt",
+        "linalg.mbt"
+      ],
+      "environment": {
+        "platform": "linux",
+        "arch": "x64",
+        "node": "v22.23.4",
+        "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+      },
+      "checker_mutation_tests": 6,
+      "checker_mutation_passed": 6,
+      "checker_mutation_failures": [],
+      "total": 400,
+      "passed": 400,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-07,
+      "groups": {
+        "analytic": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004855043797,
+          "max_oracle_error_divided_by_scale": 2.2202336987312e-07
+        },
+        "translation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.2203312255442142e-07
+        },
+        "rotation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9620979124491669,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "scaling": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004356727591,
+          "max_oracle_error_divided_by_scale": 2.220233691354864e-07
+        },
+        "perturbation": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "extreme": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004808485669,
+          "max_oracle_error_divided_by_scale": 2.2202336986532716e-07
+        }
+      },
+      "families": {
+        "triangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 2,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "rectangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "mirror_circles": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.8330971468240023,
+          "max_oracle_error_divided_by_scale": 1.2351665645837784e-07
+        },
+        "line_circle_tangent": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.7445445149301122,
+          "max_oracle_error_divided_by_scale": 1.3219687389209867e-07
+        }
+      },
+      "failures": []
+    },
+    "wasm-gc": {
+      "schema": 1,
+      "corpus": "cad-validation-400-v1",
+      "seed": 20261022,
+      "target": "wasm-gc",
+      "source_sha256": "dc754e57f8ddcfb468b3fd4e35e87fa1c002ac9a90660993b306798cf3a5af39",
+      "source_files": [
+        "cmd/validation/main.mbt",
+        "cmd/validation/moon.pkg",
+        "scripts/validation_suite.cjs",
+        "scripts/snapshot_provenance.cjs",
+        "errors.mbt",
+        "model.mbt",
+        "validate.mbt",
+        "residual.mbt",
+        "solver.mbt",
+        "autodiff.mbt",
+        "linalg.mbt"
+      ],
+      "environment": {
+        "platform": "linux",
+        "arch": "x64",
+        "node": "v22.23.4",
+        "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+      },
+      "checker_mutation_tests": 6,
+      "checker_mutation_passed": 6,
+      "checker_mutation_failures": [],
+      "total": 400,
+      "passed": 400,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-07,
+      "groups": {
+        "analytic": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004855043797,
+          "max_oracle_error_divided_by_scale": 2.2202336987312e-07
+        },
+        "translation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.2203312255442142e-07
+        },
+        "rotation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9620979124491669,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "scaling": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004356727591,
+          "max_oracle_error_divided_by_scale": 2.220233691354864e-07
+        },
+        "perturbation": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "extreme": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004808485669,
+          "max_oracle_error_divided_by_scale": 2.2202336986532716e-07
+        }
+      },
+      "families": {
+        "triangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 2,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "rectangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "mirror_circles": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.8330971468240023,
+          "max_oracle_error_divided_by_scale": 1.2351665645837784e-07
+        },
+        "line_circle_tangent": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.7445445149301122,
+          "max_oracle_error_divided_by_scale": 1.3219687389209867e-07
+        }
+      },
+      "failures": []
+    },
+    "js": {
+      "schema": 1,
+      "corpus": "cad-validation-400-v1",
+      "seed": 20261022,
+      "target": "js",
+      "source_sha256": "dc754e57f8ddcfb468b3fd4e35e87fa1c002ac9a90660993b306798cf3a5af39",
+      "source_files": [
+        "cmd/validation/main.mbt",
+        "cmd/validation/moon.pkg",
+        "scripts/validation_suite.cjs",
+        "scripts/snapshot_provenance.cjs",
+        "errors.mbt",
+        "model.mbt",
+        "validate.mbt",
+        "residual.mbt",
+        "solver.mbt",
+        "autodiff.mbt",
+        "linalg.mbt"
+      ],
+      "environment": {
+        "platform": "linux",
+        "arch": "x64",
+        "node": "v22.23.4",
+        "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+      },
+      "checker_mutation_tests": 6,
+      "checker_mutation_passed": 6,
+      "checker_mutation_failures": [],
+      "total": 400,
+      "passed": 400,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-07,
+      "groups": {
+        "analytic": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004855043797,
+          "max_oracle_error_divided_by_scale": 2.2202336987312e-07
+        },
+        "translation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.2203312255442142e-07
+        },
+        "rotation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9620979124491669,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "scaling": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004356727591,
+          "max_oracle_error_divided_by_scale": 2.220233691354864e-07
+        },
+        "perturbation": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "extreme": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004808485669,
+          "max_oracle_error_divided_by_scale": 2.2202336986532716e-07
+        }
+      },
+      "families": {
+        "triangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 2,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "rectangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "mirror_circles": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.8330971468240023,
+          "max_oracle_error_divided_by_scale": 1.2351665645837784e-07
+        },
+        "line_circle_tangent": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.7445445149301122,
+          "max_oracle_error_divided_by_scale": 1.3219687389209867e-07
+        }
+      },
+      "failures": []
+    },
+    "native": {
+      "schema": 1,
+      "corpus": "cad-validation-400-v1",
+      "seed": 20261022,
+      "target": "native",
+      "source_sha256": "dc754e57f8ddcfb468b3fd4e35e87fa1c002ac9a90660993b306798cf3a5af39",
+      "source_files": [
+        "cmd/validation/main.mbt",
+        "cmd/validation/moon.pkg",
+        "scripts/validation_suite.cjs",
+        "scripts/snapshot_provenance.cjs",
+        "errors.mbt",
+        "model.mbt",
+        "validate.mbt",
+        "residual.mbt",
+        "solver.mbt",
+        "autodiff.mbt",
+        "linalg.mbt"
+      ],
+      "environment": {
+        "platform": "linux",
+        "arch": "x64",
+        "node": "v22.23.4",
+        "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+      },
+      "checker_mutation_tests": 6,
+      "checker_mutation_passed": 6,
+      "checker_mutation_failures": [],
+      "total": 400,
+      "passed": 400,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-07,
+      "groups": {
+        "analytic": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004855043797,
+          "max_oracle_error_divided_by_scale": 2.2202336987312e-07
+        },
+        "translation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.2203312255442142e-07
+        },
+        "rotation": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9620979124491669,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "scaling": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004356727591,
+          "max_oracle_error_divided_by_scale": 2.220233691354864e-07
+        },
+        "perturbation": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "extreme": {
+          "total": 60,
+          "passed": 60,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9234004808485669,
+          "max_oracle_error_divided_by_scale": 2.2202336986532716e-07
+        }
+      },
+      "families": {
+        "triangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 2,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.9635689091069821,
+          "max_oracle_error_divided_by_scale": 1.617882769977541e-07
+        },
+        "rectangle": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 4
+          },
+          "max_independent_tolerance_ratio": 0.9235310935166182,
+          "max_oracle_error_divided_by_scale": 2.7152559667342757e-07
+        },
+        "mirror_circles": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.8330971468240023,
+          "max_oracle_error_divided_by_scale": 1.2351665645837784e-07
+        },
+        "line_circle_tangent": {
+          "total": 100,
+          "passed": 100,
+          "failed": 0,
+          "success_rate": 1,
+          "failure_categories": {},
+          "iterations": {
+            "min": 2,
+            "median": 3,
+            "max": 3
+          },
+          "max_independent_tolerance_ratio": 0.7445445149301122,
+          "max_oracle_error_divided_by_scale": 1.3219687389209867e-07
+        }
+      },
+      "failures": []
+    }
+  },
+  "random_triangle_js": {
+    "schema": 1,
+    "experiment": "3-4-5-triangle-random-initialization-v1",
+    "target": "js",
+    "cases": 1000,
+    "seed": 20261022,
+    "seed_step": 97,
+    "warmup": 5,
+    "coordinate_range": [
+      -10,
+      10
+    ],
+    "sides": [
+      3,
+      4,
+      5
+    ],
+    "length_tolerance": 1e-07,
+    "max_iterations": 200,
+    "anchors": false,
+    "expected_local_dof": 3,
+    "restarts_per_case": 0,
+    "counts": {
+      "Satisfied": 1000,
+      "Stalled": 0,
+      "IterationLimit": 0,
+      "Invalid": 0
+    },
+    "independently_verified_satisfied": 1000,
+    "verified_satisfaction_rate": 1,
+    "correctness_failures": [],
+    "checker_mutations": [
+      {
+        "category": "false_satisfaction",
+        "passed": true
+      },
+      {
+        "category": "non_finite_output",
+        "passed": true
+      },
+      {
+        "category": "failed_geometry_changed",
+        "passed": true
+      }
+    ],
+    "invalid_cases": [],
+    "nonconverged_cases": [],
+    "iterations": {
+      "min": 3,
+      "median": 4,
+      "max": 24
+    },
+    "max_verified_tolerance_ratio": 0.9387859467580029,
+    "source_sha256": "50ff0414c59457dbd0eeb393f9a29de5284be111b4fa25013346ddb6d96a0175",
+    "source_files": [
+      "cmd/random_triangle/main.mbt",
+      "cmd/random_triangle/moon.pkg",
+      "scripts/random_triangle.cjs",
+      "scripts/snapshot_provenance.cjs",
+      "errors.mbt",
+      "model.mbt",
+      "solver.mbt",
+      "validate.mbt",
+      "residual.mbt",
+      "autodiff.mbt",
+      "linalg.mbt"
+    ],
+    "cases_csv_sha256": "9d1a925e7dead39c14ba1cfc9f87c6b24d84f7ee56572922b8c0c9f762b8b737",
+    "environment": {
+      "platform": "linux",
+      "arch": "x64",
+      "node": "v22.23.4",
+      "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+    }
+  },
+  "benchmark_smoke_js": {
+    "schema": 1,
+    "workload": "triangulated-zigzag-v1",
+    "target": "js",
+    "build": "release",
+    "smoke": true,
+    "warmups_per_case": 0,
+    "repetitions_per_case": 1,
+    "length_tolerance": 1e-07,
+    "cases": [
+      {
+        "case": "Small",
+        "points": 10,
+        "variables": 20,
+        "constraints": 20,
+        "equations": 22,
+        "repetitions": 1,
+        "verified_successes": 1,
+        "reported_status_counts": {
+          "Satisfied": 1
+        },
+        "iterations": {
+          "min": 4,
+          "median": 4,
+          "max": 4
+        },
+        "solve_us": {
+          "min": 10892.729,
+          "median": 10892.729,
+          "max": 10892.729
+        },
+        "max_independent_length_error": 7.768270471331107e-10,
+        "max_tolerance_ratio": 0.007768270471331107,
+        "max_coordinate_error": 1.63966837884999e-08
+      }
+    ],
+    "measured_solves": 1,
+    "verified_successes": 1,
+    "checker_mutations_passed": 3,
+    "failures": [],
+    "source_files": [
+      "bench/main.mbt",
+      "bench/moon.pkg",
+      "scripts/benchmark.cjs",
+      "scripts/snapshot_provenance.cjs",
+      "errors.mbt",
+      "model.mbt",
+      "solver.mbt",
+      "validate.mbt",
+      "residual.mbt",
+      "autodiff.mbt",
+      "linalg.mbt"
+    ],
+    "source_sha256": "176eadc126e2e12e5f0bae6b6a0fdbe7a152231f76d7d125cc8e7dff04ac9838",
+    "environment": {
+      "platform": "linux",
+      "release": "7.0.0-1017-azure",
+      "arch": "x64",
+      "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+      "logical_cpus": 4,
+      "memory_bytes": 16759296000,
+      "node": "v22.23.4",
+      "moon": "moon 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moon\nmoonc v0.10.17+093cb8f9c (2026-10-21) ~/.moon/bin/moonc\nmoonrun 0.1.20261021 (a4f8933 2026-10-21) ~/.moon/bin/moonrun\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+    },
+    "cases_csv_sha256": "3cbf49f1412660ef91f4084f0e618d9d6de667fd53a3be71c8a4b8b7ba8f45c8"
+  },
+  "full_job_steps": [
+    {
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v7",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/setup-python@v7",
+      "conclusion": "success"
+    },
+    {
+      "name": "Install MoonBit",
+      "conclusion": "success"
+    },
+    {
+      "name": "Toolchain version",
+      "conclusion": "success"
+    },
+    {
+      "name": "Check formatting",
+      "conclusion": "success"
+    },
+    {
+      "name": "Check all targets without warnings",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test wasm",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test wasm-gc",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test JavaScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Test native",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run public API examples",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify editing workflow and analytic coordinates",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify parametric bracket and committed SVG",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify four-bar continuation and committed SVG",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify 400 generated models on all backends",
+      "conclusion": "success"
+    },
+    {
+      "name": "Measure 1000 randomized triangle initializations",
+      "conclusion": "success"
+    },
+    {
+      "name": "Check benchmark smoke case",
+      "conclusion": "success"
+    },
+    {
+      "name": "Save validation cases and failure classifications",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify source archive and downstream consumer",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/setup-python@v7",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v7",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "artifact": {
+    "id": 12428982948,
+    "name": "validation-results",
+    "size_in_bytes": 1545518,
+    "sha256": "239725cd4cb3d3a92f4aa57bcad1cd06618a2ff9a16cffbcb6d197ab3be759c3",
+    "release_asset_url": "https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression-results.zip"
+  },
+  "log": {
+    "sha256": "fc13fb4dddfe6e93bd9529cd2bf54d8e3c135b9fbaf65fead20509cfd6f57160",
+    "release_asset_url": "https://github.com/mik1e80/moonbit-cad-sketch/releases/download/v0.2.1/full-regression.log"
+  },
+  "historical_snapshots_overwritten": false,
+  "not_remeasured": [
+    "Optional SciPy development reference",
+    "Four-scale benchmark timing (only Small smoke executed)"
+  ],
+  "scope_note": "400 unique model configurations repeated on each backend; do not count these as 1600 distinct models. Archive matrix repeats library tests and adds five consumer tests."
+}
