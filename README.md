@@ -10,7 +10,13 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 ## 使用示例
 
-源码版本 `0.1.0` 尚未发布到 Mooncakes；需 `moonc >= 0.10.15`。[快速开始](docs/QUICK_START.md)包含源码安装、本地 workspace 和完整尺寸编辑示例。
+[Mooncakes：mik1e80/cad_sketch@0.1.0](https://mooncakes.io/docs/mik1e80/cad_sketch)。需 `moonc >= 0.10.15`。在自己的 MoonBit 项目根目录安装：
+
+```sh
+moon add mik1e80/cad_sketch
+```
+
+在 `moon.pkg` 中导入 `"mik1e80/cad_sketch" @sketch`；完整语法、尺寸编辑及本地 workspace 见[快速开始](docs/QUICK_START.md)。
 
 ```moonbit
 let sketch = @sketch.Sketch::new()
@@ -42,7 +48,7 @@ sketch.set_constraint(length, Distance(a, b, 7.0)) |> ignore
 | [VALIDATION](docs/VALIDATION.md) | 语料、独立判定、真实历史数据与复现 |
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | 内部建模、数值实现与验证方法 |
 
-[API 总览](docs/API_GUIDE.md) · [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md) · [项目定位](docs/POSITIONING.md) · [验收记录](docs/ACCEPTANCE.md)
+[API 总览](docs/API_GUIDE.md) · [约束生命周期](docs/CONSTRAINT_LIFECYCLE.md) · [项目定位](docs/POSITIONING.md) · [验收记录](docs/ACCEPTANCE.md) · [发布与安装验证](docs/PUBLISHING.md)
 
 ## 示例目录
 

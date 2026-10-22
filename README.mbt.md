@@ -4,7 +4,21 @@
 
 适用于参数化零件草图、草图编辑器集成及小型平面机构教学。核心库仅依赖 MoonBit core，支持 wasm、wasm-gc、JS 和 native；当前上限为 256 个标量变量、512 条线、512 条约束。非线性求解依赖初值，局部自由度是一阶数值估计。
 
-源码版本 `0.1.0` 尚未发布到 Mooncakes；安装、完整约束表、诊断语义和数值边界见 [README.md](README.md)，目标用户与应用范围见 [项目定位与范围](docs/POSITIONING.md)。
+版本 `0.1.0` 可从 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 安装。在自己的 MoonBit 项目根目录运行：
+
+```sh
+moon add mik1e80/cad_sketch
+```
+
+再在 `moon.pkg` 中导入：
+
+```moonbit
+import {
+  "mik1e80/cad_sketch" @sketch,
+}
+```
+
+安装、完整约束表、诊断语义和数值边界见 [README.md](README.md)，目标用户与应用范围见 [项目定位与范围](docs/POSITIONING.md)。
 
 完整文档入口：[快速开始](docs/QUICK_START.md)、[约束参考](docs/CONSTRAINTS.md)、[求解](docs/SOLVER.md)、[诊断](docs/DIAGNOSTICS.md)和[限制](docs/LIMITATIONS.md)。
 

@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "module": "mik1e80/cad_sketch",
+  "version": "0.1.0",
+  "date": "2026-10-22",
+  "registry": "https://mooncakes.io",
+  "package_url": "https://mooncakes.io/docs/mik1e80/cad_sketch",
+  "publish_http_status": 200,
+  "source_base_commit": "e79ae70c2c26928bf29b87d70eff2824bfe5277e",
+  "uploaded_archive_sha256": "9d1418f1aa1c11761f691c46dcf38696db27ed21124a15ddd6d361e3c170a70d",
+  "registry_download_matches_archive": true,
+  "matched_archive_files": 99,
+  "install_command": "moon add mik1e80/cad_sketch",
+  "resolved_dependency": "mik1e80/cad_sketch@0.1.0",
+  "dependency_source": "registry",
+  "local_workspace_or_path_override": false,
+  "toolchain": {
+    "moon": "0.1.20261012",
+    "moonc": "0.10.15+943464bfa"
+  },
+  "checks": {
+    "readme_js_tests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "registry_js_smoke": {
+      "passed": 2,
+      "failed": 0,
+      "cases": [
+        "dimension solve and edit from 5 to 7",
+        "pattern matching InvalidRadius from public SketchError"
+      ]
+    },
+    "full_regression_executed": false,
+    "backend_matrix_executed": false
+  },
+  "note": "Post-publication receipt; this file is not inside the immutable 0.1.0 archive. Source baseline plus this release change updates documentation and package auditing only."
+}

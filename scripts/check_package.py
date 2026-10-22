@@ -37,6 +37,7 @@ def main() -> None:
     consumer.mkdir()
     required = {
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
+        "CHANGELOG.md", "docs/PUBLISHING.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
         "errors.mbt", "model.mbt", "solver.mbt", "pkg.generated.mbti", "examples/mirror_holes/main.mbt",
         "examples/parametric_bracket/main.mbt", "examples/parametric_bracket/moon.pkg",

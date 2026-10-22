@@ -17,12 +17,12 @@
 | MoonBit 为主要实现语言 | 求解、自动微分、线性代数、验证和示例均为 MoonBit；Python 只做发布包及消费方验证，不参与求解运行时 |
 | 源码公开，保留开发记录 | [GitHub 仓库](https://github.com/mik1e80/MoonBit-CAD-)；使用 `git log --oneline`、`git rev-list --count HEAD` 复核历史，已保留首版及逐项完善提交；满足用户至少 10 条 commit 的要求，不伪造开发日期 |
 | 完成声明的核心功能 | 24 种小型二维草图关系；输入、数值及规模边界见 README，不声称完整 CAD、全局收敛、精确刚性判定或 DXF 集成 |
-| 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`examples/basic`、`cmd/edit_demo`；尚未发布时按本地 workspace 消费源码 |
+| 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`examples/basic`、`cmd/edit_demo`；`moon add mik1e80/cad_sketch` 安装发布版本，本地 workspace 用于源码开发 |
 | CI 覆盖检查、构建、测试 | `.github/workflows/ci.yml` 执行格式、全目标零警告检查、构建、四后端测试、示例及发布包消费验证；验收时需以最新提交的实际 Actions 结果为准 |
 | 核心路径测试 | AD 差分、解析几何、机构运动、矛盾 / 冗余、启停、极端数值、跨草图误用、资源边界；已有失败反例先复现再修复 |
 | 开源和参考来源 | 完整 Apache-2.0 LICENSE；THIRD_PARTY_NOTICES.md 记录参考项目名称、链接、许可证和具体范围；没有第三方 CAD 样例或求解器代码进入源码包 |
 | AI 使用可解释 | docs/ARCHITECTURE.md 说明建模、数值步骤、质量边界及 AI 协作；参赛者仍需掌握并解释这些内容 |
-| Mooncakes 发布 | **待完成。正式章程第 5.1 节要求发布到 mooncakes.io；`moon package` 仅生成本地压缩包，不等同于发布** |
+| Mooncakes 发布 | `mik1e80/cad_sketch@0.1.0` 通过 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 分发；发布记录和独立安装验证见 [PUBLISHING](PUBLISHING.md) |
 
 ## 本次重点修复
 
@@ -56,11 +56,11 @@ git rev-list --count HEAD
 
 ## 提交验收前仍需完成
 
-- 授权并完成 Mooncakes 发布，确认包可安装、文档可读，登记包页面链接，再同步更新 README 中“尚未发布”的状态。
+- Mooncakes 首版交付已补齐；后续版本应重新进行注册表安装检查并同步文档，赛事账户与验收事项仍需单独核对。
 - 由参赛者确认本期报名成功、个人 / 组队信息、已使用的提交次数、赛事群 GitHub 昵称及适用截止时间。仓库与 CI 无法证明这些账户和报名事项。
 - 参赛者实际运行示例并熟悉技术说明，能说明与 Cassowary、SolveSpace 和 DXFKIT 的范围差异，以及未收敛和局部自由度的含义。
 
-发布前不能将本表描述为“全部验收项已满足”。最终认定由赛事组完成。
+Mooncakes 发布完成也不能将本表描述为“全部验收项已满足”。最终认定由赛事组完成。
 
 ## 2026-10-22 参数化安装板案例
 
@@ -127,3 +127,8 @@ Python / SciPy 位于可选开发目录，使用独立依赖文件，通过 `.mo
 公开接口审查确认内部求值、自动微分类型和线性求解函数未出现在生成的公开接口中。本次保持既有类型和方法签名，新增[五类 API 指南](API_GUIDE.md)，将 README 入门流程前移，并将数值算法与高级设置说明集中到内部技术文档。普通调用围绕几何、约束、求解、编辑和诊断，默认参数即可开始；现有高级诊断字段保留兼容性。
 
 轻量验证仅运行 README 的 5 个公开接口示例（JS 后端，5/5 通过），并核对公开接口文件、文档链接及包检查脚本语法。未运行全量回归、后端矩阵、数据实验或包消费检查；本次提交跳过全量 CI。
+
+
+## 2026-10-22 Mooncakes 首次发布
+
+`mik1e80/cad_sketch@0.1.0` 正式发布，服务端返回 200。独立项目从注册表安装，并在 JS 下通过尺寸编辑与类型化错误的两项冒烟检查；下载文件与上传归档逐字节一致。README 的 6 项公开接口检查通过，未重跑全量回归、后端矩阵或历史批量实验。归档指纹及实际记录见 [发布说明](PUBLISHING.md#010-实际发布记录)和[回执](releases/0.1.0.json)。

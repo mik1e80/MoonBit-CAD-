@@ -16,7 +16,7 @@
 
 ## 交付状态
 
-源码版本 `0.1.0` 尚未发布到 Mooncakes，`moon package` 只生成本地源码归档。安装说明见 [QUICK_START](QUICK_START.md#安装与版本)，待完成验收项见 [ACCEPTANCE](ACCEPTANCE.md)。
+版本 `0.1.0` 通过 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 分发；`moon package` 本身仍只生成本地源码归档，正式上传使用 `moon publish`。安装说明见 [QUICK_START](QUICK_START.md#安装与版本)，待完成验收项见 [ACCEPTANCE](ACCEPTANCE.md)。
 
 只支持点、线、圆与当前 24 种等式关系。圆弧为可选后续工作，未实现椭圆、样条、实体建模或通用文件交换。项目定位见 [POSITIONING](POSITIONING.md)，相关库的分工见 [ECOSYSTEM](ECOSYSTEM.md)。
 

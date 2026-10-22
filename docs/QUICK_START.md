@@ -4,9 +4,19 @@
 
 ## 安装与版本
 
-第一版源码版本 `0.1.0`，尚未发布到 Mooncakes。仓库：<https://github.com/mik1e80/MoonBit-CAD->。模块名：`mik1e80/cad_sketch`。
+首个发布版本 `0.1.0`：[Mooncakes 包页面](https://mooncakes.io/docs/mik1e80/cad_sketch)。源码仓库：[MoonBit-CAD-](https://github.com/mik1e80/MoonBit-CAD-)。模块名：`mik1e80/cad_sketch`。
+
+在已有 MoonBit 项目的根目录运行：
+
+```sh
+moon add mik1e80/cad_sketch
+```
+
+该命令从注册表下载模块，并写入当前项目的 `moon.mod` 依赖。然后按下文配置使用方的 `moon.pkg` 导入核心包。
 
 工具链要求：`moonc >= 0.10.15`，已在 `moon 0.1.20261012` / `moonc 0.10.15+943464bfa` 上验证。源码采用新版 `Int32` 与带默认值的标记参数语法；旧版 0.10.14 需要先更新工具链。
+
+如果希望修改源码或运行仓库内案例：
 
 ```sh
 git clone https://github.com/mik1e80/MoonBit-CAD-.git
@@ -15,7 +25,7 @@ moon test README.mbt.md --target js
 moon run examples/basic
 ```
 
-源码版本尚未发布到 Mooncakes。使用本地 workspace 的方式见下文；示例及核心库只需要 MoonBit。Node.js 和 Python 仅用于可选的开发验证。
+源码开发也可使用下文的本地 workspace；示例及核心库只需要 MoonBit。Node.js 和 Python 仅用于可选的开发验证。
 
 ## 第一个草图
 
@@ -63,7 +73,7 @@ if s.set_constraint(dimension, Distance(a, b, 7.0)) {
 }
 ```
 
-发布前，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["MoonBit-CAD-", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员，无需注册表中已有包。不要把 `moon add mik1e80/cad_sketch` 当作已经可用的安装命令。
+进行源码开发时，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["MoonBit-CAD-", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员。普通使用者直接用上面的 `moon add` 安装即可。
 
 ## 运行案例
 
