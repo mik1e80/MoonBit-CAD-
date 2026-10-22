@@ -53,5 +53,18 @@ jobs:
         run: |
           node scripts/four_bar_showcase.cjs --check --target wasm
           node scripts/four_bar_showcase.cjs --check --target js
+      - name: Verify 400 generated models on all backends
+        run: |
+          node scripts/validation_suite.cjs --check --target wasm
+          node scripts/validation_suite.cjs --check --target wasm-gc
+          node scripts/validation_suite.cjs --check --target js
+          node scripts/validation_suite.cjs --check --target native
+      - name: Save validation cases and failure classifications
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: validation-results
+          path: _build/validation/
+          if-no-files-found: warn
       - name: Verify source archive and downstream consumer
         run: python scripts/check_package.py

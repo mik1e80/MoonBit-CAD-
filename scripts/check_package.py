@@ -49,6 +49,11 @@ def main() -> None:
         "scripts/four_bar_showcase.cjs",
         "removal_wbtest.mbt", "docs/CONSTRAINT_LIFECYCLE.md",
         "diagnostics_wbtest.mbt", "docs/DIAGNOSTICS.md",
+        "cmd/validation/main.mbt", "cmd/validation/moon.pkg",
+        "cmd/validation/pkg.generated.mbti", "scripts/validation_suite.cjs",
+        "docs/VALIDATION.md",
+        "docs/validation-results/js.json", "docs/validation-results/wasm.json",
+        "docs/validation-results/wasm-gc.json", "docs/validation-results/native.json",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -181,7 +186,11 @@ test "rank likely conflicts through the packaged public API" {
         [node, "scripts/four_bar_showcase.cjs", "--check"],
         cwd=package, check=True, timeout=180,
     )
-    print(f"Package, both showcases and downstream consumer verified; workspace retained at {work}")
+    subprocess.run(
+        [node, "scripts/validation_suite.cjs", "--check", "--target", "js"],
+        cwd=package, check=True, timeout=180,
+    )
+    print(f"Package, both showcases, 400 validation cases and downstream consumer verified; workspace retained at {work}")
 
 
 if __name__ == "__main__":

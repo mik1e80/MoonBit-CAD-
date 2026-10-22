@@ -6,7 +6,17 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [400 模型验证](#validation-suite) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+
+## Validation Suite
+
+**400 个可复现模型配置，四后端独立检查。** 基础解析、平移、旋转、缩放、极端尺寸各 60 个，固定种子初始扰动 100 个；包含三角形、矩形、镜像孔位和线圆相切模型。除求解状态外，Node 检查器独立重算残差，并核对解析位置、构型分支和保存的几何。
+
+```sh
+node scripts/validation_suite.cjs --check --target js
+```
+
+当前 wasm、wasm-gc、JS、native 各 400/400 通过；CI 重跑全部四个后端，保存逐案例 JSON / CSV。测试范围为接近目标构型的小型模型，极端尺寸组同步缩放长度容差；数据与方法见 [Validation Suite](docs/VALIDATION.md)，其中说明种子、判定阈值、失败分类及四后端结果快照。
 
 ## Parametric Bracket Demo
 
@@ -136,7 +146,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 共 24 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆弧、样条和不等式约束暂未实现。
 
-本轮聚焦 `Point`、`Line`、`Circle`，优先补齐稳定性验证、Benchmark 和包与版本交付。`Arc` 仅列为可选 P1，时间不足可跳过；椭圆、Bezier、Spline、NURBS 和独立 Polygon 类型暂缓。具体安排见[几何扩展优先级](docs/POSITIONING.md#几何扩展优先级)。
+本轮聚焦 `Point`、`Line`、`Circle`，持续验证稳定性，优先补齐 Benchmark 和包与版本交付。`Arc` 仅列为可选 P1，时间不足可跳过；椭圆、Bezier、Spline、NURBS 和独立 Polygon 类型暂缓。具体安排见[几何扩展优先级](docs/POSITIONING.md#几何扩展优先级)。
 
 `Mirror(a, b, axis)` 使两点的沿轴坐标相等、其中点到轴的带符号距离为零，两个残差都使用长度容差。允许两点在轴上重合；`Mirror(p, p, axis)` 等价于点落在轴上，仍保留沿轴自由度。轴需要非退化，不会自动固定；需固定轴时应约束端点。镜像圆可组合圆心的 `Mirror` 与半径的 `EqualRadius`。
 

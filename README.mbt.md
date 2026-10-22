@@ -10,6 +10,8 @@
 
 机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
 
+[Validation Suite](docs/VALIDATION.md) 自动生成 400 个模型配置，分为基础解析、平移、旋转、缩放、固定种子初始扰动和极端尺寸六组；在四后端独立核对残差与解析坐标，并记录逐案例结果。运行 `node scripts/validation_suite.cjs --check --target js` 复现。结果仅代表文档中定义的小型模型和初值范围。
+
 需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
 
 下面的公开接口示例随 `moon test` 执行：

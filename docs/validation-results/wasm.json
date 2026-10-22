@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "corpus": "cad-validation-400-v1",
+  "seed": 20261022,
+  "target": "wasm",
+  "source_sha256": "4a7ff7c984f942a126fb6084447129302d2a45f6f2b15d363d89aec3fe0bdc87",
+  "source_files": [
+    "cmd/validation/main.mbt",
+    "cmd/validation/moon.pkg",
+    "scripts/validation_suite.cjs",
+    "model.mbt",
+    "validate.mbt",
+    "residual.mbt",
+    "solver.mbt",
+    "autodiff.mbt",
+    "linalg.mbt"
+  ],
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.19.0",
+    "moon": "moon 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moon.exe\nmoonc v0.10.15+943464bfa (2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonc.exe\nmoonrun 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+  },
+  "checker_mutation_tests": 6,
+  "checker_mutation_passed": 6,
+  "checker_mutation_failures": [],
+  "total": 400,
+  "passed": 400,
+  "failed": 0,
+  "success_rate": 1,
+  "failure_categories": {},
+  "iterations": {
+    "min": 2,
+    "median": 3,
+    "max": 4
+  },
+  "max_independent_tolerance_ratio": 0.9635689091069821,
+  "max_oracle_error_divided_by_scale": 2.7152559667342757e-7,
+  "groups": {
+    "analytic": {
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9234004544696468,
+      "max_oracle_error_divided_by_scale": 2.2202337195739025e-7
+    },
+    "translation": {
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9235310935166182,
+      "max_oracle_error_divided_by_scale": 2.2203312255442142e-7
+    },
+    "rotation": {
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9620979124491669,
+      "max_oracle_error_divided_by_scale": 1.6178827877411095e-7
+    },
+    "scaling": {
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9234004727312959,
+      "max_oracle_error_divided_by_scale": 2.2202336979938008e-7
+    },
+    "perturbation": {
+      "total": 100,
+      "passed": 100,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-7
+    },
+    "extreme": {
+      "total": 60,
+      "passed": 60,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9234004808485669,
+      "max_oracle_error_divided_by_scale": 2.2202337195384822e-7
+    }
+  },
+  "families": {
+    "triangle": {
+      "total": 100,
+      "passed": 100,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 2,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.9635689091069821,
+      "max_oracle_error_divided_by_scale": 1.6178827877411095e-7
+    },
+    "rectangle": {
+      "total": 100,
+      "passed": 100,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 4
+      },
+      "max_independent_tolerance_ratio": 0.9235310935166182,
+      "max_oracle_error_divided_by_scale": 2.7152559667342757e-7
+    },
+    "mirror_circles": {
+      "total": 100,
+      "passed": 100,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.8330971468240023,
+      "max_oracle_error_divided_by_scale": 1.2351665645837784e-7
+    },
+    "line_circle_tangent": {
+      "total": 100,
+      "passed": 100,
+      "failed": 0,
+      "success_rate": 1,
+      "failure_categories": {},
+      "iterations": {
+        "min": 2,
+        "median": 3,
+        "max": 3
+      },
+      "max_independent_tolerance_ratio": 0.7445445149301122,
+      "max_oracle_error_divided_by_scale": 1.3219687389209867e-7
+    }
+  },
+  "failures": []
+}
