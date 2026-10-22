@@ -1,6 +1,6 @@
 # Mooncakes 发布与独立安装验证
 
-模块：`mik1e80/cad_sketch`；首个发布版本：`0.1.0`。[Mooncakes 包页面](https://mooncakes.io/docs/mik1e80/cad_sketch)。
+模块：`mik1e80/cad_sketch`；当前版本：`0.2.1`（首版 `0.1.0` 保留不可变）。[Mooncakes 包页面](https://mooncakes.io/docs/mik1e80/cad_sketch)。
 
 ## 使用方安装
 
@@ -63,3 +63,25 @@ git remote set-url origin https://github.com/mik1e80/moonbit-cad-sketch.git
 ```
 
 已发布的 0.1.0 归档包含发布时的原仓库地址，归档保持不可变；本次重命名不重新发布该版本，也不修改原发布回执、源码指纹或历史测量。新地址随后续版本元数据发布。
+
+
+## 0.2.0 版本与验证策略
+
+0.2.0 将 `Sketch::to_svg()`、`SvgOptions` 和 `SvgBounds` 纳入正式包，模块元数据使用重命名后的仓库地址。0.1.0 归档及历史回执保持不变。
+
+默认 Actions 只运行四后端静态编译、7 项 README 与 9 项 SVG 测试，JS 另运行 5 项真实源码归档消费测试。工作流中的 `full` job 只有在手动触发并勾选 `full_regression` 时才运行；日常提交和默认手动触发不会执行全量回归、400 / 1000 模型实验或完整包矩阵。提交使用 `[skip ci]` 时，可在同一提交上手动触发默认冒烟检查。
+
+`python scripts/check_package.py` 默认只执行消费包的 5 项 JS 测试，使用 `--package audit/cad_consumer`，避免 workspace 把库测试连带执行。`--full` 为明确的完整检查入口。`python scripts/check_consumer.py --archive <上传ZIP>` 在仓库外安装当前版本，执行 3 项 JS 测试与可执行程序，并独立解析 SVG、逐字节核对归档。
+
+GitHub 对应交付名称为 `v0.2.1`。发布记录分别保存 Mooncakes 的实际服务端结果、消费检查和对应提交的 Actions 结果，历史规模数据不改写为本版的新测量。
+
+0.2.1 修复开发消费工具对多行 SVG 的解析；核心库与 0.2.0 相同。0.2.0 的安装、三项测试及程序运行已通过，工具末尾的 XML 解析问题在 0.2.1 修复。
+
+
+## 0.2.1 实际发布与消费记录
+
+2026-10-22 正式发布返回 `200 OK`。仓库外全新项目从注册表下载 0.2.1，未命中缓存；110 个上传归档文件与安装文件逐字节一致。尺寸编辑、类型化错误及 SVG 接口的 3 项 JS 测试通过，程序实际输出尺寸 6.9999999993777795，多行 SVG 经独立 XML 解析通过。
+
+[发布回执](releases/0.2.1.json)和[消费记录](releases/consumer-0.2.1.json)保留真实版本、归档指纹与验证范围。GitHub 正式版本入口为 [v0.2.1](https://github.com/mik1e80/moonbit-cad-sketch/releases/tag/v0.2.1)，发布验证附件记录对应提交和四后端冒烟工作流结果。
+
+旧包检查脚本首次执行曾意外连带运行 112 项 JS 测试，全部通过；已修复默认执行范围为消费模块的 5 项测试。之后不再执行库全量回归，400 / 1000 模型、SciPy 对照与四档 Benchmark 均未重新测量。

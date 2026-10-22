@@ -1,6 +1,6 @@
 # SVG 导出
 
-**源码开发版新增接口，已发布的 Mooncakes 0.1.0 尚不包含此功能。** 本次没有发布新版本；请先克隆源码，或使用[本地 workspace](QUICK_START.md)调用开发版本。核心导出逻辑为纯 MoonBit，不需要 Node.js、Python、浏览器或绘图库。
+**Mooncakes 0.2.0 起提供此接口。** 使用 `moon add mik1e80/cad_sketch` 安装；已使用旧版本的项目可运行 `moon add mik1e80/cad_sketch --upgrade`。核心导出逻辑为纯 MoonBit，不需要 Node.js、Python、浏览器或绘图库。
 
 ## 导出字符串
 

@@ -54,7 +54,7 @@ moon run cmd/validation --target js
 
 汇总包括各组及各模型族的成功数、成功率、迭代次数、最大独立残差比、解析坐标误差和失败分类。失败分类包含求解错误、未收敛、非法 / 非有限输出、独立残差超标、解析位置 / 分支不符、自由度 / 维度不符、诊断不符及几何应用不符。任何案例失败、检查器故障注入未被拒绝、语料校验不符都会使命令以非零状态退出。
 
-CI 在四后端分别检查 400 个配置，上传 `validation-results` artifact 保存逐案例文件；源码包检查也在实际解包目录运行 JS 版完整套件。
+手动完整验证在四后端分别检查 400 个配置，上传 `validation-results` artifact 保存逐案例文件；`python scripts/check_package.py --full` 也在实际解包目录运行 JS 版完整套件。默认 CI 不执行批量实验。
 
 ## 实测快照
 
@@ -103,7 +103,7 @@ node scripts/four_bar_showcase.cjs --check
 
 测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。内部数值算法的验证设计见[技术说明](ARCHITECTURE.md#如何验证)。测试通过不代表任意非线性草图均会收敛。
 
-`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板、四杆机构及 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
+`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，显式选择独立消费模块执行 5 项 JS 测试。只有传入 `--full` 才执行四后端及批量模型检查，并运行包内安装板、四杆机构及 SVG 检查（完整路径还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
 
 本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
 
@@ -112,4 +112,4 @@ node scripts/four_bar_showcase.cjs --check
 
 ## 注册表 Consumer Test
 
-`python scripts/check_consumer.py` 在仓库外执行 `moon new`、`moon add mik1e80/cad_sketch`，编写小型消费程序并运行两个 JS 测试和一次可执行示例。它针对已发布的包，不使用本地 workspace；标准注册表缓存允许使用并记录。独立项目代码、真实输出及完整复现见 [CONSUMER_TEST](CONSUMER_TEST.md)。这项轻量检查不调用上面的源码包全矩阵检查或 400 / 1000 模型实验。
+`python scripts/check_consumer.py` 在仓库外执行 `moon new`、`moon add mik1e80/cad_sketch`，编写小型消费程序并运行三个 JS 测试和一次可执行示例。它针对已发布的包，不使用本地 workspace；标准注册表缓存允许使用并记录。独立项目代码、真实输出及完整复现见 [CONSUMER_TEST](CONSUMER_TEST.md)。这项轻量检查不调用上面的源码包全矩阵检查或 400 / 1000 模型实验。

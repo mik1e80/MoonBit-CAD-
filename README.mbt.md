@@ -4,7 +4,7 @@
 
 适用于参数化零件草图、草图编辑器集成及小型平面机构教学。核心库仅依赖 MoonBit core，支持 wasm、wasm-gc、JS 和 native；当前上限为 256 个标量变量、512 条线、512 条约束。非线性求解依赖初值，局部自由度是一阶数值估计。
 
-版本 `0.1.0` 可从 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 安装。在自己的 MoonBit 项目根目录运行：
+版本 `0.2.1` 可从 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 安装。在自己的 MoonBit 项目根目录运行：
 
 ```sh
 moon add mik1e80/cad_sketch
@@ -187,9 +187,9 @@ test "mirror a hole center about a vertical construction line" {
 核心库仅依赖 MoonBit core，无 C/C++ 或 JS 求解器依赖。使用者通过几何关系调用，无需提供方程或导数。算法实现与高级设置见[内部实现](docs/ARCHITECTURE.md)，参考来源和许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 
-## SVG 输出（源码开发版）
+## SVG 输出
 
-`to_svg()` 返回当前保存几何的 SVG 字符串，保留草图不变。它是源码开发版新增接口，已发布的 0.1.0 尚不包含；选项、共享比例和三阶段图形见 [SVG_EXPORT](docs/SVG_EXPORT.md)。
+`to_svg()` 返回当前保存几何的 SVG 字符串，保留草图不变。它从 0.2.0 起提供，建议使用当前 0.2.1；选项、共享比例和三阶段图形见 [SVG_EXPORT](docs/SVG_EXPORT.md)。
 
 ```mbt check
 ///|

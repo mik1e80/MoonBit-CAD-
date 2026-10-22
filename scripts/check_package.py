@@ -4,6 +4,7 @@ Requires Python 3.10+, Node.js 18+ and MoonBit on PATH. No third-party packages.
 """
 
 from pathlib import Path, PurePosixPath
+import argparse
 import os
 import re
 import shutil
@@ -25,6 +26,9 @@ def run(*args: str, cwd: Path = ROOT) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--full", action="store_true", help="Opt in to all backends, showcases and 400 generated cases")
+    args = parser.parse_args()
     manifest = (ROOT / "moon.mod").read_text(encoding="utf-8-sig")
     name = re.search(r'^name\s*=\s*"([^"]+)"', manifest, re.M).group(1)
     version = re.search(r'^version\s*=\s*"([^"]+)"', manifest, re.M).group(1)
@@ -106,7 +110,7 @@ def main() -> None:
         encoding="utf-8",
     )
     (consumer / "moon.pkg").write_text(f'import {{ "{name}" @cad }} for "test"\n', encoding="utf-8")
-    (consumer / "consumer_test.mbt").write_text('''///|
+    (consumer / "consumer_test.mbt").write_text(r'''///|
 test "public API from packaged source" {
   let s = @cad.Sketch::new()
   let a = s.add_point(0.0, 0.0)
@@ -186,7 +190,27 @@ test "rank likely conflicts through the packaged public API" {
     assert_true(finding.tolerance_ratio > 1.0)
   }
 }
+///|
+test "SVG export from the packaged public API" {
+  let s = @cad.Sketch::new()
+  let center = s.add_point(0.0, 0.0)
+  s.add_circle(center, 2.0) |> ignore
+  let svg = s.to_svg(options={
+    ..@cad.SvgOptions::default(),
+    title: "Package <SVG>",
+    show_points: false,
+  }).unwrap()
+  assert_true(svg.contains("<title>Package &lt;SVG&gt;</title>"))
+  assert_true(svg.contains("data-circle=\"0\""))
+  assert_false(svg.contains("data-point="))
+  assert_eq(s.radius(s.add_circle(center, 3.0)).unwrap(), 3.0)
+}
 ''', encoding="utf-8")
+    if not args.full:
+        run("check", "--target", "js", "--deny-warn", cwd=consumer)
+        run("test", "--package", "audit/cad_consumer", "--target", "js", "--deny-warn", cwd=consumer)
+        print(f"Archive contents and five public JS consumer tests verified; workspace retained at {work}")
+        return
     run("check", "--target", "all", "--deny-warn", cwd=consumer)
     for target in ("wasm", "wasm-gc", "js", "native"):
         run("test", "--target", target, cwd=consumer)

@@ -4,7 +4,7 @@
 
 ## 安装与版本
 
-首个发布版本 `0.1.0`：[Mooncakes 包页面](https://mooncakes.io/docs/mik1e80/cad_sketch)。源码仓库：[moonbit-cad-sketch](https://github.com/mik1e80/moonbit-cad-sketch)。模块名：`mik1e80/cad_sketch`。
+当前版本 `0.2.1`：[Mooncakes 包页面](https://mooncakes.io/docs/mik1e80/cad_sketch)。源码仓库：[moonbit-cad-sketch](https://github.com/mik1e80/moonbit-cad-sketch)。模块名：`mik1e80/cad_sketch`。
 
 在已有 MoonBit 项目的根目录运行：
 
@@ -73,7 +73,7 @@ if s.set_constraint(dimension, Distance(a, b, 7.0)) {
 }
 ```
 
-进行源码开发时，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["moonbit-cad-sketch", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员。普通使用者直接用上面的 `moon add` 安装即可。
+进行源码开发时，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["moonbit-cad-sketch", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.2.1" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员。普通使用者直接用上面的 `moon add` 安装即可。
 
 ## 运行案例
 

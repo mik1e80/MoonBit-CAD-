@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "module": "mik1e80/cad_sketch",
+  "version": "0.2.1",
+  "target": "js",
+  "consumer_created_by_moon_new": true,
+  "consumer_outside_repository": true,
+  "workspace_or_path_override": false,
+  "fresh_project_dependency_directory": true,
+  "dependency_source": "Mooncakes registry",
+  "registry_index_refresh_failed": false,
+  "registry_cache_used": false,
+  "commands": [
+    {
+      "command": [
+        "moon",
+        "version",
+        "--all"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "new",
+        "consumer",
+        "--user",
+        "consumer_test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "add",
+        "mik1e80/cad_sketch"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "info"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "fmt"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "moon",
+        "run",
+        "cmd/main",
+        "--target",
+        "js",
+        "--deny-warn"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "run": {
+    "exit_code": 0,
+    "edited_length": 6.9999999993777795,
+    "expected_length": 7.0,
+    "tolerance": 1e-06
+  },
+  "svg_xml_verified": true,
+  "uploaded_archive_sha256": "8615e81634844e7c47c306993d056dec55d857f7b82837922cc6cea2bca7cc36",
+  "registry_download_matches_archive": true,
+  "matched_archive_files": 110,
+  "consumer_source_sha256": {
+    "moon.pkg": "54efb698cac15320265b8873a62c32ace27f0a41e6d4d408eb051bbb3ecdfcad",
+    "consumer.mbt": "86ca2bc3a023d2efab27d1c9abb57191799f8b50df50bca5b12f1337aa5221e8",
+    "consumer_test.mbt": "faf5b65118bc8d67d33553f63bfa5861fede46f0c3d233d36e6ab5c6184d5596",
+    "cmd/main/moon.pkg": "238ed5eefa155865af3b898f44263652f42f4926893d35229861ad07608bed36",
+    "cmd/main/main.mbt": "3408d6293482bb3b890b4de2f200d053e6e020b4b7f1e3f942a8f9db369dcbeb"
+  },
+  "toolchain": {
+    "moon": "0.1.20261012",
+    "moonc": "v0.10.15+943464bfa",
+    "moonrun": "0.1.20261012"
+  },
+  "repository_regression_suite_executed": false,
+  "date": "2026-10-22",
+  "note": "Actual registry installation; no workspace override, three JS tests and executable SVG XML validation."
+}

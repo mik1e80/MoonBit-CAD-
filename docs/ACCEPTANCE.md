@@ -1,6 +1,6 @@
 # 验收前核对记录
 
-核对日期：2026-10-16。本文件记录代码证据与待完成事项，不表示组委会已批准项目。
+初次核对日期：2026-10-16；交付状态更新：2026-10-22。本文件记录代码证据与待完成事项，不表示组委会已批准项目。
 
 ## 对照来源
 
@@ -18,11 +18,11 @@
 | 源码公开，保留开发记录 | [GitHub 仓库](https://github.com/mik1e80/moonbit-cad-sketch)；使用 `git log --oneline`、`git rev-list --count HEAD` 复核历史，已保留首版及逐项完善提交；满足用户至少 10 条 commit 的要求，不伪造开发日期 |
 | 完成声明的核心功能 | 24 种小型二维草图关系；输入、数值及规模边界见 README，不声称完整 CAD、全局收敛、精确刚性判定或 DXF 集成 |
 | 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`examples/basic`、`cmd/edit_demo`；`moon add mik1e80/cad_sketch` 安装发布版本，本地 workspace 用于源码开发 |
-| CI 覆盖检查、构建、测试 | `.github/workflows/ci.yml` 执行格式、全目标零警告检查、构建、四后端测试、示例及发布包消费验证；验收时需以最新提交的实际 Actions 结果为准 |
+| CI 覆盖检查、构建、测试 | `.github/workflows/ci.yml` 默认对 wasm / wasm-gc / JS / native 执行静态检查、7 项 README 与 9 项 SVG 定向测试，JS 另运行 5 项包消费测试；完整回归与批量实验必须手动勾选。验收按对应提交的实际 Actions 结果区分冒烟与全量证据 |
 | 核心路径测试 | AD 差分、解析几何、机构运动、矛盾 / 冗余、启停、极端数值、跨草图误用、资源边界；已有失败反例先复现再修复 |
 | 开源和参考来源 | 完整 Apache-2.0 LICENSE；THIRD_PARTY_NOTICES.md 记录参考项目名称、链接、许可证和具体范围；没有第三方 CAD 样例或求解器代码进入源码包 |
 | AI 使用可解释 | docs/ARCHITECTURE.md 说明建模、数值步骤、质量边界及 AI 协作；参赛者仍需掌握并解释这些内容 |
-| Mooncakes 发布 | `mik1e80/cad_sketch@0.1.0` 通过 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 分发；发布记录和独立安装验证见 [PUBLISHING](PUBLISHING.md) |
+| Mooncakes 发布 | `mik1e80/cad_sketch@0.2.1` 通过 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 分发；发布记录和独立安装验证见 [PUBLISHING](PUBLISHING.md) |
 
 ## 本次重点修复
 
@@ -137,3 +137,12 @@ Python / SciPy 位于可选开发目录，使用独立依赖文件，通过 `.mo
 ## 2026-10-22 完整 Consumer Test
 
 在仓库外用 `moon new consumer` 创建项目，从注册表安装 0.1.0，完成最小程序、两项 JS 测试及 `moon run cmd/main` 实际执行。索引刷新成功并使用标准缓存；未使用 path 或本地 workspace。实际编辑尺寸为 6.9999999993777795，满足目标 7 的 1e-6 容差。流程、代码和单独记录见 [Consumer Test](CONSUMER_TEST.md)。仅运行消费项目检查，未执行库的全量测试或再次发布。
+
+
+## 2026-10-22 按用户最终交付标准补齐
+
+- Mooncakes 0.2.1 正式发布，包含 SVG 导出及当前仓库元数据；独立注册表消费检查的 3 项测试、实际程序输出、SVG XML 与归档一致性均通过。见[发布回执](releases/0.2.1.json)及[消费记录](releases/consumer-0.2.1.json)。
+- GitHub 对应版本为 [v0.2.1](https://github.com/mik1e80/moonbit-cad-sketch/releases/tag/v0.2.1)，Release 验证附件记录确切提交、正式 tag 与实际 Actions 结果。
+- 默认 CI 在四后端分别执行 7 项公开接口与 9 项 SVG 测试，JS 另执行 5 项源码归档消费测试；这属于定向冒烟，不能称为最新版全量回归通过。完整验证仍需维护者手动勾选。
+- 修复包消费检查在 workspace 中意外扩大测试范围的问题，并修复多行 SVG 的 XML 提取。首次旧路径意外执行了 112 项 JS 测试，均通过；修复后默认只运行 5 项消费测试。
+- 400 配置、1000 随机初值、SciPy 参考与四档 Benchmark 的历史数据继续保留其原始指纹；本版未重测，不作为本版全量验证声明。诊断排序继续明确为启发式，不承诺最小冲突集。

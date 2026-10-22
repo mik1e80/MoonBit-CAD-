@@ -5,12 +5,56 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      full_regression:
+        description: 'Run the complete regression and generated-model suites (opt-in)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: moonbit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  smoke:
+    if: ${{ !inputs.full_regression }}
+    name: smoke (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [wasm, wasm-gc, js, native]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        if: matrix.target == 'js'
+        with:
+          python-version: '3.13'
+      - name: Install MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - name: Toolchain version
+        run: moon version --all
+      - name: Check formatting
+        if: matrix.target == 'js'
+        run: moon fmt --check
+      - name: Check selected target
+        run: moon check --target ${{ matrix.target }} --deny-warn
+      - name: Test public API examples
+        run: moon test README.mbt.md --target ${{ matrix.target }} --deny-warn
+      - name: Test SVG export
+        run: moon test svg_test.mbt --target ${{ matrix.target }} --deny-warn
+      - name: Verify lightweight source archive consumer
+        if: matrix.target == 'js'
+        run: python scripts/check_package.py
+
+  full:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.full_regression }}
+    name: full regression (manual)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -77,4 +121,4 @@ jobs:
             _build/bench/
           if-no-files-found: warn
       - name: Verify source archive and downstream consumer
-        run: python scripts/check_package.py
+        run: python scripts/check_package.py --full

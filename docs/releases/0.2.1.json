@@ -1,0 +1,44 @@
+{
+  "module": "mik1e80/cad_sketch",
+  "version": "0.2.1",
+  "publish_http_status": 200,
+  "uploaded_archive_sha256": "8615e81634844e7c47c306993d056dec55d857f7b82837922cc6cea2bca7cc36",
+  "schema": 1,
+  "date": "2026-10-22",
+  "registry": "https://mooncakes.io",
+  "package_url": "https://mooncakes.io/docs/mik1e80/cad_sketch",
+  "source_base_commit": "f0f47f0052bcbcbead02d3261b3a85b79f62865a",
+  "runtime_source_sha256": {
+    "moon.mod": "82b71c97de2d8a4143156a475139448d788087c345af123f8bebf75f955bfa07",
+    "moon.pkg": "cbf2b36a50b1ae9b86099c8f1485426a92d53f79e4b0a4d82f31cb6025e583b1",
+    "pkg.generated.mbti": "64b592c05dd07bc6f29ee258bc9cc5e1211a5005438b00e2a3183b22ffbdbfc8",
+    "model.mbt": "2d1fce5a8cb7935e5b1af4207a81cc8ac44c7182a18b64b74f806c697c7e86b3",
+    "validate.mbt": "3af42d4b307291fe3dbcdf3e8fb06f30d3718b608b248ca9fe347cd76cc29a7b",
+    "errors.mbt": "f316e2bf6bc919a75e1b5a4aa8b862071879118e582798bf0519880f3f716b61",
+    "residual.mbt": "58429600db70b45d4622c9761226408d2064ade32f9ab8c2a7816ff7a4db72e3",
+    "solver.mbt": "760126c365011f2217bd98f27b08c28532b0863716c6f24933abef3b0c2da684",
+    "linalg.mbt": "c63ff50f665d256836cbb06ec092cf18871dc9293cadd6e24e4f5df0ab03a9db",
+    "autodiff.mbt": "12de7969209027fb85e76a2becfb40259cc579a42b89e3d5fc4b59c35181a31e",
+    "svg.mbt": "d6d8b452f1ce67df88924aca83ba32f437e4ebad38d9d3118ac945a8ad61a664"
+  },
+  "registry_download_matches_archive": true,
+  "matched_archive_files": 110,
+  "consumer_js_tests": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "svg_xml_verified": true,
+  "toolchain": {
+    "moon": "0.1.20261012",
+    "moonc": "v0.10.15+943464bfa",
+    "moonrun": "0.1.20261012"
+  },
+  "full_regression_matrix_executed": false,
+  "legacy_workspace_check": {
+    "unintended_js_tests_before_fix": 112,
+    "passed": 112,
+    "fix": "Default package check now explicitly selects audit/cad_consumer (5 tests), full mode is opt-in."
+  },
+  "note": "Post-publication receipt. This receipt and the appended delivery evidence are not in the immutable archive. Historical model and benchmark snapshots were not refreshed."
+}

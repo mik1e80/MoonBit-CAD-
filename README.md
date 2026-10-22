@@ -2,7 +2,7 @@
 
 **Pure MoonBit 2D parametric sketch constraint solver.** 定义点、线和圆，添加几何与尺寸约束，求解草图；修改尺寸后再次求解。
 
-[![Mooncakes v0.1.0](https://img.shields.io/badge/Mooncakes-v0.1.0-blue)](https://mooncakes.io/docs/mik1e80/cad_sketch)
+[![Mooncakes v0.2.1](https://img.shields.io/badge/Mooncakes-v0.2.1-blue)](https://mooncakes.io/docs/mik1e80/cad_sketch)
 [![CI](https://github.com/mik1e80/moonbit-cad-sketch/actions/workflows/ci.yml/badge.svg)](https://github.com/mik1e80/moonbit-cad-sketch/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue)](LICENSE)
 
@@ -63,7 +63,7 @@ match sketch.solve_and_apply() {
 moon run examples/parametric_bracket --target js
 ```
 
-[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。以上三份 SVG 由核心库的 `sketch.to_svg()` 直接返回，同一视野、同一比例。[SVG 导出说明](docs/SVG_EXPORT.md)包含接口与生成命令；这是源码开发版新增功能，Mooncakes 0.1.0 尚不包含。
+[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。以上三份 SVG 由核心库的 `sketch.to_svg()` 直接返回，同一视野、同一比例。[SVG 导出说明](docs/SVG_EXPORT.md)包含接口与生成命令；此接口从 Mooncakes 0.2.1 起提供。
 
 ## Features
 
@@ -199,7 +199,7 @@ moon test README.mbt.md --target js
 
 ## Installation
 
-[Mooncakes：mik1e80/cad_sketch@0.1.0](https://mooncakes.io/docs/mik1e80/cad_sketch)。需 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` / `moonc 0.10.15+943464bfa` 验证。核心仅依赖 MoonBit core。Python、Node.js 和 SciPy 用于可选开发验证。
+[Mooncakes：mik1e80/cad_sketch@0.2.1](https://mooncakes.io/docs/mik1e80/cad_sketch)。需 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` / `moonc 0.10.15+943464bfa` 验证。核心仅依赖 MoonBit core。Python、Node.js 和 SciPy 用于可选开发验证。
 
 ```sh
 moon add mik1e80/cad_sketch

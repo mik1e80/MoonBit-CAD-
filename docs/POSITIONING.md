@@ -4,7 +4,7 @@
 
 MoonBit CAD Sketch 是面向 MoonBit 应用开发者的小型二维参数化草图约束求解库：将点、线、圆及设计关系转换为非线性方程，求解坐标与半径，并提供尺寸编辑后的重新求解和约束诊断。
 
-模块名为 `mik1e80/cad_sketch`。核心库使用纯 MoonBit 实现，仅依赖 MoonBit core，支持 wasm、wasm-gc、JS 和 native。当前源码版本为 `0.1.0`，发布状态以 [README](QUICK_START.md#安装与版本) 为准。
+模块名为 `mik1e80/cad_sketch`。核心库使用纯 MoonBit 实现，仅依赖 MoonBit core，支持 wasm、wasm-gc、JS 和 native。当前源码版本为 `0.2.1`，发布状态以 [README](QUICK_START.md#安装与版本) 为准。
 
 ## 面向谁，解决什么问题
 
@@ -71,8 +71,8 @@ MoonBit CAD Sketch 是面向 MoonBit 应用开发者的小型二维参数化草�
 | 工作 | 完成标准 |
 | --- | --- |
 | 完整参数化零件案例 | 已提供 [四孔安装板 Showcase](SHOWCASE.md)：尺寸与设计关系、求解前后图形、冲突恢复、可运行入口与独立结果校验 |
-| 批量稳定性验证 | 已提供 [Validation Suite](VALIDATION.md)：六组共 400 个固定种子模型配置、四后端独立残差 / 解析检查、成功率与失败分类；持续随 CI 复核限定模型范围 |
+| 批量稳定性验证 | 已提供 [Validation Suite](VALIDATION.md)：六组共 400 个固定种子模型配置、四后端独立残差 / 解析检查、成功率与失败分类；由维护者按需运行完整验证以复核限定模型范围 |
 | Benchmark | 已提供 [四档规模实测](BENCHMARK.md)：20～200 变量与约束、迭代、独立残差、状态、同机计时及原始数据；只声明已测模型与 JS release 范围 |
-| 包与版本交付 | `0.1.0` 通过 Mooncakes 分发，安装与复现见 [发布说明](PUBLISHING.md)；GitHub 正式 Release 属于后续独立事项 |
+| 包与版本交付 | `0.2.1` 通过 Mooncakes 分发，安装与复现见 [发布说明](PUBLISHING.md)；对应 GitHub tag / Release 为 `v0.2.1` |
 
 当前定位工作的完成标准是：README 和包说明能清楚交代目标用户、解决的问题、使用入口及能力边界；后续成果分别以可运行案例、测量数据和实际发布记录验收。

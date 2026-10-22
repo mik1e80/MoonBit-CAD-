@@ -92,4 +92,4 @@ SVG 使用返回坐标与半径绘制，前后采用同一比例。绘制时将�
 
 ## 核心库 SVG 输出（源码开发版）
 
-六条 JSON 事件现增加 `svg` 字段，由 `Sketch::to_svg()` 直接生成。运行 `python scripts/export_svg.py --write` 可保存独立的 `before.svg`、`after.svg` 和 `conflict.svg`，三张图使用同一视野与比例；冲突阶段只画保留几何。原有 Node 对比图和校验入口继续保留。[SVG 接口及文件说明](SVG_EXPORT.md)列出具体行为；当前发布的 0.1.0 尚不包含这个源码接口。
+六条 JSON 事件现增加 `svg` 字段，由 `Sketch::to_svg()` 直接生成。运行 `python scripts/export_svg.py --write` 可保存独立的 `before.svg`、`after.svg` 和 `conflict.svg`，三张图使用同一视野与比例；冲突阶段只画保留几何。原有 Node 对比图和校验入口继续保留。[SVG 接口及文件说明](SVG_EXPORT.md)列出具体行为；Mooncakes 0.2.0 起包含这个接口。

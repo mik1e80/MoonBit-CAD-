@@ -13,11 +13,13 @@ import re
 import shutil
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = "mik1e80/cad_sketch"
-VERSION = "0.1.0"
+VERSION = re.search(r'^version\s*=\s*"([^"]+)"', (ROOT / "moon.mod").read_text(encoding="utf-8"), re.M).group(1)
 LIBRARY = r'''///|
 pub fn edited_length() -> Double {
   let sketch = @sketch.Sketch::new()
@@ -51,6 +53,20 @@ pub fn rejects_invalid_radius() -> Bool {
     _ => false
   }
 }
+
+///|
+pub fn exported_svg() -> String {
+  let sketch = @sketch.Sketch::new()
+  let a = sketch.add_point(0.0, 0.0)
+  let b = sketch.add_point(7.0, 0.0)
+  sketch.add_line(a, b) |> ignore
+  sketch.add_circle(a, 2.0) |> ignore
+  sketch.to_svg(options={
+    ..@sketch.SvgOptions::default(),
+    title: "Consumer <SVG>",
+    show_points: false,
+  }).unwrap()
+}
 '''
 TESTS = '''///|
 test "installed library solves an edited dimension" {
@@ -61,6 +77,11 @@ test "installed library solves an edited dimension" {
 test "installed library exposes typed errors" {
   assert_true(@consumer.rejects_invalid_radius())
 }
+
+///|
+test "installed library exposes SVG export" {
+  assert_true(@consumer.exported_svg().contains("<title>Consumer &lt;SVG&gt;</title>"))
+}
 '''
 MAIN = r'''///|
 fn main {
@@ -69,6 +90,7 @@ fn main {
     abort("Wrong edited dimension")
   }
   println("Length after edit: \{length}")
+  println("SVG after edit: \{@consumer.exported_svg()}")
 }
 '''
 
@@ -76,6 +98,7 @@ fn main {
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "_build/consumer-test/latest.json")
+    parser.add_argument("--archive", type=Path, help="Compare every uploaded source file with the registry installation")
     args = parser.parse_args()
     executable = "moon.exe" if os.name == "nt" else "moon"
     moon = str(Path(os.environ["MOON_HOME"]) / "bin" / executable) if os.getenv("MOON_HOME") else shutil.which(executable)
@@ -112,6 +135,20 @@ def main() -> None:
     assert dependency.is_dir() and not dependency.is_symlink(), "Expected registry download"
     dependency_manifest = (dependency / "moon.mod").read_text(encoding="utf-8")
     assert re.search(rf'^version\s*=\s*"{re.escape(VERSION)}"', dependency_manifest, re.M)
+    archive_match = {}
+    if args.archive:
+        matched = 0
+        with zipfile.ZipFile(args.archive) as archive:
+            for item in archive.infolist():
+                if item.is_dir():
+                    continue
+                relative = item.filename.replace("\\", "/")
+                destination = (dependency / relative).resolve()
+                destination.relative_to(dependency.resolve())
+                assert archive.read(item) == destination.read_bytes(), f"Registry differs: {relative}"
+                matched += 1
+        archive_match = {"uploaded_archive_sha256": hashlib.sha256(args.archive.read_bytes()).hexdigest(),
+                         "registry_download_matches_archive": True, "matched_archive_files": matched}
 
     files = {
         "moon.pkg": 'import { "mik1e80/cad_sketch" @sketch, }\n\nimport { "consumer_test/consumer" @consumer, } for "test"\n',
@@ -125,12 +162,20 @@ def main() -> None:
     run("info", cwd=project)
     run("fmt", cwd=project)
     test_output = run("test", "--target", "js", "--deny-warn", cwd=project)
-    assert re.search(r"Total tests:\s*2, passed:\s*2, failed:\s*0", test_output), "Expected exactly two consumer tests"
+    assert re.search(r"Total tests:\s*3, passed:\s*3, failed:\s*0", test_output), "Expected exactly three consumer tests"
     output = run("run", "cmd/main", "--target", "js", "--deny-warn", cwd=project)
     match = re.search(r"^Length after edit: ([0-9.eE+-]+)\s*$", output, re.M)
     assert match, "Consumer executable did not report an actual result"
     length = float(match[1])
     assert math.isfinite(length) and abs(length - 7.0) < 1e-6
+    svg_match = re.search(r"^SVG after edit: (<svg\b.*?</svg>)", output, re.M | re.S)
+    assert svg_match, "Consumer executable did not export SVG"
+    svg = ET.fromstring(svg_match[1])
+    ns = "{http://www.w3.org/2000/svg}"
+    assert svg.tag == ns + "svg"
+    assert svg.find(ns + "title").text == "Consumer <SVG>"
+    assert len(svg.findall(".//" + ns + "line")) == 1
+    assert len(svg.findall(".//" + ns + "circle")) == 1
     source_hashes = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in files}
     report = {
         "schema": 1, "module": MODULE, "version": VERSION, "target": "js",
@@ -138,8 +183,10 @@ def main() -> None:
         "workspace_or_path_override": False, "fresh_project_dependency_directory": True,
         "dependency_source": "Mooncakes registry", "registry_index_refresh_failed": False,
         "registry_cache_used": "Using cached" in install_output, "commands": commands,
-        "tests": {"total": 2, "passed": 2, "failed": 0},
+        "tests": {"total": 3, "passed": 3, "failed": 0},
         "run": {"exit_code": 0, "edited_length": length, "expected_length": 7.0, "tolerance": 1e-6},
+        "svg_xml_verified": True,
+        **archive_match,
         "consumer_source_sha256": source_hashes,
         "toolchain": {name: match.group(1) for name in ("moon", "moonc", "moonrun")
                       if (match := re.search(rf"^{name} (\S+)", toolchain, re.M))},
