@@ -136,6 +136,8 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 共 24 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆弧、样条和不等式约束暂未实现。
 
+本轮聚焦 `Point`、`Line`、`Circle`，优先补齐稳定性验证、Benchmark 和包与版本交付。`Arc` 仅列为可选 P1，时间不足可跳过；椭圆、Bezier、Spline、NURBS 和独立 Polygon 类型暂缓。具体安排见[几何扩展优先级](docs/POSITIONING.md#几何扩展优先级)。
+
 `Mirror(a, b, axis)` 使两点的沿轴坐标相等、其中点到轴的带符号距离为零，两个残差都使用长度容差。允许两点在轴上重合；`Mirror(p, p, axis)` 等价于点落在轴上，仍保留沿轴自由度。轴需要非退化，不会自动固定；需固定轴时应约束端点。镜像圆可组合圆心的 `Mirror` 与半径的 `EqualRadius`。
 
 `InternalTangent(outer, inner)` 要求两圆心距离等于 `outer.radius-inner.radius`。外圆半径在初值和迭代中均须大于内圆，差值超过草图尺度的 `1e-12`；等半径圆不作为孤立内切接受。初始圆心重合时可能停滞，宜先设置不同圆心。
