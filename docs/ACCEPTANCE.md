@@ -15,7 +15,7 @@
 | 要求 | 本仓库证据与边界 |
 | --- | --- |
 | MoonBit 为主要实现语言 | 求解、自动微分、线性代数、验证和示例均为 MoonBit；Python 只做发布包及消费方验证，不参与求解运行时 |
-| 源码公开，保留开发记录 | [GitHub 仓库](https://github.com/mik1e80/MoonBit-CAD-)；使用 `git log --oneline`、`git rev-list --count HEAD` 复核历史，已保留首版及逐项完善提交；满足用户至少 10 条 commit 的要求，不伪造开发日期 |
+| 源码公开，保留开发记录 | [GitHub 仓库](https://github.com/mik1e80/moonbit-cad-sketch)；使用 `git log --oneline`、`git rev-list --count HEAD` 复核历史，已保留首版及逐项完善提交；满足用户至少 10 条 commit 的要求，不伪造开发日期 |
 | 完成声明的核心功能 | 24 种小型二维草图关系；输入、数值及规模边界见 README，不声称完整 CAD、全局收敛、精确刚性判定或 DXF 集成 |
 | 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`examples/basic`、`cmd/edit_demo`；`moon add mik1e80/cad_sketch` 安装发布版本，本地 workspace 用于源码开发 |
 | CI 覆盖检查、构建、测试 | `.github/workflows/ci.yml` 执行格式、全目标零警告检查、构建、四后端测试、示例及发布包消费验证；验收时需以最新提交的实际 Actions 结果为准 |

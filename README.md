@@ -6,6 +6,8 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 二维参数化草图约束求解库，提供草图建模、24 种几何与尺寸关系、参数编辑和求解诊断。核心仅依赖 MoonBit core。
 
+[GitHub 源码仓库](https://github.com/mik1e80/moonbit-cad-sketch) · [Mooncakes 包](https://mooncakes.io/docs/mik1e80/cad_sketch)
+
 [快速开始](docs/QUICK_START.md) · [约束](docs/CONSTRAINTS.md) · [求解](docs/SOLVER.md) · [诊断](docs/DIAGNOSTICS.md) · [限制](docs/LIMITATIONS.md) · [示例](examples/README.md)
 
 ## 使用示例

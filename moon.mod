@@ -4,7 +4,7 @@ version = "0.1.0"
 
 readme = "README.mbt.md"
 
-repository = "https://github.com/mik1e80/MoonBit-CAD-"
+repository = "https://github.com/mik1e80/moonbit-cad-sketch"
 
 license = "Apache-2.0"
 

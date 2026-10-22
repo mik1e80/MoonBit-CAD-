@@ -52,3 +52,14 @@ moon publish
 ## 完整 Consumer Test
 
 发布后的独立安装检查进一步补齐 `moon new → moon add → 最小示例 → moon test → moon run` 全流程；仓库外新项目的两个测试及可执行程序均通过。运行 `python scripts/check_consumer.py` 可复现，完整手工步骤、代码、缓存说明与真实结果见 [Consumer Test](CONSUMER_TEST.md)。该检查只使用公开发布的 0.1.0，未再次发布版本，也不执行库的全量回归。
+
+
+## 仓库名称与已发布版本
+
+GitHub 源码仓库使用 [mik1e80/moonbit-cad-sketch](https://github.com/mik1e80/moonbit-cad-sketch)，README 标题为 MoonBit CAD Sketch，Mooncakes 模块名继续为 `mik1e80/cad_sketch`。`moon.mod` 的 `repository`、克隆示例和源码文档链接均使用新地址。已有本地检出可执行：
+
+```sh
+git remote set-url origin https://github.com/mik1e80/moonbit-cad-sketch.git
+```
+
+已发布的 0.1.0 归档包含发布时的原仓库地址，归档保持不可变；本次重命名不重新发布该版本，也不修改原发布回执、源码指纹或历史测量。新地址随后续版本元数据发布。
