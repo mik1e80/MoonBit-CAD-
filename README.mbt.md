@@ -12,7 +12,8 @@ moon add mik1e80/cad_sketch
 
 再在 `moon.pkg` 中导入：
 
-```moonbit
+```moonbit nocheck
+///|
 import {
   "mik1e80/cad_sketch" @sketch,
 }
@@ -184,3 +185,23 @@ test "mirror a hole center about a vertical construction line" {
 需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
 
 核心库仅依赖 MoonBit core，无 C/C++ 或 JS 求解器依赖。使用者通过几何关系调用，无需提供方程或导数。算法实现与高级设置见[内部实现](docs/ARCHITECTURE.md)，参考来源和许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+
+## SVG 输出（源码开发版）
+
+`to_svg()` 返回当前保存几何的 SVG 字符串，保留草图不变。它是源码开发版新增接口，已发布的 0.1.0 尚不包含；选项、共享比例和三阶段图形见 [SVG_EXPORT](docs/SVG_EXPORT.md)。
+
+```mbt check
+///|
+test "export stored sketch geometry to SVG" {
+  let s = @sketch.Sketch::new()
+  let a = s.add_point(0.0, 0.0)
+  let b = s.add_point(5.0, 2.0)
+  s.add_line(a, b) |> ignore
+  s.add_circle(a, 1.0) |> ignore
+  let svg = s.to_svg().unwrap()
+  assert_true(svg.contains("data-line=\"0\""))
+  assert_true(svg.contains("data-circle=\"0\""))
+  assert_eq(s.point(b).unwrap().x, 5.0)
+}
+```

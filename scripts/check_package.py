@@ -39,6 +39,8 @@ def main() -> None:
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
         "CHANGELOG.md", "docs/PUBLISHING.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
+        "svg.mbt", "svg_test.mbt", "docs/SVG_EXPORT.md", "scripts/export_svg.py",
+        "docs/images/svg-export/before.svg", "docs/images/svg-export/after.svg", "docs/images/svg-export/conflict.svg",
         "errors.mbt", "model.mbt", "solver.mbt", "pkg.generated.mbti", "examples/mirror_holes/main.mbt",
         "examples/parametric_bracket/main.mbt", "examples/parametric_bracket/moon.pkg",
         "examples/parametric_bracket/bracket_wbtest.mbt", "examples/parametric_bracket/pkg.generated.mbti",

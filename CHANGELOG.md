@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- 新增纯 MoonBit `Sketch::to_svg()`、`SvgOptions` 与共享世界坐标 `SvgBounds`。
+- 安装板示例提供修改前、修改后与冲突保留的三份独立 SVG，以及定向校验脚本。
+- 此接口尚未发布到 Mooncakes，既有 0.1.0 归档保持不变。
+
 ## 0.1.0 — 2026-10-22
 
 首个 Mooncakes 版本：`mik1e80/cad_sketch`。

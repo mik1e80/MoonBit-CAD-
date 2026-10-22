@@ -48,13 +48,22 @@ match sketch.solve_and_apply() {
 
 同一份四孔安装板草图，将板宽 120→160、孔半径 5→8、水平孔心边距 20→30。四孔位置由镜像、等半径和边距关系共同求解，编辑时只修改尺寸约束。
 
-![安装板尺寸编辑前后的实际求解结果](docs/images/bracket-before-after.svg)
+| 修改尺寸前 | 修改尺寸后 |
+| --- | --- |
+| ![修改前](docs/images/svg-export/before.svg) | ![修改后](docs/images/svg-export/after.svg) |
+
+<details>
+<summary>冲突阶段：保存几何保持不变</summary>
+
+![冲突后保留已保存几何](docs/images/svg-export/conflict.svg)
+
+</details>
 
 ```sh
 moon run examples/parametric_bracket --target js
 ```
 
-[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。图形由实际求解坐标生成，[建模关系和独立校验](docs/SHOWCASE.md)均可复现。
+[安装板案例](examples/parametric_bracket/README.md)展示尺寸联动，以及冲突编辑后的几何保留与恢复。以上三份 SVG 由核心库的 `sketch.to_svg()` 直接返回，同一视野、同一比例。[SVG 导出说明](docs/SVG_EXPORT.md)包含接口与生成命令；这是源码开发版新增功能，Mooncakes 0.1.0 尚不包含。
 
 ## Features
 
@@ -63,6 +72,7 @@ moon run examples/parametric_bracket --target js
 - **参数编辑**：修改尺寸、启停或永久删除约束，再次求解。
 - **结果应用**：只有全部启用关系达标时，`solve_and_apply()` 才写回几何。
 - **诊断**：类型化错误、状态、逐约束残差和局部自由度。
+- **SVG 输出（源码开发版）**：`to_svg()` 导出保存几何，支持自动适配和共享视野。
 - **运行时**：纯 MoonBit，仅依赖 MoonBit core；支持 wasm、wasm-gc、JS 和 native。
 
 <details>

@@ -327,10 +327,26 @@ fn Bracket::emit(
       "{\"id\":\{residual.id.index()},\"active\":\{residual.active},\"length_error\":\{residual.length_error},\"angular_error\":\{residual.angular_error},\"tolerance_ratio\":\{residual.tolerance_ratio}}"
   }
   residuals = residuals + "]"
+  let title = match stage {
+    "initial" =>
+      "BEFORE: \{p.width} x \{p.height} | R\{p.hole_radius} | horizontal margin \{p.horizontal_margin}"
+    "edited" =>
+      "AFTER: \{p.width} x \{p.height} | R\{p.hole_radius} | horizontal margin \{p.horizontal_margin}"
+    "conflict" =>
+      "CONFLICT: widths \{p.width} and \{p.width + 10.0} | stored geometry retained"
+    _ => "CAD sketch: " + stage
+  }
+  let svg = s
+    .to_svg(options={
+      ..@sketch.SvgOptions::default(),
+      title,
+      bounds: Some({ min_x: -12.0, min_y: -12.0, max_x: 180.0, max_y: 100.0, }),
+    })
+    .unwrap()
   let corners = points_json(s, self.corners)
   let axes = points_json(s, self.axis_points)
   println(
-    "{\"stage\":\"\{stage}\",\"parameters\":{\"width\":\{p.width},\"height\":\{p.height},\"hole_radius\":\{p.hole_radius},\"horizontal_margin\":\{p.horizontal_margin},\"vertical_margin\":\{p.vertical_margin}},\"constraint_ids\":{\"width\":\{self.width.index()},\"height\":\{self.height.index()},\"radius\":\{self.radius.index()},\"horizontal_margin\":\{self.horizontal_margin.index()},\"vertical_margin\":\{self.vertical_margin.index()},\"conflict\":\{self.conflict.index()}},\"geometry\":{\"corners\":\{corners},\"axis_points\":\{axes},\"holes\":\{holes}},\"report\":{\"status\":\"\{status}\",\"local_dof\":\{report.local_dof},\"variables\":\{report.variables},\"equations\":\{report.equations},\"iterations\":\{report.iterations},\"max_tolerance_ratio\":\{report.max_tolerance_ratio},\"residuals\":\{residuals}},\"applied\":\{report.is_satisfied()}}",
+    "{\"stage\":\"\{stage}\",\"parameters\":{\"width\":\{p.width},\"height\":\{p.height},\"hole_radius\":\{p.hole_radius},\"horizontal_margin\":\{p.horizontal_margin},\"vertical_margin\":\{p.vertical_margin}},\"constraint_ids\":{\"width\":\{self.width.index()},\"height\":\{self.height.index()},\"radius\":\{self.radius.index()},\"horizontal_margin\":\{self.horizontal_margin.index()},\"vertical_margin\":\{self.vertical_margin.index()},\"conflict\":\{self.conflict.index()}},\"geometry\":{\"corners\":\{corners},\"axis_points\":\{axes},\"holes\":\{holes}},\"report\":{\"status\":\"\{status}\",\"local_dof\":\{report.local_dof},\"variables\":\{report.variables},\"equations\":\{report.equations},\"iterations\":\{report.iterations},\"max_tolerance_ratio\":\{report.max_tolerance_ratio},\"residuals\":\{residuals}},\"applied\":\{report.is_satisfied()},\"svg\":\{svg.escape()}}",
   )
 }
 

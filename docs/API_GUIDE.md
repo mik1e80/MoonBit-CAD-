@@ -17,3 +17,8 @@
 ## 进阶入口
 
 范围与资源边界见 [LIMITATIONS](LIMITATIONS.md)。高级数值设置见 [SOLVER](SOLVER.md#容差与选项)，算法细节见 [ARCHITECTURE](ARCHITECTURE.md)。可执行公开接口示例保留在 [README.mbt.md](../README.mbt.md)。
+
+
+## SVG 导出（源码开发版）
+
+`Sketch::to_svg()` 返回当前保存几何的 SVG 字符串；可选设置画布、点标记、标题和共享视野。已发布的 Mooncakes 0.1.0 不含此新增接口。[完整用法与三阶段图形](SVG_EXPORT.md)说明校验、坐标方向和冲突保留语义。

@@ -97,6 +97,7 @@ pub fn Sketch::set_point(Self, PointId, Point) -> Bool
 pub fn Sketch::set_radius(Self, CircleId, Double) -> Bool
 pub fn Sketch::solve(Self, options? : SolveOptions) -> Result[Solution, SketchError]
 pub fn Sketch::solve_and_apply(Self, options? : SolveOptions) -> Result[Solution, SketchError]
+pub fn Sketch::to_svg(Self, options? : SvgOptions) -> Result[String, SketchError]
 
 pub(all) enum SketchError {
   InvalidGeometry(String)
@@ -150,6 +151,25 @@ pub(all) enum SolveStatus {
   IterationLimit
 } derive(@debug.Debug)
 pub fn SolveStatus::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SvgBounds {
+  min_x : Double
+  min_y : Double
+  max_x : Double
+  max_y : Double
+} derive(@debug.Debug)
+pub fn SvgBounds::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SvgOptions {
+  width : Int
+  height : Int
+  padding : Double
+  title : String
+  show_points : Bool
+  bounds : SvgBounds?
+} derive(@debug.Debug)
+pub fn SvgOptions::default() -> Self
+pub fn SvgOptions::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
