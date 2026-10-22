@@ -61,6 +61,9 @@ jobs:
           node scripts/validation_suite.cjs --check --target native
       - name: Measure 1000 randomized triangle initializations
         run: node scripts/random_triangle.cjs --check --target js
+      # Full benchmark measurements stay opt-in; this is only the smallest case.
+      - name: Check benchmark smoke case
+        run: node scripts/benchmark.cjs --smoke --target js
       - name: Save validation cases and failure classifications
         if: always()
         uses: actions/upload-artifact@v7
@@ -69,6 +72,7 @@ jobs:
           path: |
             _build/validation/
             _build/random-triangle/
+            _build/bench/
           if-no-files-found: warn
       - name: Verify source archive and downstream consumer
         run: python scripts/check_package.py

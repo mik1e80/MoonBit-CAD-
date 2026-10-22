@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "workload": "triangulated-zigzag-v1",
+  "target": "js",
+  "build": "release",
+  "smoke": false,
+  "warmups_per_case": 1,
+  "repetitions_per_case": 3,
+  "length_tolerance": 1e-7,
+  "cases": [
+    {
+      "case": "Small",
+      "points": 10,
+      "variables": 20,
+      "constraints": 20,
+      "equations": 22,
+      "repetitions": 3,
+      "verified_successes": 3,
+      "reported_status_counts": {
+        "Satisfied": 3
+      },
+      "iterations": {
+        "min": 4,
+        "median": 4,
+        "max": 4
+      },
+      "solve_us": {
+        "min": 608.8999999999985,
+        "median": 747.399999999999,
+        "max": 966.3000000000004
+      },
+      "max_independent_length_error": 7.768270471331107e-10,
+      "max_tolerance_ratio": 0.007768270471331107,
+      "max_coordinate_error": 1.6396680013741616e-8
+    },
+    {
+      "case": "Medium",
+      "points": 30,
+      "variables": 60,
+      "constraints": 60,
+      "equations": 62,
+      "repetitions": 3,
+      "verified_successes": 3,
+      "reported_status_counts": {
+        "Satisfied": 3
+      },
+      "iterations": {
+        "min": 6,
+        "median": 6,
+        "max": 6
+      },
+      "solve_us": {
+        "min": 2655.9000000000024,
+        "median": 2947.200000000002,
+        "max": 4767.299999999998
+      },
+      "max_independent_length_error": 1.1813473310695599e-8,
+      "max_tolerance_ratio": 0.11813473310695599,
+      "max_coordinate_error": 0.000001653950740809762
+    },
+    {
+      "case": "Large",
+      "points": 60,
+      "variables": 120,
+      "constraints": 120,
+      "equations": 122,
+      "repetitions": 3,
+      "verified_successes": 3,
+      "reported_status_counts": {
+        "Satisfied": 3
+      },
+      "iterations": {
+        "min": 8,
+        "median": 8,
+        "max": 8
+      },
+      "solve_us": {
+        "min": 16730.699999999997,
+        "median": 17367.599999999995,
+        "max": 17644.800000000003
+      },
+      "max_independent_length_error": 5.489657173285423e-9,
+      "max_tolerance_ratio": 0.05489657173285423,
+      "max_coordinate_error": 0.000002823112928984628
+    },
+    {
+      "case": "Stress",
+      "points": 100,
+      "variables": 200,
+      "constraints": 200,
+      "equations": 202,
+      "repetitions": 3,
+      "verified_successes": 3,
+      "reported_status_counts": {
+        "Satisfied": 3
+      },
+      "iterations": {
+        "min": 8,
+        "median": 8,
+        "max": 8
+      },
+      "solve_us": {
+        "min": 61741.900000000016,
+        "median": 62483.49999999999,
+        "max": 63012.39999999999
+      },
+      "max_independent_length_error": 7.1658545763853e-8,
+      "max_tolerance_ratio": 0.71658545763853,
+      "max_coordinate_error": 0.00009897226317168162
+    }
+  ],
+  "measured_solves": 12,
+  "verified_successes": 12,
+  "checker_mutations_passed": 3,
+  "failures": [],
+  "source_files": [
+    "bench/main.mbt",
+    "bench/moon.pkg",
+    "scripts/benchmark.cjs",
+    "model.mbt",
+    "solver.mbt",
+    "validate.mbt",
+    "residual.mbt",
+    "autodiff.mbt",
+    "linalg.mbt"
+  ],
+  "source_sha256": "3e78d4f257624206617b83530bbc8a5e5c9980bd08dce87a651c700175f9daa3",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 9 8945HX with Radeon Graphics        ",
+    "logical_cpus": 32,
+    "memory_bytes": 33342455808,
+    "node": "v24.19.0",
+    "moon": "moon 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moon.exe\nmoonc v0.10.15+943464bfa (2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonc.exe\nmoonrun 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+  },
+  "cases_csv_sha256": "5fe1c1858f3b5fcf9b254aed652f21c11713371885b746116bc2f42ecbf6ac1f"
+}

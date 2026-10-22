@@ -1,0 +1,9 @@
+import {
+  "mik1e80/cad_sketch" @sketch,
+  "moonbitlang/core/bench" @clock,
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/core/math",
+}
+
+pkgtype(kind: "executable")

@@ -60,6 +60,9 @@ def main() -> None:
         "docs/validation-results/random-triangle-js.csv",
         "docs/SCIPY_REFERENCE.md", "docs/validation-results/scipy-reference-js.json",
         "docs/validation-results/scipy-reference-js.csv",
+        "bench/main.mbt", "bench/moon.pkg", "bench/pkg.generated.mbti",
+        "scripts/benchmark.cjs", "docs/BENCHMARK.md",
+        "docs/benchmarks/js.json", "docs/benchmarks/js.csv",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()

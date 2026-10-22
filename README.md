@@ -6,7 +6,7 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [400 模型验证](#validation-suite) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [400 模型验证](#validation-suite) · [Benchmark](#benchmark) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
 
 ## Validation Suite
 
@@ -38,6 +38,21 @@ node scripts/random_triangle.cjs --check --target js
 ### SciPy 开发参考对照
 
 另以相同输入对比 MoonBit JS 与 SciPy `least_squares`：500 个配置均达到预设的残差与几何比较标准，其中 200 个含圆。最大坐标差 / scale 为 2.72e-7，最大半径差 / scale 为 1.14e-7；自由三角形先做刚体对齐。[对照方法、阈值和真实逐项数据](docs/SCIPY_REFERENCE.md)说明了适用范围。Python 仅为可选开发工具，排除在发布库之外；正式运行时仍为纯 MoonBit。
+
+## Benchmark
+
+JS release 实测，同一种相连三角化折线模型；每档预热一次、从相同初值求解三次：
+
+| Case | Points | Vars | Constraints | Iterations | Status | 最大长度残差 |
+| --- | ---: | ---: | ---: | ---: | --- | ---: |
+| Small | 10 | 20 | 20 | 4 | Satisfied，3/3 | 7.77e-10 |
+| Medium | 30 | 60 | 60 | 6 | Satisfied，3/3 | 1.18e-8 |
+| Large | 60 | 120 | 120 | 8 | Satisfied，3/3 | 5.49e-9 |
+| Stress | 100 | 200 | 200 | 8 | Satisfied，3/3 | 7.17e-8 |
+
+[Benchmark 方法、机器环境、耗时与逐次数据](docs/BENCHMARK.md)明确了计时范围和模型边界。这些是固定模型的重复测量，不代表任意同规模草图的成功率或跨电脑性能。
+
+日常轻量复现：`node scripts/benchmark.cjs --smoke --target js`。
 
 ## Parametric Bracket Demo
 

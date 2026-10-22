@@ -16,6 +16,8 @@
 
 [SciPy 开发参考对照](docs/SCIPY_REFERENCE.md)另验证 500 个同输入配置的坐标、半径和残差。Python / SciPy 工具不进入发布库，核心仍是纯 MoonBit runtime。
 
+[Benchmark](docs/BENCHMARK.md)提供 10/30/60/100 点、20/60/120/200 条约束的 JS release 实测，保存迭代、收敛状态、独立残差及限定环境下的耗时。日常可用 `node scripts/benchmark.cjs --smoke --target js` 只检查最小模型。
+
 需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
 
 下面的公开接口示例随 `moon test` 执行：
