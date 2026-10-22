@@ -6,7 +6,55 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [400 模型验证](#validation-suite) · [Benchmark](#benchmark) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+[使用示例](#使用示例) · [API 指南](docs/API_GUIDE.md) · [安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [400 模型验证](#validation-suite) · [Benchmark](#benchmark) · [能力图](#能力图) · [项目定位与范围](docs/POSITIONING.md) · [内部实现](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+
+## 使用示例
+
+日常使用只需：创建几何 → 添加约束 → 求解 → 编辑尺寸 → 查看诊断。默认选项即可开始；[API 使用指南](docs/API_GUIDE.md)按这五步介绍接口。
+
+在使用者的 `moon.pkg` 中导入：
+
+```moonbit
+import {
+  "mik1e80/cad_sketch" @sketch,
+}
+```
+
+下面这段示例也作为公开接口测试运行，完整版本见 [README.mbt.md](README.mbt.md)。
+
+```moonbit
+let s = @sketch.Sketch::new()
+let a = s.add_point(0.0, 0.0)
+let b = s.add_point(3.0, 0.5)
+let line = s.add_line(a, b)
+s.constrain(Fix(a, 0.0, 0.0)) |> ignore
+s.constrain(Horizontal(line)) |> ignore
+let dimension = s.constrain(Distance(a, b, 5.0))
+
+match s.solve_and_apply() {
+  Ok(solution) => {
+    if solution.report.is_satisfied() {
+      let p = s.point(b).unwrap()
+      println("B = (\{p.x}, \{p.y})") // 接近 (5, 0)
+    } else {
+      for finding in solution.report.likely_conflicts() {
+        println("约束 #\{finding.id.index()}：误差比 \{finding.tolerance_ratio}")
+      }
+    }
+  }
+  Err(message) => println(message)
+}
+
+// 修改尺寸后，以已有坐标为初值继续求解。
+if s.set_constraint(dimension, Distance(a, b, 7.0)) {
+  match s.solve_and_apply() {
+    Ok(updated) => println("修改尺寸后达标：\{updated.report.is_satisfied()}")
+    Err(message) => println(message)
+  }
+}
+```
+
+发布前，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["MoonBit-CAD-", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员，无需注册表中已有包。不要把 `moon add mik1e80/cad_sketch` 当作已经可用的安装命令。
 
 ## Validation Suite
 
@@ -118,7 +166,7 @@ flowchart TD
 ```sh
 git clone https://github.com/mik1e80/MoonBit-CAD-.git
 cd MoonBit-CAD-
-moon test
+moon test README.mbt.md --target js
 moon run cmd/demo
 ```
 
@@ -127,43 +175,6 @@ moon run cmd/demo
 `moon run cmd/mirror_demo` 验证等半径镜像孔位：将对称轴从 `x=10` 移到 `x=12`，检查右孔中心从 `(14,3)` 移到 `(18,3)`，再验证冲突编辑不改变几何。
 
 `moon run cmd/edit_demo` 演示中心对称、带符号偏移、长度比例和内切圆组成的完整草图。程序检查解析坐标，启用冲突关系后确认失败不改变几何，再关闭冲突并修改尺寸继续求解；结果不符会以非零状态退出，CI 在 wasm 与 JS 上运行。
-
-## 使用示例
-
-在使用者的 `moon.pkg` 中导入：
-
-```moonbit
-import {
-  "mik1e80/cad_sketch" @sketch,
-}
-```
-
-下面这段示例也作为公开接口测试运行，完整版本见 [README.mbt.md](README.mbt.md)。
-
-```moonbit
-let s = @sketch.Sketch::new()
-let a = s.add_point(0.0, 0.0)
-let b = s.add_point(3.0, 0.5)
-let line = s.add_line(a, b)
-s.constrain(Fix(a, 0.0, 0.0)) |> ignore
-s.constrain(Horizontal(line)) |> ignore
-let dimension = s.constrain(Distance(a, b, 5.0))
-
-match s.solve_and_apply() {
-  Ok(solution) => {
-    if solution.report.is_satisfied() {
-      let p = s.point(b).unwrap()
-      println("B = (\{p.x}, \{p.y})") // 接近 (5, 0)
-    }
-  }
-  Err(message) => println(message)
-}
-
-// 修改尺寸后，以已有坐标为初值继续求解。
-s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
-```
-
-发布前，可使用 MoonBit 的[本地 workspace](https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html#local-dependencies) 调用源码。在共同父目录创建 `moon.work`，例如 `members = ["MoonBit-CAD-", "my_app"]`；在 `my_app/moon.mod` 添加 `import { "mik1e80/cad_sketch@0.1.0" }`，再按上面的 `moon.pkg` 导入。workspace 优先解析本地成员，无需注册表中已有包。不要把 `moon add mik1e80/cad_sketch` 当作已经可用的安装命令。
 
 ## 支持的约束
 
@@ -182,7 +193,7 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 共 24 种约束。`Distance(..., 0)` 使用两个坐标差方程，避免零距离范数的奇异导数。`Parallel` 同时接受同向和反向线；`Angle` 区分有向线。圆弧、样条和不等式约束暂未实现。
 
-本轮聚焦 `Point`、`Line`、`Circle`，持续验证稳定性，优先补齐 Benchmark 和包与版本交付。`Arc` 仅列为可选 P1，时间不足可跳过；椭圆、Bezier、Spline、NURBS 和独立 Polygon 类型暂缓。具体安排见[几何扩展优先级](docs/POSITIONING.md#几何扩展优先级)。
+本轮聚焦 `Point`、`Line`、`Circle`，持续验证稳定性并维护 Benchmark，优先完善包与版本交付。`Arc` 仅列为可选 P1，时间不足可跳过；椭圆、Bezier、Spline、NURBS 和独立 Polygon 类型暂缓。具体安排见[几何扩展优先级](docs/POSITIONING.md#几何扩展优先级)。
 
 `Mirror(a, b, axis)` 使两点的沿轴坐标相等、其中点到轴的带符号距离为零，两个残差都使用长度容差。允许两点在轴上重合；`Mirror(p, p, axis)` 等价于点落在轴上，仍保留沿轴自由度。轴需要非退化，不会自动固定；需固定轴时应约束端点。镜像圆可组合圆心的 `Mirror` 与半径的 `EqualRadius`。
 
@@ -204,8 +215,8 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 | 字段 | 含义 |
 | --- | --- |
 | `status` | `Satisfied`：返回几何的每个残差分量均达标；`Stalled`：无法继续降低误差或输出坐标精度不足；`IterationLimit`：达到迭代次数上限 |
-| `local_dof` | 变量数减去当前雅可比矩阵的数值秩 |
-| `dependent_equations` | 方程数减去数值秩，表示当前点的一阶方程依赖 |
+| `local_dof` | 当前构型下估计的剩余自由度；为零不等于全局唯一解 |
+| `dependent_equations` | 可选高级诊断：当前构型下的相关方程数，技术定义见[内部实现](docs/ARCHITECTURE.md#自由度与失败的含义) |
 | `residuals` | 求解时每条现存约束的启用状态 `active`、最大长度误差、角度 / 方向误差、误差与容差之比；禁用项误差置零，已删除项不包含在新报告中 |
 | `unsatisfied()` | 误差与容差之比大于 1 的约束 |
 
@@ -219,21 +230,32 @@ s.set_constraint(dimension, Distance(a, b, 7.0)) |> ignore
 
 ## 数值范围与边界
 
-采用带列缩放和阻尼的 Gauss–Newton 迭代。前向自动微分计算雅可比，增广系统通过 Givens QR 求解，不显式形成正规方程。平移和统一长度缩放用于改善数值条件。求解结束后，直接以返回的世界坐标重新计算全部残差，不再将输出坐标归一化后判断，以免再次相消掩盖容差违例。点线距离先归一化线方向，避免先做大数 / 小数叉积造成溢出或下溢。
+初次使用无需设置数值算法。库负责把几何关系转成方程并求解，使用者通过尺寸、初值、状态和残差控制编辑流程。内部算法及高级数值设置见[技术说明](docs/ARCHITECTURE.md#数值求解)。
 
-默认 `SolveOptions`：长度容差 `1e-7`、角度 / 方向容差 `1e-8`、数值秩阈值 `1e-9`、最多 200 次迭代。长度沿用调用者单位；`Angle` 使用弧度，平行 / 垂直的方向残差分别为单位向量的叉积 / 点积。固定坐标同样受长度容差约束，并非精确算术常量。
+默认 `SolveOptions`：长度容差 `1e-7`、角度 / 方向容差 `1e-8`、最多 200 次迭代。长度沿用调用者单位；`Angle` 使用弧度。固定坐标同样受长度容差约束，并非精确算术常量。
 
 - 面向小型草图：最多 256 个标量变量、512 条线、512 条现存约束（包括禁用项，不包括已删除项）。点占 2 个变量，圆半径另占 1 个变量；同一中心点可复用。累计添加删除可以超过 512 次，编号不复用。
 - 坐标及长度输入必须有限，绝对值不超过 `1e100`。距离非负、半径严格为正；角度在 `[-2π, 2π]`。
 - `LengthRatio` 的比例必须有限、为正且不超过 `1e12`；残差为 `length(a)-ratio*length(b)`，按长度容差判断。极端比例仍受退化线长和浮点精度限制。
-- 长度容差 / 草图尺度需在 `[1e-14, 1e6]`；角度容差 `[1e-14, 0.1]`，秩阈值 `[1e-14, 0.01]`，迭代预算 `1..1000`。
+- 长度容差 / 草图尺度需在 `[1e-14, 1e6]`；角度容差 `[1e-14, 0.1]`，迭代预算 `1..1000`。其他高级设置见[技术说明](docs/ARCHITECTURE.md#数值求解)。
 - 初始线长不得为零。迭代中线长必须大于草图尺度的 `1e-12`，半径必须大于尺度的 `1e-14`。极端大小混合的模型可能被拒绝。
 - 非线性问题可能多解、翻转或停滞。初始几何应接近所需构型；改尺寸时可分小步求解。两点重合时再要求正距离，是可能停滞的奇异初值，可先分开两点。
 - 欠约束草图没有“离初值最近”的优化目标，自由方向可能漂移较远。应添加必要的定位关系；残差达标不等于最小位移。
-- 当前使用稠密矩阵，每次求解重新线性化；没有稀疏增量求解、全局搜索、拖拽优先级、几何对象删除、最小冲突证明和大型装配求解。
+- 当前面向小型草图，没有增量求解、全局搜索、拖拽优先级、几何对象删除、最小冲突证明和大型装配求解。
 - 这是一套库及命令行示例，尚未提供完整 CAD 编辑器、文件导入导出或 DXFKIT 集成。
 
 ## 验证
+
+日常改动优先选择相关检查，例如公开接口示例：
+
+```sh
+moon test README.mbt.md --target js
+```
+
+以下是维护者按需执行的完整验证，不是使用 API 的前置步骤：
+
+<details>
+<summary>完整验证命令</summary>
 
 ```sh
 moon fmt --check
@@ -252,7 +274,9 @@ moon run examples/four_bar
 node scripts/four_bar_showcase.cjs --check
 ```
 
-测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。全部 24 种约束的自动微分导数另外与中心差分对照；QR 和数值秩也有独立构造案例。测试通过不代表任意非线性草图均会收敛。
+</details>
+
+测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。内部数值算法的验证设计见[技术说明](docs/ARCHITECTURE.md#如何验证)。测试通过不代表任意非线性草图均会收敛。
 
 `python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板、四杆机构及 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
 
@@ -260,7 +284,7 @@ node scripts/four_bar_showcase.cjs --check
 
 ## 验收与技术说明
 
-[验收对照记录](docs/ACCEPTANCE.md) 区分仓库证据和未完成事项；[技术路径说明](docs/ARCHITECTURE.md) 解释建模、AD、阻尼 QR、局部秩与 AI 协作。正式章程要求 Mooncakes 发布，当前仅完成源码与打包验证，**尚不能视为全部验收条件已完成**。
+[验收对照记录](docs/ACCEPTANCE.md) 区分仓库证据和未完成事项；[技术路径说明](docs/ARCHITECTURE.md) 解释内部实现、数值边界及 AI 协作。正式章程要求 Mooncakes 发布，当前仅完成源码与打包验证，**尚不能视为全部验收条件已完成**。
 
 ## 与相关项目的区别
 

@@ -6,19 +6,7 @@
 
 源码版本 `0.1.0` 尚未发布到 Mooncakes；安装、完整约束表、诊断语义和数值边界见 [README.md](README.md)，目标用户与应用范围见 [项目定位与范围](docs/POSITIONING.md)。
 
-完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run cmd/bracket_demo`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
-
-机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
-
-[Validation Suite](docs/VALIDATION.md) 自动生成 400 个模型配置，分为基础解析、平移、旋转、缩放、固定种子初始扰动和极端尺寸六组；在四后端独立核对残差与解析坐标，并记录逐案例结果。运行 `node scripts/validation_suite.cjs --check --target js` 复现。结果仅代表文档中定义的小型模型和初值范围。
-
-另有 [3-4-5 三角形随机初值实验](docs/RANDOM_TRIANGLE.md)：六个坐标从 (-10,10) 生成，不固定位置与方向；JS 后端实测 1000 项 Satisfied、0 项 Stalled / IterationLimit / Invalid，全部通过独立边长检查。完整种子、初值和条件与结果一起保存。
-
-[SciPy 开发参考对照](docs/SCIPY_REFERENCE.md)另验证 500 个同输入配置的坐标、半径和残差。Python / SciPy 工具不进入发布库，核心仍是纯 MoonBit runtime。
-
-[Benchmark](docs/BENCHMARK.md)提供 10/30/60/100 点、20/60/120/200 条约束的 JS release 实测，保存迭代、收敛状态、独立残差及限定环境下的耗时。日常可用 `node scripts/benchmark.cjs --smoke --target js` 只检查最小模型。
-
-需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
+默认选项即可开始；[API 使用指南](docs/API_GUIDE.md)按几何、约束、求解、编辑和诊断介绍接口。需要 `moonc >= 0.10.15`。
 
 下面的公开接口示例随 `moon test` 执行：
 
@@ -145,4 +133,20 @@ test "mirror a hole center about a vertical construction line" {
 
 `moon run cmd/mirror_demo` 进一步演示等半径镜像孔位、平移对称轴后的尺寸联动及冲突编辑后的几何保留，并以解析坐标检查结果。
 
-核心库仅依赖 MoonBit core，无 C/C++ 或 JS 求解器依赖。参照 [SolveSpace 的约束建模需求](https://solvespace.com/constraints.pl)，独立实现前向自动微分、阻尼 Gauss–Newton 与增广 Givens QR。完整来源和许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+## 案例与验证
+
+完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run cmd/bracket_demo`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
+
+机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
+
+[Validation Suite](docs/VALIDATION.md) 自动生成 400 个模型配置，分为基础解析、平移、旋转、缩放、固定种子初始扰动和极端尺寸六组；在四后端独立核对残差与解析坐标，并记录逐案例结果。运行 `node scripts/validation_suite.cjs --check --target js` 复现。结果仅代表文档中定义的小型模型和初值范围。
+
+另有 [3-4-5 三角形随机初值实验](docs/RANDOM_TRIANGLE.md)：六个坐标从 (-10,10) 生成，不固定位置与方向；JS 后端实测 1000 项 Satisfied、0 项 Stalled / IterationLimit / Invalid，全部通过独立边长检查。完整种子、初值和条件与结果一起保存。
+
+[SciPy 开发参考对照](docs/SCIPY_REFERENCE.md)另验证 500 个同输入配置的坐标、半径和残差。Python / SciPy 工具不进入发布库，核心仍是纯 MoonBit runtime。
+
+[Benchmark](docs/BENCHMARK.md)提供 10/30/60/100 点、20/60/120/200 条约束的 JS release 实测，保存迭代、收敛状态、独立残差及限定环境下的耗时。日常可用 `node scripts/benchmark.cjs --smoke --target js` 只检查最小模型。
+
+需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
+
+核心库仅依赖 MoonBit core，无 C/C++ 或 JS 求解器依赖。使用者通过几何关系调用，无需提供方程或导数。算法实现与高级设置见[内部实现](docs/ARCHITECTURE.md)，参考来源和许可说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

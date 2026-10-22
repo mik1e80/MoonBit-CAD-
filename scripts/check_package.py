@@ -62,6 +62,7 @@ def main() -> None:
         "docs/validation-results/scipy-reference-js.csv",
         "bench/main.mbt", "bench/moon.pkg", "bench/pkg.generated.mbti",
         "scripts/benchmark.cjs", "docs/BENCHMARK.md",
+        "docs/API_GUIDE.md",
         "docs/benchmarks/js.json", "docs/benchmarks/js.csv",
     }
     with zipfile.ZipFile(archive) as bundle:
