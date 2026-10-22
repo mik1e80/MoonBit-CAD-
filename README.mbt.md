@@ -8,6 +8,8 @@
 
 完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run cmd/bracket_demo`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
 
+机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
+
 需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
 
 下面的公开接口示例随 `moon test` 执行：

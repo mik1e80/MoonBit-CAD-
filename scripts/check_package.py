@@ -43,6 +43,10 @@ def main() -> None:
         "cmd/bracket_demo/bracket_wbtest.mbt", "cmd/bracket_demo/pkg.generated.mbti",
         "docs/SHOWCASE.md", "docs/images/bracket-before-after.svg",
         "scripts/bracket_showcase.cjs", "docs/POSITIONING.md", "docs/ECOSYSTEM.md",
+        "examples/four_bar/main.mbt", "examples/four_bar/moon.pkg",
+        "examples/four_bar/four_bar_wbtest.mbt", "examples/four_bar/pkg.generated.mbti",
+        "examples/four_bar/README.md", "docs/images/four-bar-motion.svg",
+        "scripts/four_bar_showcase.cjs",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
@@ -120,7 +124,15 @@ test "mirror API from packaged source" {
         [node, "scripts/bracket_showcase.cjs", "--check"],
         cwd=package, check=True, timeout=180,
     )
-    print(f"Package, bracket showcase and downstream consumer verified; workspace retained at {work}")
+    subprocess.run(
+        [MOON, "run", "examples/four_bar"], cwd=package,
+        stdout=subprocess.DEVNULL, check=True, timeout=180,
+    )
+    subprocess.run(
+        [node, "scripts/four_bar_showcase.cjs", "--check"],
+        cwd=package, check=True, timeout=180,
+    )
+    print(f"Package, both showcases and downstream consumer verified; workspace retained at {work}")
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ Define points, lines and circles, add geometric or dimensional constraints, solv
 
 纯 MoonBit 的二维参数化草图约束求解库。定义点、线和圆，添加几何或尺寸约束，求解草图；修改尺寸后再次求解。
 
-[安装板案例](#parametric-bracket-demo) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
+[安装板案例](#parametric-bracket-demo) · [四杆机构](#four-bar-linkage) · [能力图](#能力图) · [使用示例](#使用示例) · [项目定位与范围](docs/POSITIONING.md) · [技术说明](docs/ARCHITECTURE.md) · [生态对比](docs/ECOSYSTEM.md)
 
 ## Parametric Bracket Demo
 
@@ -20,6 +20,19 @@ node scripts/bracket_showcase.cjs --check
 ```
 
 首条命令验证六个阶段并输出 JSON Lines；第二条需要 Node.js 18+，独立核对实际坐标并检查 SVG。案例还启用互相矛盾的宽度 160 与 170，验证失败时几何不变，关闭冲突后恢复。参数、建模关系、孔位结果及复现步骤见 [安装板案例说明](docs/SHOWCASE.md)。
+
+## Four-bar linkage
+
+固定 A=(0,0)、D=(80,0)，保持 AB=30、BC=70、CD=50；只修改 AB 相对 AD 的角度，以 15° 步长从 0° 连续求解到 180°，再返回 0°。同一草图共生成 25 个姿态，B、C 由上一成功构型继续求解。
+
+![四杆机构连续求解的轨迹与选定构型](docs/images/four-bar-motion.svg)
+
+```sh
+moon run examples/four_bar
+node scripts/four_bar_showcase.cjs --check
+```
+
+案例核对杆长、固定支点、装配分支、往返一致性，以及关闭 / 启用角度驱动时 1→0 的局部自由度变化，并输出完整 JSON 与 CSV。[机构建模与复现说明](examples/four_bar/README.md)介绍了参数选择和独立解析校验；这是运动学位置序列，未包含动力学或碰撞求解。
 
 ## 能力图
 
@@ -182,11 +195,13 @@ moon run cmd/edit_demo
 moon run cmd/mirror_demo
 moon run cmd/bracket_demo
 node scripts/bracket_showcase.cjs --check
+moon run examples/four_bar
+node scripts/four_bar_showcase.cjs --check
 ```
 
 测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。全部 24 种约束的自动微分导数另外与中心差分对照；QR 和数值秩也有独立构造案例。测试通过不代表任意非线性草图均会收敛。
 
-`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板案例与 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
+`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板、四杆机构及 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
 
 本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
 

@@ -49,5 +49,9 @@ jobs:
         run: |
           node scripts/bracket_showcase.cjs --check --target wasm
           node scripts/bracket_showcase.cjs --check --target js
+      - name: Verify four-bar continuation and committed SVG
+        run: |
+          node scripts/four_bar_showcase.cjs --check --target wasm
+          node scripts/four_bar_showcase.cjs --check --target js
       - name: Verify source archive and downstream consumer
         run: python scripts/check_package.py
