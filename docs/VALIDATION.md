@@ -63,3 +63,5 @@ CI 在四后端分别检查 400 个配置，上传 `validation-results` artifact
 原始汇总快照见 [wasm](validation-results/wasm.json)、[wasm-gc](validation-results/wasm-gc.json)、[JS](validation-results/js.json)、[native](validation-results/native.json)，保留环境、工具链及相关源码 SHA-256。源码指纹按文件名和统一换行的内容计算，涵盖生成器、检查器和核心求解源文件；`--check` 要求快照与当前源码一致，不要求不同系统得到逐位相同的浮点统计。修改这些源文件后，应审查结果并用 `--write` 为四个后端重新生成快照。
 
 400 个自动配置独立于原有测试框架的测试条目数；应分别报告回归测试数和模型配置数。
+
+接近目标构型的扰动测试之外，另有 [1000 项三角形随机初值实验](RANDOM_TRIANGLE.md)，其六个初始坐标直接从 (-10,10) 生成，只添加三条边长关系、保留 3 个自由度。该实验单独统计真实状态，未并入上面的 400 个配置或四后端成功率。

@@ -18,6 +18,23 @@ node scripts/validation_suite.cjs --check --target js
 
 当前 wasm、wasm-gc、JS、native 各 400/400 通过；CI 重跑全部四个后端，保存逐案例 JSON / CSV。测试范围为接近目标构型的小型模型，极端尺寸组同步缩放长度容差；数据与方法见 [Validation Suite](docs/VALIDATION.md)，其中说明种子、判定阈值、失败分类及四后端结果快照。
 
+### 3-4-5 triangle randomized initialization
+
+另在 JS 后端将 A、B、C 的六个初始坐标从 (-10,10) 随机生成，仅约束 AB=3、BC=4、AC=5，真实求解 **1000 个配置**，不重启或筛除失败样本。未固定位置与方向，解保留 3 个局部自由度。
+
+| 状态 | 实测数量 |
+| --- | ---: |
+| Satisfied | 1000 |
+| Stalled | 0 |
+| IterationLimit | 0 |
+| Invalid | 0 |
+
+全部成功项通过独立边长检查；迭代次数为 3～24。这是固定种子与范围下的观测，不是任意草图的成功率承诺。[实验方法、真实汇总与全部初值](docs/RANDOM_TRIANGLE.md)均可检查。
+
+```sh
+node scripts/random_triangle.cjs --check --target js
+```
+
 ## Parametric Bracket Demo
 
 用同一个草图建立 120×80 的四孔安装板，再将板宽 120→160、孔半径 5→8、水平孔心边距 20→30。四孔位置由镜像、等半径和孔心到板边的距离关系共同确定；每次编辑只修改尺寸约束。

@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "experiment": "3-4-5-triangle-random-initialization-v1",
+  "target": "js",
+  "cases": 1000,
+  "seed": 20261022,
+  "seed_step": 97,
+  "warmup": 5,
+  "coordinate_range": [
+    -10,
+    10
+  ],
+  "sides": [
+    3,
+    4,
+    5
+  ],
+  "length_tolerance": 1e-7,
+  "max_iterations": 200,
+  "anchors": false,
+  "expected_local_dof": 3,
+  "restarts_per_case": 0,
+  "counts": {
+    "Satisfied": 1000,
+    "Stalled": 0,
+    "IterationLimit": 0,
+    "Invalid": 0
+  },
+  "independently_verified_satisfied": 1000,
+  "verified_satisfaction_rate": 1,
+  "correctness_failures": [],
+  "checker_mutations": [
+    {
+      "category": "false_satisfaction",
+      "passed": true
+    },
+    {
+      "category": "non_finite_output",
+      "passed": true
+    },
+    {
+      "category": "failed_geometry_changed",
+      "passed": true
+    }
+  ],
+  "invalid_cases": [],
+  "nonconverged_cases": [],
+  "iterations": {
+    "min": 3,
+    "median": 4,
+    "max": 24
+  },
+  "max_verified_tolerance_ratio": 0.9387859467580029,
+  "source_sha256": "4f19c168da282855c7cd843c460137ebf0f000b5f8db13171a14493800eb85c5",
+  "source_files": [
+    "cmd/random_triangle/main.mbt",
+    "cmd/random_triangle/moon.pkg",
+    "scripts/random_triangle.cjs",
+    "model.mbt",
+    "solver.mbt",
+    "validate.mbt",
+    "residual.mbt",
+    "autodiff.mbt",
+    "linalg.mbt"
+  ],
+  "cases_csv_sha256": "a2a3bcac1b6cf6096fff28185173b3ffb7265798b5dfd0676bc4b8c36f33a199",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.19.0",
+    "moon": "moon 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moon.exe\nmoonc v0.10.15+943464bfa (2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonc.exe\nmoonrun 0.1.20261012 (748b63c 2026-10-12) ~\\AppData\\Local\\Temp\\moonbit-cad-toolchain-curl-20261015\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg"
+  }
+}

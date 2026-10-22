@@ -12,6 +12,8 @@
 
 [Validation Suite](docs/VALIDATION.md) 自动生成 400 个模型配置，分为基础解析、平移、旋转、缩放、固定种子初始扰动和极端尺寸六组；在四后端独立核对残差与解析坐标，并记录逐案例结果。运行 `node scripts/validation_suite.cjs --check --target js` 复现。结果仅代表文档中定义的小型模型和初值范围。
 
+另有 [3-4-5 三角形随机初值实验](docs/RANDOM_TRIANGLE.md)：六个坐标从 (-10,10) 生成，不固定位置与方向；JS 后端实测 1000 项 Satisfied、0 项 Stalled / IterationLimit / Invalid，全部通过独立边长检查。完整种子、初值和条件与结果一起保存。
+
 需要 `moonc >= 0.10.15`；已用 `moon 0.1.20261012` 和 `moonc 0.10.15+943464bfa` 验证。
 
 下面的公开接口示例随 `moon test` 执行：

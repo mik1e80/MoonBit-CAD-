@@ -54,6 +54,10 @@ def main() -> None:
         "docs/VALIDATION.md",
         "docs/validation-results/js.json", "docs/validation-results/wasm.json",
         "docs/validation-results/wasm-gc.json", "docs/validation-results/native.json",
+        "cmd/random_triangle/main.mbt", "cmd/random_triangle/moon.pkg",
+        "cmd/random_triangle/pkg.generated.mbti", "scripts/random_triangle.cjs",
+        "docs/RANDOM_TRIANGLE.md", "docs/validation-results/random-triangle-js.json",
+        "docs/validation-results/random-triangle-js.csv",
     }
     with zipfile.ZipFile(archive) as bundle:
         names = set()
