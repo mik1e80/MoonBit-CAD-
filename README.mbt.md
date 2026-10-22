@@ -6,6 +6,8 @@
 
 源码版本 `0.1.0` 尚未发布到 Mooncakes；安装、完整约束表、诊断语义和数值边界见 [README.md](README.md)，目标用户与应用范围见 [项目定位与范围](docs/POSITIONING.md)。
 
+完整文档入口：[快速开始](docs/QUICK_START.md)、[约束参考](docs/CONSTRAINTS.md)、[求解](docs/SOLVER.md)、[诊断](docs/DIAGNOSTICS.md)和[限制](docs/LIMITATIONS.md)。
+
 默认选项即可开始；[API 使用指南](docs/API_GUIDE.md)按几何、约束、求解、编辑和诊断介绍接口。需要 `moonc >= 0.10.15`。
 
 下面的公开接口示例随 `moon test` 执行：
@@ -147,11 +149,11 @@ test "mirror a hole center about a vertical construction line" {
 }
 ```
 
-`moon run cmd/mirror_demo` 进一步演示等半径镜像孔位、平移对称轴后的尺寸联动及冲突编辑后的几何保留，并以解析坐标检查结果。
+`moon run examples/mirror_holes` 进一步演示等半径镜像孔位、平移对称轴后的尺寸联动及冲突编辑后的几何保留，并以解析坐标检查结果。
 
 ## 案例与验证
 
-完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run cmd/bracket_demo`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
+完整零件案例见 [四孔安装板 Showcase](docs/SHOWCASE.md)：运行 `moon run examples/parametric_bracket`，依次修改板宽、孔半径和孔心边距，验证实际孔位、冲突保留与恢复，并提供可再生成的前后对比图。
 
 机构案例见 [Four-bar linkage](examples/four_bar/README.md)：运行 `moon run examples/four_bar`，仅修改角度约束，在同一草图中往返求解 25 个姿态，核对杆长、分支和局部自由度，并提供轨迹图与 JSON / CSV。
 

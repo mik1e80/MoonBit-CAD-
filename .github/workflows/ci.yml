@@ -38,13 +38,15 @@ jobs:
       - name: Test native
         run: moon test --target native
       - name: Run public API examples
-        run: moon run cmd/demo
+        run: |
+          moon run examples/basic
+          moon run examples/conflict --target js
       - name: Verify editing workflow and analytic coordinates
         run: |
           moon run cmd/edit_demo
           moon run cmd/edit_demo --target js
-          moon run cmd/mirror_demo
-          moon run cmd/mirror_demo --target js
+          moon run examples/mirror_holes
+          moon run examples/mirror_holes --target js
       - name: Verify parametric bracket and committed SVG
         run: |
           node scripts/bracket_showcase.cjs --check --target wasm

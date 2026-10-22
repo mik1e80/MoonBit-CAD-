@@ -11,7 +11,7 @@
 需要项目要求的 MoonBit 工具链（`moonc >= 0.10.15`）。仅运行示例不需要 Python 或 Node.js：
 
 ```sh
-moon run cmd/bracket_demo
+moon run examples/parametric_bracket
 ```
 
 程序按顺序输出六条 JSON Lines：`initial`、`widened`、`larger_holes`、`edited`、`conflict`、`recovered`。任何预期几何或失败恢复检查不符都会以非零状态退出。
@@ -40,7 +40,7 @@ SVG 使用返回坐标与半径绘制，前后采用同一比例。绘制时将�
 
 边距指**孔心到板边的距离**，不是孔壁净距。初始水平 / 垂直孔壁净距分别为 15 / 10，最终分别为 22 / 7。
 
-建模代码位于 [cmd/bracket_demo/main.mbt](../cmd/bracket_demo/main.mbt)，使用核心库的公开接口：
+建模代码位于 [examples/parametric_bracket/main.mbt](../examples/parametric_bracket/main.mbt)，使用核心库的公开接口：
 
 | 设计关系 | 使用的约束 | 方程数 |
 | --- | --- | --- |
@@ -84,7 +84,7 @@ SVG 使用返回坐标与半径绘制，前后采用同一比例。绘制时将�
 
 - MoonBit 示例对四个角点、四个构造轴端点、四个孔心和四个半径做解析核对。
 - Node 脚本从真实命令行输出做第二次独立核对，检查状态、参数、句柄、逐约束残差、失败保留和恢复，并验证 SVG 可再生成。
-- [额外测试](../cmd/bracket_demo/bracket_wbtest.mbt)从 105×65、R4、边距 17/12 改到 150×90、R6、边距 26/19，另覆盖板高和垂直边距变化，以及冲突恢复。
+- [额外测试](../examples/parametric_bracket/bracket_wbtest.mbt)从 105×65、R4、边距 17/12 改到 150×90、R6、边距 26/19，另覆盖板高和垂直边距变化，以及冲突恢复。
 - CI 对四后端运行单元测试，并在 wasm 与 JS 上运行 Showcase 检查。源码包检查要求案例、说明、SVG 和生成脚本都进入分发包，并在解包后的源码上重新运行案例与图形检查。
 
 本例的输入检查要求参数有限且为正，孔处于板内且互不相交；这属于这个安装板应用的参数范围检查，没有为核心库新增不等式或碰撞约束。它交付一个可运行、可检查、可视化的参数化零件案例，未新增交互式 CAD 编辑器、DXF/STEP 接口或 Mooncakes 发布。

@@ -17,7 +17,7 @@
 | MoonBit 为主要实现语言 | 求解、自动微分、线性代数、验证和示例均为 MoonBit；Python 只做发布包及消费方验证，不参与求解运行时 |
 | 源码公开，保留开发记录 | [GitHub 仓库](https://github.com/mik1e80/MoonBit-CAD-)；使用 `git log --oneline`、`git rev-list --count HEAD` 复核历史，已保留首版及逐项完善提交；满足用户至少 10 条 commit 的要求，不伪造开发日期 |
 | 完成声明的核心功能 | 24 种小型二维草图关系；输入、数值及规模边界见 README，不声称完整 CAD、全局收敛、精确刚性判定或 DXF 集成 |
-| 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`cmd/demo`、`cmd/edit_demo`；尚未发布时按本地 workspace 消费源码 |
+| 安装、使用、示例可复现 | README 与可执行 README.mbt.md，`examples/basic`、`cmd/edit_demo`；尚未发布时按本地 workspace 消费源码 |
 | CI 覆盖检查、构建、测试 | `.github/workflows/ci.yml` 执行格式、全目标零警告检查、构建、四后端测试、示例及发布包消费验证；验收时需以最新提交的实际 Actions 结果为准 |
 | 核心路径测试 | AD 差分、解析几何、机构运动、矛盾 / 冗余、启停、极端数值、跨草图误用、资源边界；已有失败反例先复现再修复 |
 | 开源和参考来源 | 完整 Apache-2.0 LICENSE；THIRD_PARTY_NOTICES.md 记录参考项目名称、链接、许可证和具体范围；没有第三方 CAD 样例或求解器代码进入源码包 |
@@ -30,7 +30,7 @@
 2. 世界坐标经过再次归一化时，容差边缘可能掩盖真实超标。现直接以返回坐标计算全部最终残差，并改进点线距离的数值稳定性。
 3. 参考来源说明补全许可证名称、原始许可链接和参考范围，区分实际核心依赖与需求 / 方法 / 生态比较来源。
 4. 新增 `Mirror(a,b,axis)` 直线轴对称关系；与中心对称分开说明。24 组旋转、平移、缩放及反向轴的解析反射对照，另测轴上重合、自镜像、非法归属和冲突回退。
-5. `cmd/mirror_demo` 提供镜像孔位与移动对称轴的完整使用流程，在 wasm 和 JS 的 CI 中执行；实际源码包的独立消费方另验证公开 Mirror 接口。
+5. `examples/mirror_holes` 提供镜像孔位与移动对称轴的完整使用流程，在 wasm 和 JS 的 CI 中执行；实际源码包的独立消费方另验证公开 Mirror 接口。
 
 ## 可复现命令
 
@@ -44,11 +44,11 @@ moon test --target wasm
 moon test --target wasm-gc
 moon test --target js
 moon test --target native
-moon run cmd/demo
+moon run examples/basic
 moon run cmd/edit_demo
 moon run cmd/edit_demo --target js
-moon run cmd/mirror_demo
-moon run cmd/mirror_demo --target js
+moon run examples/mirror_holes
+moon run examples/mirror_holes --target js
 python scripts/check_package.py
 git log --oneline
 git rev-list --count HEAD
@@ -64,7 +64,7 @@ git rev-list --count HEAD
 
 ## 2026-10-22 参数化安装板案例
 
-新增 [四孔安装板 Showcase](SHOWCASE.md) 与 `cmd/bracket_demo`。同一草图依次完成板宽 120→160、孔半径 5→8、水平孔心边距 20→30，输出真实坐标、原约束编号和逐约束诊断。构造轴由板边中点决定，四孔通过镜像、等半径和点线距离关系求解；编辑函数不直接设置目标坐标。
+新增 [四孔安装板 Showcase](SHOWCASE.md) 与 `examples/parametric_bracket`。同一草图依次完成板宽 120→160、孔半径 5→8、水平孔心边距 20→30，输出真实坐标、原约束编号和逐约束诊断。构造轴由板边中点决定，四孔通过镜像、等半径和点线距离关系求解；编辑函数不直接设置目标坐标。
 
 `node scripts/bracket_showcase.cjs --check` 独立核对四个角点、四个构造轴端点、四个孔心及四个半径，并检查已提交 SVG 与实际输出一致。额外启用宽度 170，验证未达标时全部 28 个几何数值不变；关闭冲突后恢复。JSON 中保存几何与候选报告的区别见案例说明。
 

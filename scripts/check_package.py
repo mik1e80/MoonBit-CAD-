@@ -38,9 +38,9 @@ def main() -> None:
     required = {
         "moon.mod", "moon.pkg", "LICENSE", "README.md", "README.mbt.md",
         "THIRD_PARTY_NOTICES.md", "docs/ARCHITECTURE.md", "docs/ACCEPTANCE.md",
-        "errors.mbt", "model.mbt", "solver.mbt", "pkg.generated.mbti", "cmd/mirror_demo/main.mbt",
-        "cmd/bracket_demo/main.mbt", "cmd/bracket_demo/moon.pkg",
-        "cmd/bracket_demo/bracket_wbtest.mbt", "cmd/bracket_demo/pkg.generated.mbti",
+        "errors.mbt", "model.mbt", "solver.mbt", "pkg.generated.mbti", "examples/mirror_holes/main.mbt",
+        "examples/parametric_bracket/main.mbt", "examples/parametric_bracket/moon.pkg",
+        "examples/parametric_bracket/bracket_wbtest.mbt", "examples/parametric_bracket/pkg.generated.mbti",
         "docs/SHOWCASE.md", "docs/images/bracket-before-after.svg",
         "scripts/bracket_showcase.cjs", "docs/POSITIONING.md", "docs/ECOSYSTEM.md",
         "examples/four_bar/main.mbt", "examples/four_bar/moon.pkg",
@@ -65,6 +65,14 @@ def main() -> None:
         "docs/API_GUIDE.md",
         "docs/benchmarks/js.json", "docs/benchmarks/js.csv",
     }
+    required.update(f"docs/{name}.md" for name in (
+        "QUICK_START", "CONSTRAINTS", "SOLVER", "DIAGNOSTICS", "LIMITATIONS",
+        "ECOSYSTEM", "VALIDATION", "ARCHITECTURE",
+    ))
+    required.add("examples/README.md")
+    required.update(f"examples/{name}/{file}" for name in (
+        "basic", "parametric_bracket", "mirror_holes", "four_bar", "conflict",
+    ) for file in ("README.md", "main.mbt", "moon.pkg", "pkg.generated.mbti"))
     with zipfile.ZipFile(archive) as bundle:
         names = set()
         for entry in bundle.infolist():
@@ -180,7 +188,11 @@ test "rank likely conflicts through the packaged public API" {
     for target in ("wasm", "wasm-gc", "js", "native"):
         run("test", "--target", target, cwd=consumer)
     subprocess.run(
-        [MOON, "run", "cmd/bracket_demo"], cwd=package,
+        [MOON, "run", "examples/parametric_bracket"], cwd=package,
+        stdout=subprocess.DEVNULL, check=True, timeout=180,
+    )
+    subprocess.run(
+        [MOON, "run", "examples/conflict", "--target", "js"], cwd=package,
         stdout=subprocess.DEVNULL, check=True, timeout=180,
     )
     node = shutil.which("node")

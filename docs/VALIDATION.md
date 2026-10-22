@@ -67,3 +67,44 @@ CI 在四后端分别检查 400 个配置，上传 `validation-results` artifact
 接近目标构型的扰动测试之外，另有 [1000 项三角形随机初值实验](RANDOM_TRIANGLE.md)，其六个初始坐标直接从 (-10,10) 生成，只添加三条边长关系、保留 3 个自由度。该实验单独统计真实状态，未并入上面的 400 个配置或四后端成功率。
 
 类型化错误升级后，以上数据保留为历史测量，本次未重跑。`--check` 独立验证本次新运行的结果，并在源码指纹不同时明确提示历史快照；不会重写已提交测量。加 `--require-current-snapshot` 可要求快照必须对应当前源码，不符即失败。CSV 完整性及当前结果正确性检查仍保留。需要刷新证据时，审查完整实测结果后显式使用 `--write`。
+
+
+## 维护者按需验证
+
+日常改动优先选择相关检查，例如公开接口示例：
+
+```sh
+moon test README.mbt.md --target js
+```
+
+以下是维护者按需执行的完整验证，不是使用 API 的前置步骤：
+
+<details>
+<summary>完整验证命令</summary>
+
+```sh
+moon fmt --check
+moon check --target all --deny-warn
+moon build
+moon test
+moon test --target wasm-gc
+moon test --target js
+moon test --target native
+moon run examples/basic
+moon run cmd/edit_demo
+moon run examples/mirror_holes
+moon run examples/parametric_bracket
+node scripts/bracket_showcase.cjs --check
+moon run examples/four_bar
+node scripts/four_bar_showcase.cjs --check
+```
+
+</details>
+
+测试包含不同尺寸与平移下的矩形、解析可验的三角形和夹角、两侧线圆相切、圆内切、中心对称、带符号偏移、长度比例、约束启停、修改尺寸、连续 21 个曲柄位置的四杆机构，以及冗余、矛盾、奇异初值、输出舍入和资源限制。内部数值算法的验证设计见[技术说明](ARCHITECTURE.md#如何验证)。测试通过不代表任意非线性草图均会收敛。
+
+`python scripts/check_package.py` 使用 Python 3.10+ 标准库检查实际发布 ZIP 的文件与许可，再解包到临时 workspace，由独立消费模块在四个后端编译测试，并运行包内的安装板、四杆机构及 SVG 检查（这一步还需要 Node.js 18+）。Python 与 Node 图形脚本仅用于开发验证；核心求解与 wasm 示例不需要它们。
+
+本次审查另覆盖 64 组经过旋转 / 平移 / 缩放的解析三角形、96 组容差临界值输入，以及跨草图同号句柄的拒绝行为。
+
+[验收对照](ACCEPTANCE.md)区分源码证据与未完成发布事项。日常只运行本次改动相关的轻量检查；完整矩阵由维护者显式决定是否运行。

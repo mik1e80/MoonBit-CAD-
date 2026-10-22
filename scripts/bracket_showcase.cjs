@@ -22,7 +22,7 @@ const executable = process.platform === 'win32' ? 'moon.exe' : 'moon';
 const moon = process.env.MOON_HOME
   ? path.join(process.env.MOON_HOME, 'bin', executable)
   : executable;
-const run = spawnSync(moon, ['run', 'cmd/bracket_demo', '--target', target], {
+const run = spawnSync(moon, ['run', 'examples/parametric_bracket', '--target', target], {
   cwd: root, encoding: 'utf8', timeout: 120_000, maxBuffer: 4 * 1024 * 1024,
 });
 if (run.error || run.status !== 0) {
