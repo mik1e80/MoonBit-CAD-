@@ -1,6 +1,6 @@
 # 验收前核对记录
 
-初次核对日期：2026-10-16；交付状态更新：2026-10-22。本文件记录代码证据与待完成事项，不表示组委会已批准项目。
+初次核对日期：2026-10-16；交付状态更新：2026-10-23。本文件记录代码证据与待完成事项，不表示组委会已批准项目。
 
 ## 对照来源
 
@@ -23,6 +23,27 @@
 | 开源和参考来源 | 完整 Apache-2.0 LICENSE；THIRD_PARTY_NOTICES.md 记录参考项目名称、链接、许可证和具体范围；没有第三方 CAD 样例或求解器代码进入源码包 |
 | AI 使用可解释 | docs/ARCHITECTURE.md 说明建模、数值步骤、质量边界及 AI 协作；参赛者仍需掌握并解释这些内容 |
 | Mooncakes 发布 | `mik1e80/cad_sketch@0.2.1` 通过 [Mooncakes](https://mooncakes.io/docs/mik1e80/cad_sketch) 分发；发布记录和独立安装验证见 [PUBLISHING](PUBLISHING.md) |
+
+## 代码行数与申报口径
+
+2026-10-23，按源码提交 `99cbe3a` 的 Git 跟踪文件复核：
+
+| 范围 | `.mbt` 文件数 | 非空行数（含注释） |
+| --- | ---: | ---: |
+| 全部 MoonBit 源文件，含实现、测试、示例、Benchmark 与开发验证命令 | 32 | 4,947 |
+| 根目录核心运行时实现 | 8 | 1,552 |
+
+统计方法为对 `git ls-files` 中以 `.mbt` 结尾的文件逐行计数，仅排除去除首尾空白后为空的行；未排除注释。核心范围为 `autodiff.mbt`, `errors.mbt`, `linalg.mbt`, `model.mbt`, `residual.mbt`, `solver.mbt`, `svg.mbt`, `validate.mbt`。生成的 `.mbti`、README 内的可执行片段及 Python / Node.js 开发脚本不在这项统计范围。
+
+以上数字是**非空原始行数，不是有效 LOC**；本仓库未提供排除注释后的有效 LOC 计算结果，不能将上述数字作为“有效代码行数”申报。申报材料应优先说明已实现的建模、约束、编辑、诊断、可安装包和当前 Release 的实际验证证据；若填写行数，必须同时说明统计范围、注释处理方式及对应源码提交，不为凑行数临时增加功能。
+
+## GitHub 展示信息
+
+2026-10-23 已设置并通过 API 回读确认 [GitHub 仓库](https://github.com/mik1e80/moonbit-cad-sketch)的简介与 Topics：
+
+> Pure MoonBit 2D parametric sketch constraint solver with 24 constraints, editable dimensions, diagnostics, and SVG export.
+
+Topics：`cad`, `constraint-solver`, `geometry`, `moonbit`, `parametric-design`, `sketch`。这些标签用于发现项目，能力与可靠性仍以代码、示例及实际验证记录为依据。
 
 ## 本次重点修复
 
